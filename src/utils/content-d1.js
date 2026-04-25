@@ -1,5 +1,49 @@
 const COLLECTION_ID = 'col-blog-posts-94b7858e';
 
+function parseD1Row(row) {
+  let parsedData = {};
+  try {
+    parsedData = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
+  } catch (e) {
+    console.error('Failed to parse JSON for row:', row.id, e);
+  }
+
+  const rawTags = parsedData.tags;
+  let tags = [];
+  if (typeof rawTags === 'string' && rawTags.trim()) {
+    tags = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+  } else if (Array.isArray(rawTags)) {
+    tags = rawTags;
+  }
+
+  let publishDate;
+  try {
+    if (parsedData.publishedAt) {
+      publishDate = new Date(parsedData.publishedAt).toISOString();
+    } else {
+      publishDate = new Date(row.created_at).toISOString();
+    }
+  } catch (e) {
+    publishDate = new Date().toISOString();
+  }
+
+  return {
+    id: row.id,
+    slug: row.slug,
+    data: {
+      title: row.title || parsedData.title || 'Untitled',
+      excerpt: parsedData.excerpt || '',
+      publishDate: publishDate,
+      image: parsedData.featuredImage || '',
+      author: parsedData.author || 'Admin',
+      category: parsedData.category || 'General',
+      tags: tags,
+      content: parsedData.content || '',
+      draft: false,
+    }
+  };
+}
+
 export async function getD1Posts(db) {
   if (!db) {
     console.warn('D1 Database not found in Astro.locals.runtime.env.DB');
@@ -19,39 +63,7 @@ export async function getD1Posts(db) {
       .bind(COLLECTION_ID)
       .all();
 
-    return results.map(row => {
-      let parsedData = {};
-      try {
-        parsedData = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
-      } catch (e) {
-        console.error('Failed to parse JSON for row:', row.id, e);
-      }
-      
-      const rawTags = parsedData.tags;
-      const tags = typeof rawTags === 'string' 
-        ? rawTags.split(',').map(t => t.trim()).filter(Boolean)
-        : Array.isArray(rawTags) ? rawTags : [];
-
-      return {
-        id: row.id,
-        slug: row.slug,
-        data: {
-          title: row.title || parsedData.title || '',
-          description: parsedData.excerpt || '',
-          excerpt: parsedData.excerpt || '',
-          publishDate: parsedData.publishedAt 
-            ? new Date(parsedData.publishedAt).toISOString()
-            : new Date(row.created_at).toISOString(),
-          image: parsedData.featuredImage || '',
-          author: parsedData.author || 'Admin',
-          category: parsedData.category || 'General',
-          tags: tags,
-          content: parsedData.content || '',
-          draft: false,
-          ...parsedData
-        }
-      };
-    });
+    return results.map(parseD1Row);
   } catch (error) {
     console.error('Error fetching posts from D1:', error);
     return [];
@@ -68,44 +80,14 @@ export async function getD1PostBySlug(db, slug) {
         FROM content 
         WHERE collection_id = ? 
         AND slug = ? 
+        AND status = 'published'
         LIMIT 1
       `)
       .bind(COLLECTION_ID, slug)
       .first();
 
     if (!row) return null;
-
-    let parsedData = {};
-    try {
-      parsedData = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
-    } catch (e) {
-      console.error('Failed to parse JSON for row:', row.id, e);
-    }
-    
-    const rawTags = parsedData.tags;
-    const tags = typeof rawTags === 'string' 
-      ? rawTags.split(',').map(t => t.trim()).filter(Boolean)
-      : Array.isArray(rawTags) ? rawTags : [];
-
-    return {
-      id: row.id,
-      slug: row.slug,
-      data: {
-        title: row.title || parsedData.title || '',
-        description: parsedData.excerpt || '',
-        excerpt: parsedData.excerpt || '',
-        publishDate: parsedData.publishedAt 
-          ? new Date(parsedData.publishedAt).toISOString()
-          : new Date(row.created_at).toISOString(),
-        image: parsedData.featuredImage || '',
-        author: parsedData.author || 'Admin',
-        category: parsedData.category || 'General',
-        tags: tags,
-        content: parsedData.content || '',
-        draft: false,
-        ...parsedData
-      }
-    };
+    return parseD1Row(row);
   } catch (error) {
     console.error('Error fetching post by slug from D1:', error);
     return null;

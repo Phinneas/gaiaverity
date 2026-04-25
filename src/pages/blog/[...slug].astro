@@ -14,49 +14,65 @@ export const prerender = false;
 
 const { slug } = Astro.params;
 
-// 1. Try local collection first
-let post = await getEntry("blog", slug);
+let post = null;
+let isD1Post = false;
 
-// 2. If not found, try D1
+try {
+  post = await getEntry("blog", slug);
+} catch (e) {
+  // Local collection lookup failed
+}
+
 if (!post) {
   const db = Astro.locals.runtime?.env?.DB;
-  post = await getD1PostBySlug(db, slug);
+  if (db) {
+    try {
+      post = await getD1PostBySlug(db, slug);
+      isD1Post = true;
+    } catch (e) {
+      console.error("D1 lookup error:", e);
+    }
+  }
 }
 
 if (!post) {
   return Astro.redirect("/404");
 }
 
-// For D1 posts, we don't have a .render() method like Astro content.
-// We'll just use the content directly from data.
-const Content = post.data.content;
+const postTitle = post.data?.title || 'Untitled';
+const postExcerpt = post.data?.excerpt || '';
+const postImage = post.data?.image || '';
+const isExternalImage = typeof postImage === 'string' && (postImage.includes('unsplash.com') || postImage.includes('gaiaverity.com'));
+const postDate = post.data?.publishDate || new Date().toISOString();
 
-const author = authors.find((item) => item.slug === post.data.author) || {
-  name: post.data.author || "Admin",
-  slug: post.data.author || "admin",
+const authorName = post.data?.author || "Admin";
+const author = authors.find((item) => item.slug === authorName) || {
+  name: authorName,
+  slug: authorName.toLowerCase().replace(/\s+/g, "-"),
   image: ""
 };
 
-// Extremely defensive category lookup
-const categoryName = post.data.category || "General";
+const categoryName = post.data?.category || "General";
 const categorySlug = (typeof categoryName === 'string' ? categoryName : "general").toLowerCase();
-
 const foundCategory = categories.find((item) => item.slug === categorySlug);
-
 const category = foundCategory || {
   title: typeof categoryName === 'string' ? categoryName : "General",
   slug: categorySlug,
   color: "blue"
 };
 
-console.log(`Building post: ${slug}, Category: ${categoryName}, Resolved:`, category);
-
+let htmlContent = '';
+if (isD1Post) {
+  htmlContent = post.data?.content || '';
+} else {
+  // For local collection posts, use the render method
+}
 ---
 
 <Layout
-  title={post.data.title}
-  desc={post.data.excerpt}
-  ogimage={post.data.image}>
+  title={postTitle}
+  desc={postExcerpt}
+  ogimage={postImage}>
   <Container>
     <div class="max-w-screen-md mx-auto">
       <div class="text-center">
@@ -65,7 +81,7 @@ console.log(`Building post: ${slug}, Category: ${categoryName}, Resolved:`, cate
 
       <h1
         class="mt-2 mb-3 text-3xl font-semibold tracking-tight text-center lg:leading-snug text-brand-primary lg:text-4xl dark:text-white">
-        {post.data.title}
+        {postTitle}
       </h1>
 
       <div class="flex justify-center mt-3 space-x-3 text-gray-500">
@@ -92,13 +108,9 @@ console.log(`Building post: ${slug}, Category: ${categoryName}, Resolved:`, cate
             <div class="flex items-center space-x-2 text-sm">
               <time
                 class="text-gray-500 dark:text-gray-400"
-                datetime={post.data.publishDate}>
-                {getFormattedDate(post.data.publishDate)}
+                datetime={postDate}>
+                {getFormattedDate(postDate)}
               </time>
-              <!-- <span>
-                · {Math.round(remarkPluginFrontmatter?.estReadingTime) || "5"} min
-                read
-              </span> -->
             </div>
           </div>
         </div>
@@ -106,34 +118,42 @@ console.log(`Building post: ${slug}, Category: ${categoryName}, Resolved:`, cate
     </div>
   </Container>
 
-  <div
-    class="relative z-0 max-w-screen-lg mx-auto overflow-hidden lg:rounded-lg aspect-video">
-    {
-      post.data.image && (
-        <Picture
-          src={post.data.image}
-          widths={[200, 400, 800, 1200]}
-          sizes="(max-width: 640px) 90vw, 480px"
+  {postImage && (
+    <div
+      class="relative z-0 max-w-screen-lg mx-auto overflow-hidden lg:rounded-lg aspect-video">
+      {isExternalImage ? (
+        <img
+          src={postImage}
           alt="Thumbnail"
-          inferSize={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? false : true}
-          width={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? 1200 : undefined}
-          height={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? 675 : undefined}
           loading="eager"
           class="w-full object-cover"
         />
-      )
-    }
-  </div>
+      ) : (
+        <Picture
+          src={postImage}
+          widths={[200, 400, 800, 1200]}
+          sizes="(max-width: 640px) 90vw, 480px"
+          alt="Thumbnail"
+          loading="eager"
+          class="w-full object-cover"
+        />
+      )}
+    </div>
+  )}
 
   <Container>
     <article class="max-w-screen-md mx-auto">
       <div
         class="mx-auto my-3 prose prose-base dark:prose-invert prose-a:text-blue-600">
-        {typeof Content === 'string' ? <div set:html={Content} /> : <Content />}
+        {isD1Post ? (
+          <div set:html={htmlContent} />
+        ) : (
+          <post.Content />
+        )}
 
         <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
           {
-            post.data.tags.map((tag) => (
+            (post.data?.tags || []).map((tag) => (
               <span class="text-sm text-gray-500">#{tag}</span>
             ))
           }
@@ -144,7 +164,7 @@ console.log(`Building post: ${slug}, Category: ${categoryName}, Resolved:`, cate
         <a
           href="/"
           class="px-5 py-3 text-sm text-blue-600 transition rounded-md dark:bg-gray-700 dark:text-white bg-blue-50 hover:bg-blue-100">
-          ← View all posts
+          &larr; View all posts
         </a>
       </div>
       {author && <Authorcard author={author} />}

@@ -11,21 +11,29 @@ import { getFormattedDate } from "@/utils/all";
 import { Icon } from "astro-icon/components";
 
 const { post, aspect, preloadImage } = Astro.props;
-const author = authors.find((item) => item.slug === post.data.author) || {
-  name: post.data.author || "Admin",
-  slug: post.data.author || "admin",
+
+const authorName = post.data?.author || "Admin";
+const author = authors.find((item) => item.slug === authorName) || {
+  name: authorName,
+  slug: authorName.toLowerCase().replace(/\s+/g, "-"),
   image: ""
 };
 
-const categoryName = post.data.category || "General";
+const categoryName = post.data?.category || "General";
 const categorySlug = (typeof categoryName === 'string' ? categoryName : "general").toLowerCase();
 const foundCategory = categories.find((item) => item.slug === categorySlug);
-
 const category = foundCategory || {
   title: typeof categoryName === 'string' ? categoryName : "General",
   slug: categorySlug,
   color: "blue"
 };
+
+const postSlug = post.slug || '';
+const postImage = post.data?.image || '';
+const isExternalImage = typeof postImage === 'string' && (postImage.includes('unsplash.com') || postImage.includes('gaiaverity.com'));
+const postTitle = post.data?.title || 'Untitled';
+const postExcerpt = post.data?.excerpt || '';
+const postDate = post.data?.publishDate || new Date().toISOString();
 ---
 
 <div class="cursor-pointer group">
@@ -34,20 +42,26 @@ const category = foundCategory || {
       "relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105",
       aspect === "landscape" ? "aspect-video" : "aspect-square"
     )}>
-    <a href={"/blog/" + post.slug}>
+    <a href={"/blog/" + postSlug}>
       {
-        post.data.image ? (
-          <Picture
-            src={post.data.image}
-            widths={[200, 400, 800]}
-            sizes="(max-width: 640px) 90vw, 480px"
-            alt="Thumbnail"
-            inferSize={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? false : true}
-            width={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? 800 : undefined}
-            height={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? 450 : undefined}
-            loading={preloadImage ? "eager" : "lazy"}
-            class="w-full h-full rounded-md object-cover"
-          />
+        postImage ? (
+          isExternalImage ? (
+            <img
+              src={postImage}
+              alt="Thumbnail"
+              loading={preloadImage ? "eager" : "lazy"}
+              class="w-full h-full rounded-md object-cover"
+            />
+          ) : (
+            <Picture
+              src={postImage}
+              widths={[200, 400, 800]}
+              sizes="(max-width: 640px) 90vw, 480px"
+              alt="Thumbnail"
+              loading={preloadImage ? "eager" : "lazy"}
+              class="w-full h-full rounded-md object-cover"
+            />
+          )
         ) : (
           <span class="absolute w-16 h-16 text-gray-200 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             <Icon
@@ -65,19 +79,19 @@ const category = foundCategory || {
   </a>
   <h2
     class="mt-2 text-lg font-semibold tracking-normal text-brand-primary dark:text-white">
-    <a href={"/blog/" + post.slug}>
+    <a href={"/blog/" + postSlug}>
       <span
         class="bg-gradient-to-r from-green-200 to-green-100 dark:from-purple-800 dark:to-purple-900 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px]">
-        {post.data.title}
+        {postTitle}
       </span>
     </a>
   </h2>
 
   <div class="hidden">
     {
-      post.data.excerpt && (
+      postExcerpt && (
         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
-          <a href={"/blog/" + post.slug}>{post.data.excerpt}</a>
+          <a href={"/blog/" + postSlug}>{postExcerpt}</a>
         </p>
       )
     }
@@ -103,8 +117,8 @@ const category = foundCategory || {
       <span class="text-sm">{author.name}</span>
     </div>
     <span class="text-xs text-gray-300 dark:text-gray-600"> &bull;</span>
-    <time class="text-sm" datetime={post.data.publishDate}>
-      {getFormattedDate(post.data.publishDate)}
+    <time class="text-sm" datetime={postDate}>
+      {getFormattedDate(postDate)}
     </time>
   </div>
 </div>
