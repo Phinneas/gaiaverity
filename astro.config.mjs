@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 
-import { remarkReadingTime } from './src/utils/all';
+import { remarkReadingTime } from './src/utils/all.js';
 
 export default defineConfig({
   site: 'https://gaiaverity.pages.dev',
@@ -29,7 +29,7 @@ export default defineConfig({
   integrations: [tailwind(), mdx(), icon(), sitemap()],
   vite: {
     ssr: {
-      external: ['node:stream', 'node:util', 'node:url', 'node:path'],
+      external: ['reading-time', 'mdast-util-to-string', 'node:stream', 'node:util', 'node:url', 'node:path'],
     },
     resolve: {
       alias: {
