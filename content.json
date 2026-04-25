@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Welcome to GaiaVerity",
+    "description": "This is the first imported post for the GaiaVerity MCP Directory.",
+    "category": "Announcement",
+    "author": "Chester",
+    "tags": ["mcp", "directory", "launch"],
+    "content": "Welcome to our new directory of MCP servers. We are excited to share this with you!"
+  },
+  {
+    "title": "What is MCP?",
+    "description": "Model Context Protocol (MCP) is a new standard for AI context.",
+    "category": "Education",
+    "author": "Chester",
+    "tags": ["mcp", "ai"],
+    "content": "MCP allows AI models to access external tools and data seamlessly."
+  }
+]

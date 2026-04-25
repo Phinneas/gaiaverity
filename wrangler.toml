@@ -1,0 +1,9 @@
+name = "gaiaverity"
+account_id = "089751e148dc58f3b1a6bd24f3e9ad60"
+pages_build_output_dir = "./dist"
+compatibility_flags = [ "nodejs_compat" ]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sonicjs-db"
+database_id = "958f2e06-9e3f-4f08-bc29-fff3b24be5e5"
