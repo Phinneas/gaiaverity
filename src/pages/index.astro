@@ -2,7 +2,7 @@
 import Container from "@/components/container.astro";
 import Postlist from "@/components/postlist.astro";
 import Layout from "@/layouts/Layout.astro";
-import { latestPosts as localPosts } from "@/utils/content";
+import { getLocalPosts } from "@/utils/content";
 import { getD1Posts } from "@/utils/content-d1";
 
 export const prerender = false;
@@ -26,7 +26,11 @@ try {
     }
   }
   
-  finalPosts = d1Posts.length > 0 ? d1Posts : localPosts;
+  if (d1Posts.length > 0) {
+    finalPosts = d1Posts;
+  } else {
+    finalPosts = await getLocalPosts();
+  }
 } catch (e) {
   console.error("Fatal homepage error:", e);
   error = e;
