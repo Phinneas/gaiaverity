@@ -3,7 +3,6 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import icon from 'astro-icon';
-import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 
@@ -26,7 +25,7 @@ export default defineConfig({
     rehypePlugins: [rehypeImageNativeLazyLoading],
     extendDefaultPlugins: true,
   },
-  integrations: [tailwind(), mdx(), icon(), sitemap()],
+  integrations: [tailwind(), mdx(), icon()],
   vite: {
     ssr: {
       external: ['reading-time', 'mdast-util-to-string', 'node:stream', 'node:util', 'node:url', 'node:path'],
