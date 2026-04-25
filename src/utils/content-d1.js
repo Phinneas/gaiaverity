@@ -13,6 +13,7 @@ export async function getD1Posts(db) {
         FROM content 
         WHERE collection_id = ? 
         AND status = 'published'
+        AND data LIKE '%"site":"gaiaverity"%'
         ORDER BY created_at DESC
       `)
       .bind(COLLECTION_ID)
@@ -21,11 +22,16 @@ export async function getD1Posts(db) {
     return results.map(row => {
       let parsedData = {};
       try {
-        parsedData = JSON.parse(row.data);
+        parsedData = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
       } catch (e) {
         console.error('Failed to parse JSON for row:', row.id, e);
       }
       
+      const rawTags = parsedData.tags;
+      const tags = typeof rawTags === 'string' 
+        ? rawTags.split(',').map(t => t.trim()).filter(Boolean)
+        : Array.isArray(rawTags) ? rawTags : [];
+
       return {
         id: row.id,
         slug: row.slug,
@@ -39,9 +45,7 @@ export async function getD1Posts(db) {
           image: parsedData.featuredImage || '',
           author: parsedData.author || 'Admin',
           category: parsedData.category || 'General',
-          tags: parsedData.tags 
-            ? parsedData.tags.split(',').map(t => t.trim()).filter(Boolean)
-            : [],
+          tags: tags,
           content: parsedData.content || '',
           draft: false,
           ...parsedData
@@ -73,11 +77,16 @@ export async function getD1PostBySlug(db, slug) {
 
     let parsedData = {};
     try {
-      parsedData = JSON.parse(row.data);
+      parsedData = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
     } catch (e) {
       console.error('Failed to parse JSON for row:', row.id, e);
     }
     
+    const rawTags = parsedData.tags;
+    const tags = typeof rawTags === 'string' 
+      ? rawTags.split(',').map(t => t.trim()).filter(Boolean)
+      : Array.isArray(rawTags) ? rawTags : [];
+
     return {
       id: row.id,
       slug: row.slug,
@@ -91,9 +100,7 @@ export async function getD1PostBySlug(db, slug) {
         image: parsedData.featuredImage || '',
         author: parsedData.author || 'Admin',
         category: parsedData.category || 'General',
-        tags: parsedData.tags 
-          ? parsedData.tags.split(',').map(t => t.trim()).filter(Boolean)
-          : [],
+        tags: tags,
         content: parsedData.content || '',
         draft: false,
         ...parsedData

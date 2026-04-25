@@ -7,15 +7,44 @@ import { getD1Posts } from "@/utils/content-d1";
 
 export const prerender = false;
 
-const db = Astro.locals.runtime?.env?.DB;
-const d1Posts = await getD1Posts(db);
+let error = null;
+let dbConnected = false;
+let d1PostsCount = 0;
+let finalPosts = [];
 
-const latestPosts = d1Posts.length > 0 ? d1Posts : localPosts;
+try {
+  const db = Astro.locals.runtime?.env?.DB;
+  dbConnected = !!db;
+  
+  let d1Posts = [];
+  if (db) {
+    try {
+      d1Posts = await getD1Posts(db);
+      d1PostsCount = d1Posts.length;
+    } catch (e) {
+      console.error("D1 fetch error:", e);
+    }
+  }
+  
+  finalPosts = d1Posts.length > 0 ? d1Posts : localPosts;
+} catch (e) {
+  console.error("Fatal homepage error:", e);
+  error = e;
+}
+
+const latestPosts = finalPosts;
 ---
 
 <Layout title="">
   <Container>
     <main>
+      {error && (
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative my-10" role="alert">
+          <strong class="font-bold">Debug Error:</strong>
+          <span class="block sm:inline">{error.message}</span>
+          <pre class="mt-2 text-xs">{error.stack}</pre>
+        </div>
+      )}
       <div class="grid gap-10 lg:gap-10 md:grid-cols-2">
         {
           latestPosts
