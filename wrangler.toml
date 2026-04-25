@@ -1,6 +1,6 @@
 name = "gaiaverity"
-account_id = "089751e148dc58f3b1a6bd24f3e9ad60"
 pages_build_output_dir = "./dist"
+compatibility_date = "2024-04-24"
 compatibility_flags = [ "nodejs_compat" ]
 
 [[d1_databases]]
