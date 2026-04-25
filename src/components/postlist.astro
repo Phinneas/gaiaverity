@@ -16,11 +16,14 @@ const author = authors.find((item) => item.slug === post.data.author) || {
   slug: post.data.author || "admin",
   image: ""
 };
-const category = categories.find(
-  (item) => item.slug === (post.data.category || "").toLowerCase()
-) || {
-  title: post.data.category || "General",
-  slug: (post.data.category || "general").toLowerCase(),
+
+const categoryName = post.data.category || "General";
+const categorySlug = (typeof categoryName === 'string' ? categoryName : "general").toLowerCase();
+const foundCategory = categories.find((item) => item.slug === categorySlug);
+
+const category = foundCategory || {
+  title: typeof categoryName === 'string' ? categoryName : "General",
+  slug: categorySlug,
   color: "blue"
 };
 ---

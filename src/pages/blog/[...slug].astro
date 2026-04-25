@@ -7,30 +7,49 @@ import { authors } from "@/data/authors";
 import { categories } from "@/data/category";
 import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
-import { CollectionEntry, getCollection } from "astro:content";
+import { getEntry } from "astro:content";
+import { getD1PostBySlug } from "@/utils/content-d1";
 
-import type { Author } from "@/data/authors";
-import type { Category } from "@/data/category";
+export const prerender = false;
 
-type Props = CollectionEntry<"blog">;
+const { slug } = Astro.params;
 
-export async function getStaticPaths() {
-  const blog = await getCollection("blog");
+// 1. Try local collection first
+let post = await getEntry("blog", slug);
 
-  return blog.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+// 2. If not found, try D1
+if (!post) {
+  const db = Astro.locals.runtime?.env?.DB;
+  post = await getD1PostBySlug(db, slug);
 }
 
-const { post } = Astro.props;
+if (!post) {
+  return Astro.redirect("/404");
+}
 
-const { Content, remarkPluginFrontmatter } = await post.render();
+// For D1 posts, we don't have a .render() method like Astro content.
+// We'll just use the content directly from data.
+const Content = post.data.content;
 
-const author = authors.find((item) => item.slug === post.data.author) as Author;
-const category = categories.find(
-  (item) => item.slug === post.data.category
-) as Category;
+const author = authors.find((item) => item.slug === post.data.author) || {
+  name: post.data.author || "Admin",
+  slug: post.data.author || "admin",
+  image: ""
+};
+
+// Extremely defensive category lookup
+const categoryName = post.data.category || "General";
+const categorySlug = (typeof categoryName === 'string' ? categoryName : "general").toLowerCase();
+
+const foundCategory = categories.find((item) => item.slug === categorySlug);
+
+const category = foundCategory || {
+  title: typeof categoryName === 'string' ? categoryName : "General",
+  slug: categorySlug,
+  color: "blue"
+};
+
+console.log(`Building post: ${slug}, Category: ${categoryName}, Resolved:`, category);
 
 ---
 
@@ -93,13 +112,14 @@ const category = categories.find(
       post.data.image && (
         <Picture
           src={post.data.image}
-          widths={[200, 400, 800]}
+          widths={[200, 400, 800, 1200]}
           sizes="(max-width: 640px) 90vw, 480px"
-          width={1024}
-          heignt={576}
           alt="Thumbnail"
+          inferSize={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? false : true}
+          width={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? 1200 : undefined}
+          height={typeof post.data.image === "string" && post.data.image.includes("gaiaverity.com") ? 675 : undefined}
           loading="eager"
-          class="w-full"
+          class="w-full object-cover"
         />
       )
     }
@@ -109,7 +129,7 @@ const category = categories.find(
     <article class="max-w-screen-md mx-auto">
       <div
         class="mx-auto my-3 prose prose-base dark:prose-invert prose-a:text-blue-600">
-        <Content />
+        {typeof Content === 'string' ? <div set:html={Content} /> : <Content />}
 
         <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
           {
