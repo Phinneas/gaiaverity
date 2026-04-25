@@ -28,7 +28,7 @@ export default defineConfig({
   integrations: [tailwind(), mdx(), icon()],
   vite: {
     ssr: {
-      external: ['node:stream', 'node:util', 'node:url', 'node:path'],
+      external: ['reading-time', 'mdast-util-to-string', 'node:stream', 'node:util', 'node:url', 'node:path'],
     },
     resolve: {
       alias: {
