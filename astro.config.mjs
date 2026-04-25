@@ -1,24 +1,19 @@
 // https://astro.build/config
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import icon from 'astro-icon';
-import cloudflare from '@astrojs/cloudflare';
+
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 
 import { remarkReadingTime } from './src/utils/all.js';
 
 export default defineConfig({
   site: 'https://gaiaverity.pages.dev',
-  output: 'hybrid',
-  adapter: cloudflare({
-    imageService: 'passthrough',
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  output: 'static',
   image: {
-    service: passthroughImageService(),
+    domains: ['pub-sonicjs-media-dev.r2.dev'],
+    remotePatterns: [{ protocol: 'https' }],
   },
   markdown: {
     remarkPlugins: [remarkReadingTime],
@@ -28,12 +23,7 @@ export default defineConfig({
   integrations: [tailwind(), mdx(), icon()],
   vite: {
     ssr: {
-      external: ['reading-time', 'mdast-util-to-string', 'node:stream', 'node:util', 'node:url', 'node:path'],
-    },
-    resolve: {
-      alias: {
-        stream: 'node:stream',
-      },
+      external: ['reading-time', 'mdast-util-to-string'],
     },
   },
 });

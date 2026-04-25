@@ -2,30 +2,10 @@
 import Container from "@/components/container.astro";
 import Postlist from "@/components/postlist.astro";
 import Layout from "@/layouts/Layout.astro";
-import { getLocalPosts } from "@/utils/content";
-import { getD1Posts } from "@/utils/content-d1";
+import { getBlogPosts } from "@/lib/sonicjs";
 
-export const prerender = false;
-
-let posts = [];
-
-try {
-  const db = Astro.locals.runtime?.env?.DB;
-  if (db) {
-    const d1Posts = await getD1Posts(db);
-    if (d1Posts.length > 0) {
-      posts = d1Posts;
-    }
-  }
-} catch (e) {
-  console.error("D1 fetch error:", e);
-}
-
-if (posts.length === 0) {
-  posts = await getLocalPosts();
-}
-
-const latestPosts = posts;
+const allPosts = await getBlogPosts();
+const latestPosts = allPosts;
 ---
 
 <Layout title="">

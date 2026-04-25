@@ -7,71 +7,39 @@ import { authors } from "@/data/authors";
 import { categories } from "@/data/category";
 import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
-import { getEntry } from "astro:content";
-import { getD1PostBySlug } from "@/utils/content-d1";
+import { getCollection } from "astro:content";
 
-export const prerender = false;
-
-const { slug } = Astro.params;
-
-let post = null;
-let isD1Post = false;
-
-try {
-  post = await getEntry("blog", slug);
-} catch (e) {
-  // Local collection lookup failed
+export async function getStaticPaths() {
+  const blog = await getCollection("blog", ({ data }) => data.draft !== true);
+  return blog.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
 
-if (!post) {
-  const db = Astro.locals.runtime?.env?.DB;
-  if (db) {
-    try {
-      post = await getD1PostBySlug(db, slug);
-      isD1Post = true;
-    } catch (e) {
-      console.error("D1 lookup error:", e);
-    }
-  }
-}
+const { post } = Astro.props;
+const { Content } = await post.render();
 
-if (!post) {
-  return Astro.redirect("/404");
-}
-
-const postTitle = post.data?.title || 'Untitled';
-const postExcerpt = post.data?.excerpt || '';
-const postImage = post.data?.image || '';
-const isExternalImage = typeof postImage === 'string' && (postImage.includes('unsplash.com') || postImage.includes('gaiaverity.com'));
-const postDate = post.data?.publishDate || new Date().toISOString();
-
-const authorName = post.data?.author || "Admin";
-const author = authors.find((item) => item.slug === authorName) || {
-  name: authorName,
-  slug: authorName.toLowerCase().replace(/\s+/g, "-"),
+const author = authors.find((item) => item.slug === post.data.author) || {
+  name: post.data.author || "Admin",
+  slug: post.data.author || "admin",
   image: ""
 };
-
-const categoryName = post.data?.category || "General";
-const categorySlug = (typeof categoryName === 'string' ? categoryName : "general").toLowerCase();
-const foundCategory = categories.find((item) => item.slug === categorySlug);
-const category = foundCategory || {
-  title: typeof categoryName === 'string' ? categoryName : "General",
-  slug: categorySlug,
+const category = categories.find(
+  (item) => item.slug === (post.data.category || "").toLowerCase()
+) || {
+  title: post.data.category || "General",
+  slug: (post.data.category || "general").toLowerCase(),
   color: "blue"
 };
 
-let htmlContent = '';
-if (isD1Post) {
-  htmlContent = post.data?.content || '';
-} else {
-  // For local collection posts, use the render method
-}
+const postImage = post.data.image || '';
+const isExternalImage = typeof postImage === 'string' && postImage.startsWith('http');
 ---
 
 <Layout
-  title={postTitle}
-  desc={postExcerpt}
+  title={post.data.title}
+  desc={post.data.excerpt}
   ogimage={postImage}>
   <Container>
     <div class="max-w-screen-md mx-auto">
@@ -81,7 +49,7 @@ if (isD1Post) {
 
       <h1
         class="mt-2 mb-3 text-3xl font-semibold tracking-tight text-center lg:leading-snug text-brand-primary lg:text-4xl dark:text-white">
-        {postTitle}
+        {post.data.title}
       </h1>
 
       <div class="flex justify-center mt-3 space-x-3 text-gray-500">
@@ -108,8 +76,8 @@ if (isD1Post) {
             <div class="flex items-center space-x-2 text-sm">
               <time
                 class="text-gray-500 dark:text-gray-400"
-                datetime={postDate}>
-                {getFormattedDate(postDate)}
+                datetime={post.data.publishDate}>
+                {getFormattedDate(post.data.publishDate)}
               </time>
             </div>
           </div>
@@ -145,15 +113,11 @@ if (isD1Post) {
     <article class="max-w-screen-md mx-auto">
       <div
         class="mx-auto my-3 prose prose-base dark:prose-invert prose-a:text-blue-600">
-        {isD1Post ? (
-          <div set:html={htmlContent} />
-        ) : (
-          <post.Content />
-        )}
+        <Content />
 
         <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
           {
-            (post.data?.tags || []).map((tag) => (
+            (post.data.tags || []).map((tag: string) => (
               <span class="text-sm text-gray-500">#{tag}</span>
             ))
           }
