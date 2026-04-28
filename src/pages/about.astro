@@ -1,54 +1,79 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
-import { Image, getImage } from "astro:assets";
-import { authors } from "@/data/authors";
 import Pagetitle from "@/components/pagetitle.astro";
 import Link from "@/components/ui/link.astro";
-
-
 ---
 
 <Layout title="About">
   <Container>
     <Pagetitle>
-      <Fragment slot="title">About</Fragment>
-      <Fragment slot="desc">We are a small passionate team.</Fragment>
+      <Fragment slot="title">Grow something real.</Fragment>
+      <Fragment slot="desc">
+        GaiaVerity is a gardening and lawn care resource for people who want to
+        work with their land — not against it.
+      </Fragment>
     </Pagetitle>
 
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
-      {
-        authors.slice(0, 3).map((item) => (
-          <div class="group">
-            <div class="w-full aspect-square">
-              <Image
-                src={item.image}
-                format="avif"
-                width={580}
-                height={580}
-                alt="Team"
-                class="w-full h-full object-cover rounded transition  group-hover:-translate-y-1 group-hover:shadow-xl"
-              />
-            </div>
+    <div class="mx-auto max-w-4xl mt-12">
+      <div class="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-400">
+        <p>
+          We believe the backyard is one of the most underused ecosystems most
+          people will ever own. Whether it's a mossy lawn in the Pacific
+          Northwest, a sun-scorched patch of ground crying out for
+          drought-resistant cover, or a fence line begging to become a vertical
+          garden — every outdoor space holds more possibility than it shows at
+          first glance.
+        </p>
+        <p>
+          GaiaVerity was built to make that possibility accessible. We research
+          what actually works — from the fungi that quietly enrich your soil to
+          the ground covers that crowd out weeds without chemicals — and we
+          write about it in plain language for real gardeners, not just Master
+          Gardeners with a greenhouse.
+        </p>
+      </div>
 
-            <div class="mt-4 text-center">
-              <h3 class="text-sm text-gray-500 dark:text-gray-300">
-                {" "}
-                {item.name}
-              </h3>
-            </div>
-          </div>
-        ))
-      }
-    </div>
+      <div class="grid md:grid-cols-3 gap-10 mt-16">
+        <div>
+          <h3 class="font-bold text-xl mb-3 text-gray-800 dark:text-white">
+            Sustainable practices
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            Methods that build soil health and reduce inputs over time — not
+            quick fixes that deplete.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-xl mb-3 text-gray-800 dark:text-white">
+            Backyard-scale advice
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            Written for home gardeners with real constraints — small spaces,
+            limited time, tight budgets.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-xl mb-3 text-gray-800 dark:text-white">
+            Seasonal, regional content
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            Timing matters. We cover the Pacific Northwest and beyond with
+            content tuned to your climate.
+          </p>
+        </div>
+      </div>
 
-    <div class="mx-auto max-w-xl text-center mt-14">
-      <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-400">
-        We're a multi-cultural team from around the world! We come from diverse
-        backgrounds, bringing different personalities, experiences and skills to
-        the job. This is what makes our team so special.
-      </p>
-      <div class="mt-8">
+      <div class="prose prose-lg dark:prose-invert max-w-none mt-16 text-gray-600 dark:text-gray-400">
+        <p>
+          Our content spans lawn care, mushroom identification, pest control,
+          drought-tolerant planting, vertical and small-space gardening, and
+          tree and shrub care — all grounded in the idea that a healthy garden
+          is one that takes less from the environment, not more.
+        </p>
+      </div>
+
+      <div class="mt-12 text-center">
         <Link href="/contact" style="primary">Get in touch</Link>
       </div>
     </div>
