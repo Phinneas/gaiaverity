@@ -20,6 +20,7 @@ module.exports = {
           light:       "#97C459",
           pale:        "#EAF3DE",
           paper:       "#f5f5d3",
+          ink:         "#0d1b2a",
         },
       },
       fontFamily: {
