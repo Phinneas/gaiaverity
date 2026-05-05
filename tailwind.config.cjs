@@ -14,10 +14,16 @@ module.exports = {
           terracotta:  "#dfa477",
           cream:       "#f5dfc5",
           soil:        "#2d2a24",
+          dark:        "#173404",
+          mid:         "#3B6D11",
+          border:      "#639922",
+          light:       "#97C459",
+          pale:        "#EAF3DE",
         },
       },
       fontFamily: {
-        sans: ["Inter Variable", "Inter", ...defaultTheme.fontFamily.sans],
+        sans:  ["Inter Variable", "Inter", ...defaultTheme.fontFamily.sans],
+        serif: ["Lora", ...defaultTheme.fontFamily.serif],
       },
       aspectRatio: {
         "4/3": "4 / 3",

@@ -17,6 +17,7 @@
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource-variable/inter": "^5.0.18",
+    "@fontsource/lora": "^5.2.8",
     "@iconify-json/heroicons": "^1.1.21",
     "astro": "^4.11.1",
     "astro-color-scheme": "^1.1.5",
