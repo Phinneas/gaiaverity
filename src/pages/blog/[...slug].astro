@@ -52,7 +52,7 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
         {post.data.title}
       </h1>
 
-      <div class="flex justify-center mt-3 space-x-3 text-gray-500">
+      <div class="flex justify-center mt-3 space-x-3 text-gaia-ink/60">
         <div class="flex items-center gap-3">
           <div class="relative flex-shrink-0">
             {
@@ -70,12 +70,12 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
           </div>
 
           <div>
-            <p class="text-gray-800 dark:text-gray-400">
+            <p class="text-gaia-ink">
               {author.name}
             </p>
             <div class="flex items-center space-x-2 text-sm">
               <time
-                class="text-gray-500 dark:text-gray-400"
+                class="text-gaia-ink/60"
                 datetime={post.data.publishDate}>
                 {getFormattedDate(post.data.publishDate)}
               </time>
@@ -112,7 +112,7 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
   <Container>
     <article class="max-w-screen-md mx-auto">
       <div
-        class="mx-auto my-3 prose prose-base dark:prose-invert prose-a:text-blue-600">
+        class="mx-auto my-3 prose prose-base prose-headings:text-gaia-ink prose-p:text-gaia-ink prose-li:text-gaia-ink prose-strong:text-gaia-ink prose-a:text-gaia-mid hover:prose-a:text-gaia-dark prose-blockquote:text-gaia-ink">
         <Content />
 
         <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
@@ -127,7 +127,7 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
       <div class="flex justify-center mt-7 mb-7">
         <a
           href="/"
-          class="px-5 py-3 text-sm text-blue-600 transition rounded-md dark:bg-gray-700 dark:text-white bg-blue-50 hover:bg-blue-100">
+          class="px-5 py-3 text-sm text-gaia-mid transition rounded-md bg-gaia-pale hover:bg-gaia-pale/70">
           &larr; View all posts
         </a>
       </div>
