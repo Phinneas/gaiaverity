@@ -8,6 +8,13 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.neutral,
+        gaia: {
+          sage:        "#a1b5a8",
+          tan:         "#cbb093",
+          terracotta:  "#dfa477",
+          cream:       "#f5dfc5",
+          soil:        "#2d2a24",
+        },
       },
       fontFamily: {
         sans: ["Inter Variable", "Inter", ...defaultTheme.fontFamily.sans],

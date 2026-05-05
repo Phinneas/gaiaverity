@@ -5,58 +5,16 @@ import Layout from "@/layouts/Layout.astro";
 import { getBlogPosts } from "@/lib/sonicjs";
 
 const allPosts = await getBlogPosts();
-const featuredPosts = allPosts.slice(0, 2);
-const recentPosts = allPosts.slice(2, 8);
+const featuredPosts = allPosts.slice(0, 3);
+const recentPosts  = allPosts.slice(3, 9);
 
 const topics = [
-  {
-    title: "Mushrooms & Fungi",
-    slug: "mushrooms",
-    desc: "Identify what's growing in your lawn and understand the fungal networks that build healthy soil.",
-    emoji: "🍄",
-    color: "bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800",
-    textColor: "text-amber-800 dark:text-amber-200",
-  },
-  {
-    title: "Lawn Alternatives",
-    slug: "lawn",
-    desc: "Replace thirsty turf with clover, wildflowers, and low-maintenance ground covers.",
-    emoji: "🌿",
-    color: "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800",
-    textColor: "text-green-800 dark:text-green-200",
-  },
-  {
-    title: "Native Plants",
-    slug: "native",
-    desc: "Plants that belong in your region — lower maintenance, better for pollinators, built for your climate.",
-    emoji: "🌸",
-    color: "bg-rose-50 dark:bg-rose-950 border-rose-200 dark:border-rose-800",
-    textColor: "text-rose-800 dark:text-rose-200",
-  },
-  {
-    title: "Drought-Tolerant",
-    slug: "drought",
-    desc: "Gardens designed to thrive on less water — practical choices for dry summers and water restrictions.",
-    emoji: "☀️",
-    color: "bg-orange-50 dark:bg-orange-950 border-orange-200 dark:border-orange-800",
-    textColor: "text-orange-800 dark:text-orange-200",
-  },
-  {
-    title: "Small Space Gardens",
-    slug: "small-space",
-    desc: "Vertical gardens, container growing, and smart layouts for balconies, patios, and tight yards.",
-    emoji: "🪴",
-    color: "bg-teal-50 dark:bg-teal-950 border-teal-200 dark:border-teal-800",
-    textColor: "text-teal-800 dark:text-teal-200",
-  },
-  {
-    title: "Sustainable Methods",
-    slug: "sustainable",
-    desc: "No-dig beds, organic amendments, and practices that build your soil instead of depleting it.",
-    emoji: "♻️",
-    color: "bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800",
-    textColor: "text-emerald-800 dark:text-emerald-200",
-  },
+  { title: "Mushrooms & Fungi",     slug: "mushrooms",   emoji: "🍄", desc: "Identify what's growing in your lawn and understand the soil networks beneath it." },
+  { title: "Lawn Alternatives",     slug: "lawn",        emoji: "🌿", desc: "Clover, wildflowers, and low-maintenance ground covers that outperform turf." },
+  { title: "Native Plants",         slug: "native",      emoji: "🌸", desc: "Plants built for your region — less work, better for pollinators, lower input." },
+  { title: "Drought-Tolerant",      slug: "drought",     emoji: "☀️", desc: "Gardens that thrive on less water. Practical choices for dry summers." },
+  { title: "Small Space Gardens",   slug: "small-space", emoji: "🪴", desc: "Vertical beds, containers, and smart layouts for patios and tight yards." },
+  { title: "Sustainable Methods",   slug: "sustainable", emoji: "♻️", desc: "No-dig beds, compost, and practices that build your soil year over year." },
 ];
 ---
 
@@ -64,32 +22,30 @@ const topics = [
   title=""
   desc="Sustainable lawn care, native plants, garden mushrooms, and low-input growing — for real gardeners in real spaces.">
 
-  <!-- Hero -->
-  <section class="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 text-white overflow-hidden">
-    <div class="absolute inset-0 opacity-10"
-      style="background-image: radial-gradient(circle at 20% 80%, #86efac 0%, transparent 50%), radial-gradient(circle at 80% 20%, #6ee7b7 0%, transparent 50%);">
-    </div>
-    <Container class="relative py-20 lg:py-28">
-      <div class="max-w-3xl">
-        <span class="inline-block text-green-300 text-sm font-medium tracking-widest uppercase mb-4">
+  <!-- ── Hero ── -->
+  <section class="bg-gaia-cream border-b border-gaia-tan/40">
+    <Container class="py-16 lg:py-24">
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold tracking-widest uppercase text-gaia-sage mb-5">
           Garden &amp; Sustainable Living
-        </span>
-        <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-6 text-white">
-          Your backyard holds more possibility than you think.
-        </h1>
-        <p class="text-lg lg:text-xl text-green-100 mb-10 max-w-2xl leading-relaxed">
-          GaiaVerity covers sustainable lawn care, native plants, garden mushrooms,
-          and low-input growing — for real gardeners working with real land.
         </p>
-        <div class="flex flex-wrap gap-4">
+        <h1 class="text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight text-gaia-soil mb-6">
+          Grow something<br/>real.
+        </h1>
+        <p class="text-lg text-gaia-soil/70 leading-relaxed mb-10 max-w-xl">
+          GaiaVerity is a gardening resource for people who want to work with their land —
+          not against it. From lawn fungi to drought-tolerant borders, we cover
+          what actually works in backyard-scale spaces.
+        </p>
+        <div class="flex flex-wrap gap-3">
           <a
-            href="/archive"
-            class="inline-flex items-center px-6 py-3 bg-white text-green-900 font-semibold rounded-lg hover:bg-green-50 transition-colors">
+            href="/blog"
+            class="inline-flex items-center px-6 py-3 bg-gaia-terracotta text-white font-semibold rounded-lg hover:bg-gaia-tan transition-colors text-sm">
             Browse All Articles
           </a>
           <a
             href="/about"
-            class="inline-flex items-center px-6 py-3 border border-green-400 text-green-100 font-semibold rounded-lg hover:bg-green-800 transition-colors">
+            class="inline-flex items-center px-6 py-3 border border-gaia-tan text-gaia-soil font-medium rounded-lg hover:bg-gaia-tan/20 transition-colors text-sm">
             About GaiaVerity
           </a>
         </div>
@@ -97,44 +53,71 @@ const topics = [
     </Container>
   </section>
 
-  <!-- Featured Posts -->
+  <!-- ── Trust bar ── -->
+  <section class="bg-gaia-soil text-gaia-cream/80 py-4">
+    <Container class="py-0">
+      <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-2 text-xs font-medium tracking-wide uppercase text-center">
+        <span>🌱 Sustainable Practices</span>
+        <span class="hidden sm:block text-gaia-sage">·</span>
+        <span>🏡 Backyard-Scale Advice</span>
+        <span class="hidden sm:block text-gaia-sage">·</span>
+        <span>🌎 Low-Input Growing</span>
+        <span class="hidden sm:block text-gaia-sage">·</span>
+        <span>🍄 Mushroom Identification</span>
+      </div>
+    </Container>
+  </section>
+
+  <!-- ── Featured posts ── -->
   {featuredPosts.length > 0 && (
-    <section class="mt-16">
+    <section class="py-16">
       <Container>
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Articles</h2>
-          <a href="/archive" class="text-sm text-green-600 dark:text-green-400 hover:underline font-medium">
+        <div class="flex items-end justify-between mb-10">
+          <div>
+            <p class="text-xs font-semibold tracking-widest uppercase text-gaia-terracotta mb-1">Latest</p>
+            <h2 class="text-2xl font-bold text-gaia-soil dark:text-white">From the Garden</h2>
+          </div>
+          <a href="/blog" class="text-sm font-medium text-gaia-sage hover:text-gaia-terracotta transition-colors">
             View all →
           </a>
         </div>
-        <div class="grid gap-10 lg:gap-10 md:grid-cols-2">
-          {featuredPosts.map((post) => (
-            <Postlist post={post} aspect="landscape" preloadImage={true} />
-          ))}
+        <!-- First post large, rest stacked -->
+        <div class="grid lg:grid-cols-5 gap-8">
+          <div class="lg:col-span-3">
+            <Postlist post={featuredPosts[0]} aspect="landscape" preloadImage={true} />
+          </div>
+          <div class="lg:col-span-2 flex flex-col gap-8">
+            {featuredPosts.slice(1).map((post) => (
+              <Postlist post={post} aspect="landscape" preloadImage={false} />
+            ))}
+          </div>
         </div>
       </Container>
     </section>
   )}
 
-  <!-- Browse by Topic -->
-  <section class="mt-20 bg-gray-50 dark:bg-gray-900 py-16">
+  <!-- ── Browse by topic ── -->
+  <section class="py-16 bg-gaia-cream/60 border-y border-gaia-tan/30">
     <Container>
-      <div class="text-center mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Browse by Topic</h2>
-        <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-          Whether you're dealing with lawn mushrooms, planning a drought-tolerant border,
-          or starting your first no-dig bed — find what you need.
+      <div class="mb-10">
+        <p class="text-xs font-semibold tracking-widest uppercase text-gaia-terracotta mb-1">Explore</p>
+        <h2 class="text-2xl font-bold text-gaia-soil dark:text-white">Browse by Topic</h2>
+        <p class="mt-2 text-gaia-soil/60 max-w-lg">
+          Whether you're dealing with fairy rings, planning a no-dig bed, or looking for
+          plants that survive your dry summers — find it here.
         </p>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {topics.map((topic) => (
           <a
-            href={`/archive?category=${topic.slug}`}
-            class={`group flex items-start gap-4 p-5 rounded-xl border ${topic.color} transition-all hover:shadow-md hover:-translate-y-0.5`}>
-            <span class="text-3xl flex-shrink-0">{topic.emoji}</span>
+            href={`/blog?category=${topic.slug}`}
+            class="group flex items-start gap-4 p-5 rounded-xl bg-white border border-gaia-tan/40 hover:border-gaia-terracotta hover:shadow-sm transition-all">
+            <span class="text-2xl mt-0.5 flex-shrink-0">{topic.emoji}</span>
             <div>
-              <h3 class={`font-semibold mb-1 ${topic.textColor}`}>{topic.title}</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400 leading-snug">{topic.desc}</p>
+              <h3 class="font-semibold text-gaia-soil group-hover:text-gaia-terracotta transition-colors mb-1">
+                {topic.title}
+              </h3>
+              <p class="text-sm text-gaia-soil/60 leading-snug">{topic.desc}</p>
             </div>
           </a>
         ))}
@@ -142,17 +125,20 @@ const topics = [
     </Container>
   </section>
 
-  <!-- Recent Posts Grid -->
+  <!-- ── More to read ── -->
   {recentPosts.length > 0 && (
-    <section class="mt-20 mb-10">
+    <section class="py-16">
       <Container>
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">More to Read</h2>
-          <a href="/archive" class="text-sm text-green-600 dark:text-green-400 hover:underline font-medium">
+        <div class="flex items-end justify-between mb-10">
+          <div>
+            <p class="text-xs font-semibold tracking-widest uppercase text-gaia-terracotta mb-1">More</p>
+            <h2 class="text-2xl font-bold text-gaia-soil dark:text-white">Keep Reading</h2>
+          </div>
+          <a href="/blog" class="text-sm font-medium text-gaia-sage hover:text-gaia-terracotta transition-colors">
             View all →
           </a>
         </div>
-        <div class="grid gap-10 mt-5 lg:gap-10 md:grid-cols-2 xl:grid-cols-3">
+        <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {recentPosts.map((post) => (
             <Postlist post={post} aspect="square" />
           ))}
@@ -161,20 +147,21 @@ const topics = [
     </section>
   )}
 
-  <!-- CTA Banner -->
-  <section class="bg-green-900 dark:bg-green-950 py-16 mt-10">
+  <!-- ── Closing CTA ── -->
+  <section class="bg-gaia-soil py-20">
     <Container>
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-2xl lg:text-3xl font-bold text-white mb-4">
-          Work with your land, not against it.
+      <div class="max-w-xl">
+        <p class="text-gaia-sage text-sm font-semibold tracking-widest uppercase mb-4">The GaiaVerity Way</p>
+        <h2 class="text-3xl lg:text-4xl font-bold text-white mb-5 leading-tight">
+          Your backyard is an ecosystem.<br/>Work with it.
         </h2>
-        <p class="text-green-200 mb-8 text-lg">
-          Practical guides for sustainable lawns, gardens, and outdoor spaces —
-          written for home gardeners, not horticulture professors.
+        <p class="text-gaia-cream/70 text-lg mb-8 leading-relaxed">
+          Practical guides grounded in soil health, seasonal timing, and the reality
+          of gardening in a real space with real constraints.
         </p>
         <a
-          href="/archive"
-          class="inline-flex items-center px-8 py-3 bg-white text-green-900 font-semibold rounded-lg hover:bg-green-50 transition-colors">
+          href="/blog"
+          class="inline-flex items-center px-7 py-3 bg-gaia-terracotta text-white font-semibold rounded-lg hover:bg-gaia-tan transition-colors">
           Explore the Archive
         </a>
       </div>
