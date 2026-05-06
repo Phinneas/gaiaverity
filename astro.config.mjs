@@ -19,7 +19,6 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkReadingTime],
     rehypePlugins: [rehypeImageNativeLazyLoading],
-    extendDefaultPlugins: true,
   },
   integrations: [tailwind(), mdx(), sitemap(), icon()],
   vite: {
