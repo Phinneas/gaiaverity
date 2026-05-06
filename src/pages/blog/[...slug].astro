@@ -8,38 +8,70 @@ import { categories } from "@/data/category";
 import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
 import { getCollection } from "astro:content";
+import { fetchCmsPosts } from "@/lib/sonicjs";
+import type { CmsPost } from "@/lib/sonicjs";
 
 export async function getStaticPaths() {
-  const blog = await getCollection("blog", ({ data }) => data.draft !== true);
-  return blog.map((post) => ({
+  const [mdxPosts, cmsPosts] = await Promise.all([
+    getCollection("blog", ({ data }) => data.draft !== true),
+    fetchCmsPosts(),
+  ]);
+
+  const mdxSlugs = new Set(mdxPosts.map((p: any) => p.slug));
+
+  const mdxRoutes = mdxPosts.map((post: any) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: { post, cmsPost: null },
   }));
+
+  const cmsRoutes = cmsPosts
+    .filter((p: CmsPost) => !mdxSlugs.has(p.slug))
+    .map((cmsPost: CmsPost) => ({
+      params: { slug: cmsPost.slug },
+      props: { post: null, cmsPost },
+    }));
+
+  return [...mdxRoutes, ...cmsRoutes];
 }
 
-const { post } = Astro.props;
-const { Content } = await post.render();
+const { post, cmsPost } = Astro.props;
 
-const author = authors.find((item) => item.slug === post.data.author) || {
-  name: post.data.author || "Admin",
-  slug: post.data.author || "admin",
+// Render MDX content if it's an MDX post
+let Content: any = null;
+if (post) {
+  const rendered = await post.render();
+  Content = rendered.Content;
+}
+
+// Normalise fields from whichever source we have
+const title       = post ? post.data.title       : cmsPost.title;
+const excerpt     = post ? post.data.excerpt      : cmsPost.excerpt;
+const postImage   = post ? (post.data.image || '') : (cmsPost.featureimage || '');
+const publishDate = post ? post.data.publishDate  : cmsPost.publishedAt;
+const authorSlug  = post ? post.data.author       : null;
+const htmlContent = cmsPost ? cmsPost.htmlContent : null;
+
+const isExternalImage = typeof postImage === 'string' && postImage.startsWith('http');
+
+const author = authors.find((item) => item.slug === authorSlug) || {
+  name: post?.data?.author || cmsPost?.author || "Admin",
+  slug: "admin",
   image: ""
 };
+
+const categorySlug = post?.data?.category || "general";
 const category = categories.find(
-  (item) => item.slug === (post.data.category || "").toLowerCase()
+  (item) => item.slug === categorySlug.toLowerCase()
 ) || {
-  title: post.data.category || "General",
-  slug: (post.data.category || "general").toLowerCase(),
+  title: post?.data?.category || "General",
+  slug: categorySlug.toLowerCase(),
   color: "blue"
 };
-
-const postImage = post.data.image || '';
-const isExternalImage = typeof postImage === 'string' && postImage.startsWith('http');
 ---
 
 <Layout
-  title={post.data.title}
-  desc={post.data.excerpt}
+  title={title}
+  desc={excerpt}
   ogimage={postImage}>
   <Container>
     <div class="max-w-screen-md mx-auto">
@@ -49,7 +81,7 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
 
       <h1
         class="mt-2 mb-3 text-3xl font-semibold tracking-tight text-center lg:leading-snug text-gaia-ink lg:text-4xl">
-        {post.data.title}
+        {title}
       </h1>
 
       <div class="flex justify-center mt-3 space-x-3 text-gaia-ink/60">
@@ -76,8 +108,8 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
             <div class="flex items-center space-x-2 text-sm">
               <time
                 class="text-gaia-ink/60"
-                datetime={post.data.publishDate}>
-                {getFormattedDate(post.data.publishDate)}
+                datetime={publishDate}>
+                {getFormattedDate(publishDate)}
               </time>
             </div>
           </div>
@@ -113,15 +145,22 @@ const isExternalImage = typeof postImage === 'string' && postImage.startsWith('h
     <article class="max-w-screen-md mx-auto">
       <div
         class="mx-auto my-3 prose prose-base prose-headings:text-gaia-ink prose-p:text-gaia-ink prose-li:text-gaia-ink prose-strong:text-gaia-ink prose-a:text-gaia-mid hover:prose-a:text-gaia-dark prose-blockquote:text-gaia-ink">
-        <Content />
 
-        <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
-          {
-            (post.data.tags || []).map((tag: string) => (
-              <span class="text-sm text-gray-500">#{tag}</span>
-            ))
-          }
-        </div>
+        {Content ? (
+          <Content />
+        ) : (
+          <div set:html={htmlContent} />
+        )}
+
+        {post?.data?.tags && (
+          <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
+            {
+              (post.data.tags || []).map((tag: string) => (
+                <span class="text-sm text-gray-500">#{tag}</span>
+              ))
+            }
+          </div>
+        )}
       </div>
 
       <div class="flex justify-center mt-7 mb-7">
