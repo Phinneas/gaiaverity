@@ -1,15 +1,20 @@
 ---
 import Container from "./container.astro";
-import Themeswitch from "./themeswitch.astro";
 ---
 
-<Container class="mt-10 border-t border-gray-100 dark:border-gray-800">
-  <footer class="flex flex-col items-center">
-    <div class="text-sm text-center">
-      Copyright © {new Date().getFullYear()} GaiaVerity. All rights reserved.
+<Container class="mt-16 border-t border-black/8">
+  <footer class="py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <span class="font-serif text-sm font-medium text-gaia-ink">GaiaVerity</span>
+      <span class="text-gray-300">·</span>
+      <span class="text-xs text-gray-400">Grow something real.</span>
     </div>
-    <div class="flex items-center justify-between mt-2">
-      <Themeswitch />
-    </div>
+    <nav class="flex items-center gap-6">
+      <a href="/blog" class="text-xs text-gray-400 hover:text-gaia-mid transition-colors">Articles</a>
+      <a href="/about" class="text-xs text-gray-400 hover:text-gaia-mid transition-colors">About</a>
+    </nav>
+    <p class="text-xs text-gray-400">
+      © {new Date().getFullYear()} GaiaVerity
+    </p>
   </footer>
 </Container>

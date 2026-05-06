@@ -1,4 +1,4 @@
-# GaiaVerity — Design Context
+# GaiaVerity — Claude Instructions
 
 ## Design Context
 
@@ -61,7 +61,7 @@ Layout:
   Approach: narrow column, generous vertical rhythm
 ```
 
-**Anti-references**: Generic big-box garden center aesthetic (Home Depot FAQ feel), overly bright/cheerful gardening influencer style, anything that feels like it was designed in a hurry.
+**Anti-references**: Generic big-box garden center aesthetic (Home Depot FAQ feel), overly bright/cheerful gardening influencer style, anything that feels rushed.
 
 **Theme**: Light mode only. Dark mode is configured in Tailwind but is not the design focus.
 

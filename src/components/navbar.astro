@@ -1,7 +1,6 @@
 ---
 import Container from "@/components/container.astro";
-import logoImage from "@/assets/logo.svg";
-import darkLogo from "@/assets/logo-dark.svg";
+import logoImage from "@/assets/logo.jpeg";
 import { Image } from "astro:assets";
 
 interface Menu {
@@ -31,8 +30,9 @@ const rightmenu: Menu[] = [
 const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
 ---
 
-<Container>
-  <nav>
+<div class="px-5" style="background:#f7f5f0; border-bottom: 1px solid #eef4f0;">
+  <div class="max-w-[1100px] mx-auto">
+  <nav class="py-4">
     <div class="flex flex-wrap justify-between md:gap-10 md:flex-nowrap">
       <div
         class="flex-col items-center justify-start order-1 hidden w-full md:flex md:flex-row md:justify-end md:w-auto md:order-none md:flex-1">
@@ -40,7 +40,7 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           leftmenu.map((item) => (
             <a
               href={item.href}
-              class="px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
+              class="px-5 py-2 font-sans font-medium transition-colors" style="font-size:20px; color:#5c7962;" onmouseover="this.style.color='#c98633'" onmouseout="this.style.color='#5c7962'">
               {item.label}
             </a>
           ))
@@ -48,18 +48,14 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
       </div>
 
       <div class="flex items-center justify-between w-full md:w-auto">
-        <a class="w-28 dark:hidden" href="/">
-          <Image src={logoImage} alt="Logo" />
-        </a>
-
-        <a class="hidden w-28 dark:block" href="/">
-          <Image src={darkLogo} alt="Logo" />
+        <a class="block" href="/" style="height:96px">
+          <Image src={logoImage} alt="GaiaVerity" height={96} class="h-full w-auto object-contain" />
         </a>
 
         <button
           id="menu"
           aria-label="Toggle Menu"
-          class="px-2 py-1 ml-auto text-gray-500 rounded-md md:hidden focus:text-blue-500 focus:outline-none dark:text-gray-300">
+          class="px-2 py-1 ml-auto text-gray-500 rounded-md md:hidden focus:text-gaia-mid focus:outline-none">
           <svg
             class="w-6 h-6 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +80,7 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           rightmenu.map((item) => (
             <a
               href={item.href}
-              class="px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
+              class="px-5 py-2 font-sans font-medium transition-colors" style="font-size:20px; color:#5c7962;" onmouseover="this.style.color='#c98633'" onmouseout="this.style.color='#5c7962'">
               {item.label}
             </a>
           ))
@@ -98,7 +94,7 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           mobilemenu.map((item, index) => (
             <a
               href={item.href}
-              class="px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500"
+              class="px-5 py-2 font-sans font-medium transition-colors" style="font-size:20px; color:#5c7962;"
               target={item.external ? "_blank" : ""}
               rel={item.external ? "noopener" : ""}>
               {item.label}
@@ -108,7 +104,8 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
       </div>
     </div>
   </nav>
-</Container>
+  </div>
+</div>
 
 <script is:inline>
   const menuButton = document.getElementById("menu");

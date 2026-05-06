@@ -39,7 +39,7 @@ const postDate = post.data?.publishDate || new Date().toISOString();
 <div class="cursor-pointer group">
   <div
     class={cx(
-      "relative overflow-hidden transition-all bg-gray-100 rounded-md dark:bg-gray-800   hover:scale-105",
+      "relative overflow-hidden transition-all bg-gaia-pale rounded-md hover:scale-[1.02]",
       aspect === "landscape" ? "aspect-video" : "aspect-square"
     )}>
     <a href={"/blog/" + postSlug}>
@@ -78,27 +78,25 @@ const postDate = post.data?.publishDate || new Date().toISOString();
     <Label theme={category.color}>{category.title}</Label>
   </a>
   <h2
-    class="mt-2 text-lg font-semibold tracking-normal text-gaia-ink">
+    class="mt-2 text-base font-semibold leading-snug text-gaia-ink">
     <a href={"/blog/" + postSlug}>
       <span
-        class="bg-gradient-to-r from-green-200 to-green-100 dark:from-purple-800 dark:to-purple-900 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px]">
+        class="bg-gradient-to-r from-gaia-pale to-gaia-pale bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px]">
         {postTitle}
       </span>
     </a>
   </h2>
 
-  <div class="hidden">
-    {
-      postExcerpt && (
-        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
-          <a href={"/blog/" + postSlug}>{postExcerpt}</a>
-        </p>
-      )
-    }
-  </div>
+  {
+    postExcerpt && (
+      <p class="mt-2 text-sm text-gray-500 leading-relaxed line-clamp-2">
+        {postExcerpt}
+      </p>
+    )
+  }
 
   <div
-    class="flex items-center mt-3 space-x-3 text-gray-500 dark:text-gray-400">
+    class="flex items-center mt-3 space-x-3 text-gray-400">
     <div class="flex items-center gap-3">
       <div class="relative flex-shrink-0 w-5 h-5">
         {
@@ -116,7 +114,7 @@ const postDate = post.data?.publishDate || new Date().toISOString();
       </div>
       <span class="text-sm">{author.name}</span>
     </div>
-    <span class="text-xs text-gray-300 dark:text-gray-600"> &bull;</span>
+    <span class="text-xs text-gray-300"> &bull;</span>
     <time class="text-sm" datetime={postDate}>
       {getFormattedDate(postDate)}
     </time>

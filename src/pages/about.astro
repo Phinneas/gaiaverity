@@ -1,81 +1,169 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Container from "@/components/container.astro";
-import Pagetitle from "@/components/pagetitle.astro";
-import Link from "@/components/ui/link.astro";
 ---
 
-<Layout title="About">
-  <Container>
-    <Pagetitle>
-      <Fragment slot="title">Grow something real.</Fragment>
-      <Fragment slot="desc">
-        GaiaVerity is a gardening and lawn care resource for people who want to
-        work with their land — not against it.
-      </Fragment>
-    </Pagetitle>
+<Layout title="About — GaiaVerity" desc="GaiaVerity is a gardening and lawn care resource for people who want to work with their land — not against it.">
 
-    <div class="mx-auto max-w-4xl mt-12">
-      <div class="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-400">
-        <p>
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section style="background:#eef4f0; padding: 80px 24px 0; position:relative; overflow:visible;">
+    <div style="max-width:680px; margin:0 auto; position:relative;">
+
+      <p class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#c98633; margin-bottom:28px;">
+        About GaiaVerity
+      </p>
+
+      <h1 class="font-sans" style="font-size:clamp(44px,7vw,80px); font-weight:700; line-height:1.02; letter-spacing:-0.03em; color:#23312b; margin-bottom:0;">
+        Grow<br/>something<br/><em class="not-italic" style="color:#5c7962;">real.</em>
+      </h1>
+
+      <!-- Overlapping image — bleeds 120px into next section -->
+      <div style="margin-top:48px; margin-right:-80px; position:relative; z-index:2; border-radius:24px; overflow:hidden; height:420px; margin-bottom:-120px;">
+        <img
+          src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80"
+          alt="Backyard garden with raised beds and vegetables"
+          style="width:100%; height:100%; object-fit:cover;"
+          loading="eager"
+        />
+        <!-- Gold accent bar overlapping bottom of image -->
+        <div style="position:absolute; bottom:0; left:0; right:0; height:6px; background:#c98633;"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Story ─────────────────────────────────────────── -->
+  <section style="background:#f7f5f0; padding: 160px 24px 80px; position:relative;">
+
+    <!-- Decorative circle behind text -->
+    <div style="position:absolute; top:80px; left:-60px; width:320px; height:320px; border-radius:50%; background:#eef4f0; z-index:0;"></div>
+
+    <div style="max-width:680px; margin:0 auto; position:relative; z-index:1;">
+
+      <!-- First paragraph — offset right -->
+      <div style="margin-left:80px; margin-bottom:64px;">
+        <p class="font-serif" style="font-size:19px; line-height:1.85; color:#23312b;">
           We believe the backyard is one of the most underused ecosystems most
-          people will ever own. Whether it's a mossy lawn in the Pacific
-          Northwest, a sun-scorched patch of ground crying out for
-          drought-resistant cover, or a fence line begging to become a vertical
-          garden — every outdoor space holds more possibility than it shows at
-          first glance.
+          people will ever own. Whether it's a shady suburban lot fighting moss,
+          a sun-scorched patch crying out for drought-resistant cover, or a fence
+          line begging to become a vertical garden — every outdoor space holds
+          more possibility than it shows at first glance.
         </p>
-        <p>
+      </div>
+
+      <!-- Floating label — offset left, breaking the column -->
+      <div style="margin-left:-40px; margin-bottom:32px; display:inline-flex; align-items:center; gap:12px;">
+        <div style="width:40px; height:2px; background:#c98633;"></div>
+        <span class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#c98633;">
+          Our approach
+        </span>
+      </div>
+
+      <!-- Second paragraph — offset left -->
+      <div style="margin-right:80px; margin-bottom:80px;">
+        <p class="font-serif" style="font-size:19px; line-height:1.85; color:#23312b;">
           GaiaVerity was built to make that possibility accessible. We research
           what actually works — from the fungi that quietly enrich your soil to
-          the ground covers that crowd out weeds without chemicals — and we
-          write about it in plain language for real gardeners, not just Master
-          Gardeners with a greenhouse.
+          the ground covers that crowd out weeds without chemicals — and write
+          about it in plain language for real gardeners, not just Master Gardeners
+          with a greenhouse.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-10 mt-16">
-        <div>
-          <h3 class="font-bold text-xl mb-3 text-gaia-ink">
-            Sustainable practices
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400">
-            Methods that build soil health and reduce inputs over time — not
-            quick fixes that deplete.
-          </p>
-        </div>
-        <div>
-          <h3 class="font-bold text-xl mb-3 text-gaia-ink">
-            Backyard-scale advice
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400">
-            Written for home gardeners with real constraints — small spaces,
-            limited time, tight budgets.
-          </p>
-        </div>
-        <div>
-          <h3 class="font-bold text-xl mb-3 text-gaia-ink">
-            Seasonal, regional content
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400">
-            Timing matters. We cover the Pacific Northwest and beyond with
-            content tuned to your climate.
-          </p>
-        </div>
+    </div>
+  </section>
+
+  <!-- ── Pull quote — asymmetric card ──────────────────── -->
+  <section style="background:#f7f5f0; padding: 0 24px 80px; position:relative;">
+    <div style="max-width:680px; margin:0 auto;">
+
+      <!-- Card breaks right edge -->
+      <div style="margin-right:-48px; border-radius:24px; padding:56px 64px; background:#23312b; position:relative; overflow:hidden;">
+        <div style="position:absolute; top:-60px; right:-60px; width:240px; height:240px; border-radius:50%; background:#2e4038;"></div>
+        <p class="font-serif" style="font-size:clamp(20px,2.5vw,26px); line-height:1.6; color:#eef4f0; font-style:italic; position:relative; z-index:1; margin-bottom:28px;">
+          "A healthy garden is one that takes less from the environment — not more. That's the premise everything here is built on."
+        </p>
+        <cite class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#80bea4; font-style:normal;">
+          — GaiaVerity
+        </cite>
       </div>
 
-      <div class="prose prose-lg dark:prose-invert max-w-none mt-16 text-gray-600 dark:text-gray-400">
-        <p>
-          Our content spans lawn care, mushroom identification, pest control,
-          drought-tolerant planting, vertical and small-space gardening, and
-          tree and shrub care — all grounded in the idea that a healthy garden
-          is one that takes less from the environment, not more.
+    </div>
+  </section>
+
+  <!-- ── Values — staggered single column ──────────────── -->
+  <section style="background:#f7f5f0; padding: 0 24px 80px;">
+    <div style="max-width:680px; margin:0 auto;">
+
+      <p class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#c98633; margin-bottom:48px;">
+        What we stand for
+      </p>
+
+      <!-- Value 1 — indented right -->
+      <div style="margin-left:60px; margin-bottom:48px; padding-bottom:48px; border-bottom: 1px solid #d8e5dc;">
+        <span class="font-sans" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#80bea4;">01</span>
+        <h3 class="font-sans" style="font-size:24px; font-weight:600; color:#23312b; margin:12px 0 14px;">Sustainable practices</h3>
+        <p class="font-serif" style="font-size:16px; line-height:1.8; color:#5c7962;">
+          Methods that build soil health and reduce inputs over time — not quick fixes that deplete what took decades to develop.
         </p>
       </div>
 
-      <div class="mt-12 text-center">
-        <Link href="/contact" style="primary">Get in touch</Link>
+      <!-- Value 2 — indented left (breaks left edge slightly) -->
+      <div style="margin-right:60px; margin-left:-20px; padding-left:20px; margin-bottom:48px; padding-bottom:48px; border-bottom: 1px solid #d8e5dc;">
+        <span class="font-sans" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#80bea4;">02</span>
+        <h3 class="font-sans" style="font-size:24px; font-weight:600; color:#23312b; margin:12px 0 14px;">Backyard-scale advice</h3>
+        <p class="font-serif" style="font-size:16px; line-height:1.8; color:#5c7962;">
+          Written for home gardeners with real constraints — small spaces, limited time, tight budgets, and no full-time groundskeeper.
+        </p>
+      </div>
+
+      <!-- Value 3 — wider, centered -->
+      <div style="margin-bottom:48px; padding-bottom:48px; border-bottom: 1px solid #d8e5dc;">
+        <span class="font-sans" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#80bea4;">03</span>
+        <h3 class="font-sans" style="font-size:24px; font-weight:600; color:#23312b; margin:12px 0 14px;">Seasonal, regional content</h3>
+        <p class="font-serif" style="font-size:16px; line-height:1.8; color:#5c7962;">
+          Timing matters as much as technique. We publish content tuned to real climate conditions — not a generic growing zone that ignores your actual soil, shade, and rainfall.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Second photo — offset left ────────────────────── -->
+  <section style="background:#f7f5f0; padding: 0 24px 80px;">
+    <div style="max-width:680px; margin:0 auto;">
+      <div style="margin-left:-48px; border-radius:24px; overflow:hidden; height:360px; position:relative;">
+        <img
+          src="/hands-in-soil.jpg"
+          alt="Hands working soil in a backyard garden"
+          style="width:100%; height:100%; object-fit:cover;"
+          loading="lazy"
+        />
+        <!-- Overlapping label card -->
+        <div style="position:absolute; bottom:24px; right:24px; background:#f7f5f0; border-radius:16px; padding:20px 28px;">
+          <p class="font-sans" style="font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#5c7962;">Sustainable backyard</p>
+          <p class="font-sans" style="font-size:12px; color:#80bea4; margin-top:4px;">grown from real soil</p>
+        </div>
       </div>
     </div>
-  </Container>
+  </section>
+
+  <!-- ── CTA ───────────────────────────────────────────── -->
+  <section style="background:#eef4f0; padding: 80px 24px;">
+    <div style="max-width:680px; margin:0 auto; text-align:center;">
+      <h2 class="font-sans" style="font-size:clamp(28px,4vw,42px); font-weight:600; color:#23312b; margin-bottom:16px; letter-spacing:-0.02em;">
+        Ready to grow something?
+      </h2>
+      <p class="font-serif" style="font-size:17px; line-height:1.8; color:#5c7962; max-width:440px; margin:0 auto 36px;">
+        All guides are free. No account, no paywall — just practical advice for your outdoor space.
+      </p>
+      <a
+        href="/blog"
+        class="font-sans"
+        style="display:inline-flex; align-items:center; gap:8px; background:#23312b; color:#f7f5f0; border-radius:999px; padding:16px 36px; font-size:15px; font-weight:600; text-decoration:none;">
+        Browse the guides
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
 </Layout>

@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
@@ -9,7 +10,7 @@ import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loadin
 import { remarkReadingTime } from './src/utils/all.js';
 
 export default defineConfig({
-  site: 'https://gaiaverity.pages.dev',
+  site: 'https://www.gaiaverity.com',
   output: 'static',
   image: {
     domains: ['pub-sonicjs-media-dev.r2.dev'],
@@ -20,7 +21,7 @@ export default defineConfig({
     rehypePlugins: [rehypeImageNativeLazyLoading],
     extendDefaultPlugins: true,
   },
-  integrations: [tailwind(), mdx(), icon()],
+  integrations: [tailwind(), mdx(), sitemap(), icon()],
   vite: {
     ssr: {
       external: ['reading-time', 'mdast-util-to-string'],

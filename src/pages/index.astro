@@ -4,19 +4,19 @@ import Postlist from "@/components/postlist.astro";
 import { getBlogPosts } from "@/lib/sonicjs";
 
 const allPosts = await getBlogPosts();
-const recentPosts = allPosts.slice(0, 6);
+const recentPosts = allPosts.slice(0, 3);
 
 const topics = [
-  { label: "Lawn mushrooms",              href: "/blog?category=mushrooms" },
+  { label: "Lawn mushrooms",                href: "/blog?category=mushrooms" },
   { label: "Drought-resistant ground cover", href: "/blog?category=drought" },
-  { label: "Native plant gardening",      href: "/blog?category=native" },
-  { label: "Vertical gardens",            href: "/blog?category=small-space" },
-  { label: "Organic lawn care",           href: "/blog?category=sustainable" },
-  { label: "Pest & weed control",         href: "/blog?category=pest-control" },
-  { label: "Soil prep & composting",      href: "/blog?category=soil" },
-  { label: "Shade gardening",             href: "/blog?category=shade" },
-  { label: "Rain garden design",          href: "/blog?category=rain-garden" },
-  { label: "Fire-resistant plants",       href: "/blog?category=fire-resistant" },
+  { label: "Native plant gardening",         href: "/blog?category=native" },
+  { label: "Vertical gardens",               href: "/blog?category=small-space" },
+  { label: "Organic lawn care",              href: "/blog?category=sustainable" },
+  { label: "Pest & weed control",            href: "/blog?category=pest-control" },
+  { label: "Soil prep & composting",         href: "/blog?category=soil" },
+  { label: "Shade gardening",                href: "/blog?category=shade" },
+  { label: "Rain garden design",             href: "/blog?category=rain-garden" },
+  { label: "Fire-resistant plants",          href: "/blog?category=fire-resistant" },
 ];
 ---
 
@@ -24,155 +24,239 @@ const topics = [
   title=""
   desc="Real, practical gardening advice for home gardeners — from lawn mushrooms to drought-tolerant borders.">
 
-  <div class="max-w-[720px] mx-auto px-8 pb-16">
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 pt-6 pb-5">
+    <div class="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-4 items-stretch" style="min-height:520px">
 
-    <!-- ── Hero ── -->
-    <section class="py-12 border-b border-black/10">
-      <p class="text-[11px] font-semibold tracking-[0.12em] uppercase text-gaia-mid mb-4">
-        GaiaVerity — Gardening &amp; Lawn Care
-      </p>
-      <h1 class="font-serif text-[clamp(28px,5vw,44px)] font-medium leading-[1.2] text-gaia-ink mb-5">
-        Grow a yard you're <em class="italic text-gaia-mid">proud of,</em><br/>
-        no green thumb required.
-      </h1>
-      <p class="text-[17px] leading-[1.75] text-gray-600 max-w-[560px] mb-8">
-        Real, practical advice for home gardeners and Pacific Northwest homeowners —
-        from taming lawn mushrooms to finding the right ground cover for your soil type.
-      </p>
-      <div class="flex flex-wrap items-center gap-4 mb-4">
-        <a
-          href="/blog"
-          class="inline-block bg-gaia-mid text-gaia-pale rounded-lg px-7 py-3 text-[15px] font-semibold hover:bg-gaia-dark transition-colors">
-          Start reading free guides &rarr;
-        </a>
-        <a
-          href="/about"
-          class="inline-block border border-black/12 text-gray-600 rounded-lg px-5 py-3 text-[15px] font-medium hover:border-gaia-border hover:text-gaia-mid transition-colors">
-          About GaiaVerity
+      <!-- Text card -->
+      <div class="bg-gaia-paper rounded-3xl p-10 lg:p-14 flex flex-col justify-between" style="background:#f7f5f0">
+        <div>
+          <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-6" style="color:#c98633">
+            Gardening &amp; Lawn Care
+          </p>
+          <h1 class="font-sans text-[clamp(32px,4.5vw,56px)] font-semibold leading-[1.08] tracking-[-0.02em] mb-6" style="color:#23312b">
+            Grow a yard<br/>you're actually<br/>
+            <span style="color:#5c7962">proud of.</span>
+          </h1>
+          <p class="font-serif text-[16px] leading-[1.8] max-w-[340px]" style="color:#5c7962">
+            Real, practical advice for backyard gardeners — from taming lawn mushrooms to building a drought-proof, low-maintenance yard.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3 mt-10">
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-sans font-semibold transition-colors"
+            style="background:#23312b; color:#f7f5f0;">
+            Read the guides
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a
+            href="/about"
+            class="inline-flex items-center rounded-full border px-6 py-3.5 text-[14px] font-sans transition-colors"
+            style="border-color:#80bea4; color:#5c7962;">
+            About
+          </a>
+        </div>
+      </div>
+
+      <!-- Photo -->
+      <div class="rounded-3xl overflow-hidden" style="min-height:420px">
+        <img
+          src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=900&q=80&auto=format&fit=crop"
+          alt="A lush backyard garden path"
+          class="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Bento features ───────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 pb-5">
+    <div class="max-w-[1100px] mx-auto" style="display:grid; grid-template-columns: repeat(3,1fr); grid-template-rows: 280px 220px; gap:16px;">
+
+      <!-- F1: Place-specific — large, 2 cols -->
+      <div class="rounded-3xl p-10 flex flex-col justify-between" style="grid-column: span 2; background:#23312b; overflow:hidden; position:relative;">
+        <div style="position:absolute;top:-40px;right:-40px;width:220px;height:220px;border-radius:50%;background:#2e4038;opacity:0.5;"></div>
+        <span class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase" style="color:#c98633">Place-specific</span>
+        <div>
+          <h3 class="font-sans text-[clamp(22px,2.5vw,32px)] font-semibold leading-[1.15] mb-3" style="color:#f7f5f0">
+            Written for your soil,<br/>your climate, your yard.
+          </h3>
+          <p class="font-serif text-[15px] leading-[1.7]" style="color:#80bea4">
+            Shady lots, clay soil, drought summers, mild winters — real conditions that most gardening sites flatten into useless generic advice.
+          </p>
+        </div>
+      </div>
+
+      <!-- F2: Photo — tall, spans 2 rows -->
+      <div class="rounded-3xl overflow-hidden" style="grid-column: 3; grid-row: span 2;">
+        <img
+          src="https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=600&q=80&auto=format&fit=crop"
+          alt="Lush garden with native plants"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- F3: Research-backed -->
+      <div class="rounded-3xl p-8 flex flex-col justify-between" style="background:#eef4f0;">
+        <span class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase" style="color:#5c7962">Research-backed</span>
+        <div>
+          <h3 class="font-sans text-[20px] font-semibold mb-2" style="color:#23312b">Every claim<br/>has a source.</h3>
+          <p class="font-serif text-[14px] leading-[1.65]" style="color:#5c7962">Grounded in horticultural science, updated when new evidence emerges.</p>
+        </div>
+      </div>
+
+      <!-- F4: Seasonal timing — gold accent -->
+      <div class="rounded-3xl p-8 flex flex-col justify-between" style="background:#c98633;">
+        <span class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase" style="color:#7a4f10; opacity:0.9">Seasonal</span>
+        <div>
+          <h3 class="font-sans text-[20px] font-semibold mb-2" style="color:#23312b">Right advice<br/>at the right time.</h3>
+          <p class="font-serif text-[14px] leading-[1.65]" style="color:#5c3a0f">Plant, prune, and rest — guided by what's actually happening in your garden.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- F5: Full-width strip -->
+    <div class="max-w-[1100px] mx-auto mt-4 rounded-3xl px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-6" style="background:#5c7962;">
+      <div>
+        <span class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-2 block" style="color:#80bea4">No account needed</span>
+        <h3 class="font-sans text-[22px] font-semibold" style="color:#f7f5f0">Free guides, no paywall, no jargon. Just good gardening.</h3>
+      </div>
+      <a
+        href="/blog"
+        class="flex-shrink-0 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-sans font-semibold transition-colors"
+        style="background:#f7f5f0; color:#23312b; white-space:nowrap;">
+        Start reading →
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Split feature ─────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 py-5">
+    <div class="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-4 items-stretch" style="min-height:460px">
+
+      <!-- Photo -->
+      <div class="rounded-3xl overflow-hidden" style="min-height:360px">
+        <img
+          src="/raised-beds.jpg"
+          alt="Person tending raised garden beds with tomatoes"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Text -->
+      <div class="rounded-3xl p-10 lg:p-14 flex flex-col justify-center" style="background:#eef4f0">
+        <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-5" style="color:#c98633">
+          Why GaiaVerity
+        </p>
+        <h2 class="font-sans text-[clamp(24px,3vw,38px)] font-semibold leading-[1.1] tracking-[-0.01em] mb-5" style="color:#23312b">
+          Advice that matches<br/>where you live.
+        </h2>
+        <p class="font-serif text-[16px] leading-[1.8] mb-8" style="color:#5c7962">
+          Most gardening sites treat every lawn the same. But your soil type, shade pattern, and local climate change everything. GaiaVerity is built around conditions real gardeners actually face.
+        </p>
+        <a href="/about" class="inline-flex items-center gap-2 font-sans text-[14px] font-semibold transition-colors" style="color:#5c7962">
+          Learn more
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
-      <p class="text-[13px] text-gray-400">No account needed. Just good gardening advice.</p>
-    </section>
 
-    <!-- ── Why GaiaVerity ── -->
-    <section class="py-12 border-b border-black/10">
-      <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-gray-400 mb-6">
-        Why GaiaVerity
-      </p>
-      <h2 class="font-serif text-[clamp(20px,3vw,26px)] font-medium text-gaia-ink mb-3">
-        Gardening advice that actually matches where you live
-      </h2>
-      <p class="text-[15px] leading-[1.75] text-gray-600 mb-8">
-        Most gardening sites treat every lawn the same. But your soil type, shade pattern,
-        and local climate change everything. GaiaVerity is built around conditions real
-        gardeners actually face — not idealised growing zones.
-      </p>
-      <ul class="flex flex-col gap-4">
-        {[
-          "Written for real outdoor spaces — shady plots, clay-heavy soil, dry summers, and all the rest.",
-          "No jargon, no assumptions. Every guide is written so anyone can follow along and get results.",
-          "Every recommendation is grounded in horticultural research, not guesswork.",
-        ].map((item) => (
-          <li class="flex items-start gap-3 text-[15px] leading-[1.65] text-gray-600">
-            <span class="flex-shrink-0 mt-[3px] w-[22px] h-[22px] rounded-full bg-gaia-pale flex items-center justify-center">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 6l3 3 5-5" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
+    </div>
+  </section>
 
-    <!-- ── Topics ── -->
-    <section class="py-12 border-b border-black/10">
-      <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-gray-400 mb-6">
-        What you'll find here
-      </p>
-      <h2 class="font-serif text-[clamp(20px,3vw,26px)] font-medium text-gaia-ink mb-3">
-        From mystery mushrooms to drought-proof lawns
-      </h2>
-      <p class="text-[15px] leading-[1.75] text-gray-600 mb-6">
-        Whether you're puzzled by white dots in your grass or ready to ditch the sprinklers
-        for good, we've got a guide for it.
-      </p>
+  <!-- ── Topics ────────────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 pb-5">
+    <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-12" style="background:#eef4f0">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <h2 class="font-sans text-[28px] font-semibold leading-tight" style="color:#23312b">
+          What you'll find here
+        </h2>
+        <a href="/blog" class="font-sans text-[13px] font-medium transition-colors" style="color:#5c7962">
+          Browse all articles →
+        </a>
+      </div>
       <div class="flex flex-wrap gap-2">
         {topics.map((t) => (
           <a
             href={t.href}
-            class="inline-block bg-gaia-pale text-gaia-mid rounded-full px-4 py-[6px] text-[13px] font-medium hover:bg-gaia-mid hover:text-gaia-pale transition-colors">
+            class="inline-block rounded-full px-5 py-2.5 text-[13px] font-sans font-medium border transition-all"
+            style="background:#f7f5f0; color:#5c7962; border-color:#80bea4;">
             {t.label}
           </a>
         ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ── Quote ── -->
-    <section class="py-12 border-b border-black/10">
-      <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-gray-400 mb-6">
-        From the community
+  <!-- ── Pull quote ────────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 pb-5">
+    <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-16 text-center" style="background:#23312b">
+      <p class="font-serif text-[clamp(18px,2.5vw,26px)] leading-[1.65] max-w-[600px] mx-auto italic mb-8" style="color:#eef4f0">
+        "I finally understand why mushrooms keep popping up in my backyard — and what to do about it. The first gardening advice that actually made sense."
       </p>
-      <blockquote class="border-l-[3px] border-gaia-light pl-5">
-        <p class="font-serif italic text-[17px] leading-[1.65] text-gaia-ink mb-2">
-          "I finally understand why mushrooms keep popping up in my backyard — and what to
-          do about it. The GaiaVerity guide was the first one that actually made sense."
-        </p>
-        <cite class="text-[13px] text-gray-400 not-italic">— A reader in Redmond, WA</cite>
-      </blockquote>
-    </section>
+      <div class="flex items-center justify-center gap-4">
+        <div class="h-px w-10" style="background:#80bea4; opacity:0.5"></div>
+        <cite class="font-sans text-[11px] tracking-[0.14em] uppercase not-italic" style="color:#80bea4">A reader in Redmond, WA</cite>
+        <div class="h-px w-10" style="background:#80bea4; opacity:0.5"></div>
+      </div>
+    </div>
+  </section>
 
-    <!-- ── Recent posts ── -->
-    {recentPosts.length > 0 && (
-      <section class="py-12 border-b border-black/10">
+  <!-- ── Recent posts ──────────────────────────────────── -->
+  {recentPosts.length > 0 && (
+    <section class="bg-gaia-pale px-5 pb-5">
+      <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-12" style="background:#f7f5f0">
         <div class="flex items-end justify-between mb-8">
-          <div>
-            <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-gray-400 mb-1">
-              Latest
-            </p>
-            <h2 class="font-serif text-[clamp(20px,3vw,26px)] font-medium text-gaia-ink">
-              From the Garden
-            </h2>
-          </div>
-          <a href="/blog" class="text-[13px] text-gaia-mid hover:text-gaia-dark font-medium transition-colors">
-            View all →
-          </a>
+          <h2 class="font-sans text-[28px] font-semibold" style="color:#23312b">From the garden</h2>
+          <a href="/blog" class="font-sans text-[13px] font-medium transition-colors" style="color:#5c7962">View all →</a>
         </div>
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {recentPosts.map((post) => (
             <Postlist post={post} aspect="square" />
           ))}
         </div>
-      </section>
-    )}
+      </div>
+    </section>
+  )}
 
-    <!-- ── Email signup ── -->
-    <section class="py-12">
-      <div class="bg-gaia-pale rounded-xl p-10">
-        <h2 class="font-serif text-[clamp(20px,3vw,24px)] font-medium text-gaia-dark mb-2">
-          Get seasonal tips in your inbox
+  <!-- ── Newsletter (coming soon) ─────────────────────── -->
+  <section class="bg-gaia-pale px-5 pb-8">
+    <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-14 flex flex-col sm:flex-row items-center justify-between gap-8" style="background:#23312b;">
+      <div>
+        <span class="font-sans inline-block mb-4 rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-[0.14em] uppercase" style="background:#2e4038; color:#c98633;">
+          Coming soon
+        </span>
+        <h2 class="font-sans text-[clamp(22px,3vw,32px)] font-semibold leading-tight mb-3" style="color:#f7f5f0;">
+          Seasonal tips,<br/>when they matter.
         </h2>
-        <p class="text-[14px] text-gaia-mid leading-[1.65] mb-5">
-          The right advice at the right time — when to plant, when to prune, and when
-          to just let your garden breathe. Once or twice a month.
+        <p class="font-serif text-[16px] leading-[1.75]" style="color:#80bea4; max-width:400px;">
+          A newsletter for backyard gardeners — what to plant, prune, and watch for, timed to what's actually happening in your garden.
         </p>
-        <form class="flex flex-wrap gap-2" onsubmit="return false;">
+      </div>
+      <div style="flex-shrink:0; text-align:center;">
+        <p class="font-sans text-[13px] mb-4" style="color:#80bea4;">Get notified when it launches</p>
+        <form class="flex gap-2" onsubmit="return false;">
           <input
             type="email"
             placeholder="your@email.com"
             aria-label="Email address"
-            class="flex-1 min-w-[200px] border border-gaia-border rounded-lg px-4 py-[10px] text-[14px] text-gaia-dark bg-white focus:outline-none focus:ring-2 focus:ring-gaia-mid/30 focus:border-gaia-mid"
+            class="rounded-full px-4 py-3 text-[14px] font-serif focus:outline-none"
+            style="background:#2e4038; border: 1px solid #3d5444; color:#f7f5f0; width:220px;"
           />
           <button
             type="submit"
-            class="bg-gaia-mid text-gaia-pale rounded-lg px-6 py-[10px] text-[14px] font-semibold hover:bg-gaia-dark transition-colors whitespace-nowrap">
-            Subscribe free
+            class="rounded-full px-5 py-3 text-[14px] font-sans font-semibold flex-shrink-0"
+            style="background:#c98633; color:#23312b;">
+            Notify me
           </button>
         </form>
-        <p class="text-[12px] text-gaia-border mt-3">No spam. Unsubscribe any time.</p>
       </div>
-    </section>
-
-  </div>
+    </div>
+  </section>
 
 </Layout>
