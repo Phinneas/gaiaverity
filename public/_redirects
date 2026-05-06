@@ -1,0 +1,9 @@
+# GaiaVerity — 301 redirects
+# Cloudflare Pages redirect syntax: source  destination  status
+
+/bio-diverse-lawn-care/             /biodiverse-lawn-care/                  301
+/blog                               /blog/                                  301
+/clover-and-wildflower-lawn/        /white-clover-lawn-alternative/         301
+/what-is-sustainable-gardening/     /sustainable-gardening-techniques/      301
+/garden-design-inspirations/        /blog/                                  301
+/designing-small-backyard-gardens/  /blog/small-backyard-garden-ideas/      301
