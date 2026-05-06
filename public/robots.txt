@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://astroship.web3templates.com/sitemap-index.xml
+Disallow: /rss/
+Disallow: /en/
+Disallow: /page/
+Disallow: /tag/
+
+Sitemap: https://www.gaiaverity.com/sitemap-index.xml
