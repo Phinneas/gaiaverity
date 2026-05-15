@@ -11,6 +11,7 @@ import { remarkReadingTime } from './src/utils/all.js';
 
 export default defineConfig({
   site: 'https://www.gaiaverity.com',
+  trailingSlash: 'always',
   output: 'static',
   image: {
     domains: ['pub-sonicjs-media-dev.r2.dev'],
