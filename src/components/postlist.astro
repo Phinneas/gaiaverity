@@ -8,8 +8,6 @@ import { authors } from "@/data/authors";
 import type { Category } from "@/data/category";
 import { categories } from "@/data/category";
 import { getFormattedDate } from "@/utils/all";
-import { Icon } from "astro-icon/components";
-
 const { post, aspect, preloadImage } = Astro.props;
 
 const authorName = post.data?.author || "Admin";
@@ -63,12 +61,7 @@ const postDate = post.data?.publishDate || new Date().toISOString();
             />
           )
         ) : (
-          <span class="absolute w-16 h-16 text-gray-200 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-            <Icon
-              class="w-4 h-4 text-black"
-              name="heroicons:photo"
-            />
-          </span>
+          <svg class="absolute w-8 h-8 text-gray-300 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
         )
       }
     </a>

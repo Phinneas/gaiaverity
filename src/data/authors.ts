@@ -1,11 +1,12 @@
 import marioImage from "../assets/authors/mario.webp";
 import joshuaImage from "../assets/authors/joshua.webp";
 import erikaImage from "../assets/authors/erika.webp";
+import type { ImageMetadata } from "astro";
 
 export interface Props {
   name: string;
   slug: string;
-  image: string;
+  image: ImageMetadata | string;
   bio: string;
 }
 

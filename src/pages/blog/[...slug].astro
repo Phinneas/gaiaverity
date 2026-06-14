@@ -7,47 +7,43 @@ import { authors } from "@/data/authors";
 import { categories } from "@/data/category";
 import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { fetchCmsPosts } from "@/lib/sonicjs";
 import type { CmsPost } from "@/lib/sonicjs";
 
-export async function getStaticPaths() {
-  const [mdxPosts, cmsPosts] = await Promise.all([
-    getCollection("blog", ({ data }) => data.draft !== true),
-    fetchCmsPosts(),
-  ]);
+const slug = Astro.params.slug;
 
-  const mdxSlugs = new Set(mdxPosts.map((p: any) => p.slug));
-
-  const mdxRoutes = mdxPosts.map((post: any) => ({
-    params: { slug: post.slug },
-    props: { post, cmsPost: null },
-  }));
-
-  const cmsRoutes = cmsPosts
-    .filter((p: CmsPost) => !mdxSlugs.has(p.slug))
-    .map((cmsPost: CmsPost) => ({
-      params: { slug: cmsPost.slug },
-      props: { post: null, cmsPost },
-    }));
-
-  return [...mdxRoutes, ...cmsRoutes];
+if (!slug) {
+  return Astro.redirect("/blog");
 }
 
-const { post, cmsPost } = Astro.props;
+// Look up the MDX post first
+const mdxPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+const post = mdxPosts.find((p: any) => p.id === slug || p.slug === slug) || null;
+
+// If not found in MDX, check CMS
+let cmsPost: CmsPost | null = null;
+if (!post) {
+  const cmsPosts = await fetchCmsPosts();
+  cmsPost = cmsPosts.find((p: CmsPost) => p.slug === slug) || null;
+}
+
+if (!post && !cmsPost) {
+  return Astro.redirect("/blog");
+}
 
 // Render MDX content if it's an MDX post
 let Content: any = null;
 if (post) {
-  const rendered = await post.render();
-  Content = rendered.Content;
+  const { Content: RenderedContent } = await render(post);
+  Content = RenderedContent;
 }
 
 // Normalise fields from whichever source we have
-const title       = post ? post.data.title       : cmsPost.title;
-const excerpt     = post ? post.data.excerpt      : cmsPost.excerpt;
-const postImage   = post ? (post.data.image || '') : (cmsPost.featureimage || '');
-const publishDate = post ? post.data.publishDate  : cmsPost.publishedAt;
+const title       = post ? post.data.title       : cmsPost!.title;
+const excerpt     = post ? post.data.excerpt      : cmsPost!.excerpt;
+const postImage   = post ? (post.data.image || '') : (cmsPost!.featureimage || '');
+const publishDate = post ? post.data.publishDate  : cmsPost!.publishedAt;
 const authorSlug  = post ? post.data.author       : null;
 const htmlContent = cmsPost ? cmsPost.htmlContent : null;
 

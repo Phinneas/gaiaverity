@@ -3,7 +3,8 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import icon from 'astro-icon';
+import cloudflare from '@astrojs/cloudflare';
+import { unified } from '@astrojs/markdown-remark';
 
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 
@@ -12,16 +13,26 @@ import { remarkReadingTime } from './src/utils/all.js';
 export default defineConfig({
   site: 'https://www.gaiaverity.com',
   trailingSlash: 'always',
-  output: 'static',
+  output: 'server',
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
+  prerender: {
+    default: false,
+    auto: false,
+  },
   image: {
-    domains: ['pub-sonicjs-media-dev.r2.dev'],
-    remotePatterns: [{ protocol: 'https' }],
+    domains: ['pub-d552d0f3145d4a05b526e561d625b49b.r2.dev', 'images.unsplash.com'],
   },
   markdown: {
-    remarkPlugins: [remarkReadingTime],
-    rehypePlugins: [rehypeImageNativeLazyLoading],
+    processor: unified({
+      remarkPlugins: [remarkReadingTime],
+      rehypePlugins: [rehypeImageNativeLazyLoading],
+    }),
   },
-  integrations: [tailwind(), mdx(), sitemap(), icon()],
+  integrations: [tailwind(), mdx(), sitemap()],
   vite: {
     ssr: {
       external: ['reading-time', 'mdast-util-to-string'],

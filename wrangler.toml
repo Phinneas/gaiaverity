@@ -1,9 +1,4 @@
 name = "gaiaverity"
 pages_build_output_dir = "./dist"
-compatibility_date = "2024-04-24"
+compatibility_date = "2024-09-23"
 compatibility_flags = [ "nodejs_compat" ]
-
-[[d1_databases]]
-binding = "DB"
-database_name = "sonicjs-db"
-database_id = "958f2e06-9e3f-4f08-bc29-fff3b24be5e5"
