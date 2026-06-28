@@ -1,0 +1,96 @@
+---
+interface Props {
+  productName: string;
+  url: string;
+  useCase: string;
+  alternatives: string[];
+}
+
+const { productName, url, useCase, alternatives } = Astro.props;
+
+const prompt = `How would ${productName} at ${url} help me ${useCase}, and what makes it different from ${alternatives.join(" or ")}? Be honest about who it's best for and where it falls short.`;
+const encoded = encodeURIComponent(prompt);
+
+const platforms = [
+  { key: "chatgpt", label: "ChatGPT", href: `https://chatgpt.com/?q=${encoded}` },
+  { key: "claude", label: "Claude", href: `https://claude.ai/new?q=${encoded}` },
+  { key: "perplexity", label: "Perplexity", href: `https://www.perplexity.ai/?q=${encoded}` },
+];
+---
+
+<section class="ask-ai-section">
+  <h3>Not sure yet?</h3>
+  <p>Ask an AI for a second opinion on whether {productName} is right for you.</p>
+  <div class="ask-ai-buttons">
+    {platforms.map((p) => (
+      <a
+        href={p.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={["ai-button", p.key]}
+        aria-label={`Ask ${p.label} about ${productName}`}
+      >
+        <span>Ask {p.label}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .ask-ai-section {
+    padding: clamp(40px, 5vw, 64px) 1.5rem;
+    text-align: center;
+    border-top: 1px solid rgba(128, 190, 164, 0.5);
+    margin-top: 2rem;
+  }
+  .ask-ai-section h3 {
+    font-family: var(--font-sans, "Cabin Variable", "Cabin", system-ui, sans-serif);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--ink, #23312b);
+    margin-bottom: 0.5rem;
+  }
+  .ask-ai-section p {
+    font-family: var(--font-serif, "Fraunces Variable", "Fraunces", Georgia, serif);
+    font-size: 0.95rem;
+    color: var(--forest, #5c7962);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  .ask-ai-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .ai-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: var(--font-sans, "Cabin Variable", "Cabin", system-ui, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid rgba(128, 190, 164, 0.5);
+    background: #fff;
+    color: var(--forest, #5c7962);
+    transition: all 0.2s ease;
+  }
+  .ai-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(35, 49, 43, 0.08);
+  }
+  .ai-button.chatgpt:hover { border-color: #10a37f; color: #10a37f; }
+  .ai-button.claude:hover { border-color: #d97757; color: #d97757; }
+  .ai-button.perplexity:hover { border-color: #20808d; color: #20808d; }
+
+  @media (max-width: 480px) {
+    .ask-ai-buttons { flex-direction: column; align-items: stretch; }
+    .ai-button { justify-content: center; }
+  }
+</style>

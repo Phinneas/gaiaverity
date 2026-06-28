@@ -1,0 +1,33 @@
+---
+import Icon from "./Icon.astro";
+import Stars from "./Stars.astro";
+import type { Planter } from "../data/planters";
+
+interface Props { product: Planter; feature?: boolean; }
+const { product: p, feature = false } = Astro.props;
+const href = `/planters/${p.slug}`;
+---
+<article class:list={["pcard", feature && "pcard--feature", "reveal"]} data-tags={p.tags.join(" ")} data-name={p.name.toLowerCase()}>
+  <a href={href} class="pcard-media" style={p.mediaTint ? `background:${p.mediaTint}` : undefined} aria-label={p.name}>
+    {p.image ? (
+      <img src={p.image} alt={p.name} loading="lazy" />
+    ) : (
+      <Icon name="leaf" class="leaf-mark" />
+    )}
+    {p.recommended && (
+      <span class="pcard-tag badge-stamp"><Icon name="shield" /> Recommended</span>
+    )}
+    <span class="pcard-fav" aria-hidden="true"><Icon name="heart" /></span>
+  </a>
+  <div class="pcard-body">
+    <span class="pcard-platform">{p.platform}</span>
+    <h3 class="pcard-name"><a href={href}>{p.name}</a></h3>
+    <p class="pcard-best">Best for {p.bestFor}</p>
+    <Stars rating={p.rating} count={p.reviews} showText={true} />
+    {feature && <p class="pcard-best">{p.verdict}</p>}
+    <div class="pcard-foot">
+      <span class="pcard-price">{p.priceRange}</span>
+      <a href={href} class="pcard-link">Read review <Icon name="arrow" class="arw" /></a>
+    </div>
+  </div>
+</article>

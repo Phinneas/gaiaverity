@@ -1,0 +1,15 @@
+---
+import Icon from "./Icon.astro";
+interface Props { rating: number; count?: number; showText?: boolean; }
+const { rating = 0, count, showText = false } = Astro.props;
+const filled = Math.round(rating);
+const stars = Array.from({ length: 5 }, (_, i) => i < filled);
+---
+<span class="pcard-rating">
+  <span class="stars" role="img" aria-label={`${rating} out of 5 stars`}>
+    {stars.map((on) => (
+      <span class={on ? "st" : "st empty"}><Icon name="star" /></span>
+    ))}
+  </span>
+  {showText && <span>{rating}{count ? ` · ${count} reviews` : ""}</span>}
+</span>

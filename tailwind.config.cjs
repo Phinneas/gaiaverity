@@ -13,12 +13,8 @@ module.exports = {
           gold:        "#c98633",   // warm accent — nav, highlights, warmth
           sage:        "#80bea4",   // medium sage/teal
           forest:      "#5c7962",   // medium forest green
-          dark:        "#2a3d32",   // deep dark green (headers, bold UI)
           pale:        "#eef4f0",   // very light green — card backgrounds
           paper:       "#f7f5f0",   // warm off-white — page background
-          cream:       "#fdf8f2",   // lightest warm white
-          tan:         "#cbb093",   // warm tan
-          terracotta:  "#dfa477",   // terracotta
           border:      "#80bea4",   // borders — sage
         },
       },
