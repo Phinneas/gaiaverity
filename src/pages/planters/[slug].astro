@@ -1,7 +1,6 @@
 ---
 export const prerender = true;
 import Layout from "@/layouts/Layout.astro";
-import "@/styles/planters.css";
 import PlanterCard from "../../components/PlanterCard.astro";
 import Icon from "../../components/Icon.astro";
 import Stars from "../../components/Stars.astro";
@@ -17,102 +16,171 @@ const related = relatedPlanters(p.slug, 3);
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 ---
 <Layout title={`${p.name} review — GaiaVerity`} desc={p.verdict}>
-<div class="gv-shop">
 
-  <!-- TOP -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/planters">Shop</a><span class="sep">/</span>
-        <a href="/planters/catalog">Catalog</a><span class="sep">/</span>
+  <!-- ── Product top ──────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 pt-6 pb-5">
+    <div class="max-w-[1100px] mx-auto">
+
+      <!-- Breadcrumb -->
+      <nav class="flex flex-wrap gap-2 font-sans text-[13px] py-5" style="color:#5c7962" aria-label="Breadcrumb">
+        <a href="/planters" class="hover:text-gaia-gold transition-colors">Shop</a>
+        <span class="opacity-50">/</span>
+        <a href="/planters/catalog" class="hover:text-gaia-gold transition-colors">Catalog</a>
+        <span class="opacity-50">/</span>
         <span>{p.name}</span>
       </nav>
 
-      <div class="pd-top">
-        <div class="pd-gallery">
-          <div class="pd-main-img" style={p.mediaTint ? `background:${p.mediaTint}` : undefined}>
-            {p.image ? <img src={p.image} alt={p.name} /> : <Icon name="leaf" class="leaf-mark" />}
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <!-- Gallery -->
+        <div class="flex flex-col gap-3 md:sticky md:top-24">
+          <div class="rounded-3xl overflow-hidden aspect-square flex items-center justify-center" style={p.mediaTint ? `background:${p.mediaTint}` : "background:radial-gradient(95% 85% at 35% 20%,rgba(128,190,164,.55),transparent 60%),linear-gradient(160deg,#E6F0E9,#D4E5D9); border:1px solid rgba(128,190,164,.5)"}>
+            {p.image ? <img src={p.image} alt={p.name} class="w-full h-full object-cover" /> : <span class="w-[86px] h-[86px] text-gaia-forest opacity-80"><Icon name="leaf" /></span>}
           </div>
-          <div class="pd-thumbs">
-            {[0, 1, 2].map(() => <div class="pd-thumb" style={p.mediaTint ? `background:${p.mediaTint}` : undefined}></div>)}
+          <div class="flex gap-2.5 flex-wrap">
+            {[0,1,2].map(() => <div class="w-[74px] h-[74px] rounded-xl overflow-hidden" style={p.mediaTint ? `background:${p.mediaTint}` : "background:#E6F0E9; border:1px solid rgba(128,190,164,.5)"}></div>)}
           </div>
         </div>
 
-        <div class="pd-info">
-          <div class="pd-stamp-row">
-            {p.recommended && <span class="badge-stamp"><Icon name="shield" /> GaiaVerity Recommended</span>}
-            <span class="kicker">via {p.platform}</span>
+        <!-- Info -->
+        <div>
+          <div class="flex flex-wrap gap-2.5 items-center mb-4">
+            {p.recommended && (
+              <span class="inline-flex items-center gap-1.5 font-sans text-[11px] font-semibold tracking-[0.05em] uppercase text-gaia-gold rounded-full px-3 py-1.5" style="background:rgba(201,134,51,.10); border:1px solid rgba(201,134,51,.35)">
+                <Icon name="shield" /> GaiaVerity Recommended
+              </span>
+            )}
+            <span class="font-sans text-[12px] tracking-[0.2em] uppercase font-semibold" style="color:#5c7962">via {p.platform}</span>
           </div>
-          <h1 class="h1">{p.name}</h1>
+
+          <h1 class="font-sans text-[clamp(30px,4vw,44px)] font-bold tracking-[-0.02em] text-gaia-ink my-3">{p.name}</h1>
           <Stars rating={p.rating} count={p.reviews} showText={true} />
-          <p class="pd-verdict">{p.verdict}</p>
 
-          <div class="spec-card">
-            <div class="spec"><span class="k">Price range</span><span class="v gold">{p.priceRange}</span></div>
-            <div class="spec"><span class="k">Best for</span><span class="v">{cap(p.bestFor)}</span></div>
-            <div class="spec"><span class="k">Platform</span><span class="v">{p.platform}</span></div>
-            <div class="spec"><span class="k">Commission</span><span class="v gold">{p.commission}</span></div>
+          <p class="font-serif italic text-[18px] mt-5 mb-6 pl-4 leading-[1.6]" style="color:#5c7962; border-left:2px solid #c98633">{p.verdict}</p>
+
+          <!-- Spec card -->
+          <div class="rounded-2xl p-5 grid grid-cols-2 gap-4 my-5" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+            <div class="flex flex-col gap-1">
+              <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Price range</span>
+              <span class="font-sans font-bold text-[18px] text-gaia-gold">{p.priceRange}</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Best for</span>
+              <span class="font-sans font-bold text-[18px] text-gaia-ink">{cap(p.bestFor)}</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Platform</span>
+              <span class="font-sans font-bold text-[18px] text-gaia-ink">{p.platform}</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Commission</span>
+              <span class="font-sans font-bold text-[18px] text-gaia-gold">{p.commission}</span>
+            </div>
           </div>
 
-          <div class="pd-cta">
-            <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="btn btn-primary btn-lg btn-block">Buy now <Icon name="external" /></a>
-            <div class="disclosure"><Icon name="info" /> We earn a small commission at no extra cost to you.</div>
+          <!-- CTA -->
+          <div class="flex flex-col gap-3 mt-2">
+            <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-[16px] font-sans font-semibold transition-colors w-full" style="background:#c98633; color:#23312b;">
+              Buy now <Icon name="external" />
+            </a>
+            <div class="flex items-center gap-2 font-sans text-[12.5px]" style="color:#5c7962">
+              <Icon name="info" /> We earn a small commission at no extra cost to you.
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- OVERVIEW + FEATURES -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <div class="section-head reveal"><span class="eyebrow">The verdict</span><h2 class="h2">Why it earns the stamp</h2></div>
-      <div class="pd-overview-grid">
-        <div class="rte reveal">
-          {p.description.map((para) => <p>{para}</p>)}
+  <!-- ── Overview + Features ───────────────────────────── -->
+  <section class="bg-gaia-pale px-5 py-8">
+    <div class="max-w-[1100px] mx-auto">
+      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">The verdict</p>
+      <h2 class="font-sans text-[clamp(27px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.018em] text-gaia-ink mb-8">Why it earns the stamp</h2>
+      <div class="grid md:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
+        <div class="font-serif text-[16.5px] leading-[1.8] text-gaia-ink">
+          {p.description.map((para) => <p class="mb-4">{para}</p>)}
         </div>
-        <div class="tile reveal" style="display:block">
-          <span class="tile-micro">Key features</span>
-          <ul class="feature-list">
-            {p.features.map((f) => <li><Icon name="check" /><span>{f}</span></li>)}
+        <div class="rounded-3xl p-6" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+          <span class="font-sans text-[11px] tracking-[0.14em] uppercase font-semibold block mb-4" style="color:#5c7962">Key features</span>
+          <ul class="flex flex-col gap-3 list-none">
+            {p.features.map((f) => (
+              <li class="flex gap-2.5 items-start font-serif text-[15px] text-gaia-ink">
+                <span class="w-5 h-5 text-gaia-forest flex-shrink-0 mt-0.5"><Icon name="check" /></span>
+                <span>{f}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROS & CONS -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <div class="section-head reveal"><span class="eyebrow">Honest take</span><h2 class="h2">Pros &amp; cons</h2></div>
-      <div class="proscons">
-        <div class="pc-card pros reveal">
-          <h4><Icon name="check-circle" /> What we love</h4>
-          <ul>{p.pros.map((x) => <li><Icon name="check" /><span>{x}</span></li>)}</ul>
+  <!-- ── Pros & Cons ──────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 py-8">
+    <div class="max-w-[1100px] mx-auto">
+      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">Honest take</p>
+      <h2 class="font-sans text-[clamp(27px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.018em] text-gaia-ink mb-8">Pros &amp; cons</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <!-- Pros -->
+        <div class="rounded-3xl p-6" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+          <h4 class="flex items-center gap-2 font-sans text-[18px] font-semibold mb-4" style="color:#5c7962">
+            <Icon name="check-circle" /> What we love
+          </h4>
+          <ul class="flex flex-col gap-2.5 list-none">
+            {p.pros.map((x) => (
+              <li class="flex gap-2.5 items-start font-serif text-[14.5px] text-gaia-ink">
+                <span class="w-[18px] h-[18px] text-gaia-forest flex-shrink-0 mt-0.5"><Icon name="check" /></span>
+                <span>{x}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div class="pc-card cons reveal">
-          <h4><Icon name="minus-circle" /> Worth weighing</h4>
-          <ul>{p.cons.map((x) => <li><Icon name="minus-circle" /><span>{x}</span></li>)}</ul>
+        <!-- Cons -->
+        <div class="rounded-3xl p-6" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+          <h4 class="flex items-center gap-2 font-sans text-[18px] font-semibold mb-4 text-gaia-gold">
+            <Icon name="minus-circle" /> Worth weighing
+          </h4>
+          <ul class="flex flex-col gap-2.5 list-none">
+            {p.cons.map((x) => (
+              <li class="flex gap-2.5 items-start font-serif text-[14.5px] text-gaia-ink">
+                <span class="w-[18px] h-[18px] text-gaia-gold flex-shrink-0 mt-0.5"><Icon name="minus-circle" /></span>
+                <span>{x}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- COMPARISON -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <div class="section-head reveal"><span class="eyebrow">How it stacks up</span><h2 class="h2">{p.name} vs. the field</h2></div>
-      <div class="compare-wrap reveal">
-        <table class="compare">
-          <thead><tr><th>Planter</th><th>Price</th><th>Best for</th><th>Rating</th><th></th></tr></thead>
+  <!-- ── Comparison table ─────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 py-8">
+    <div class="max-w-[1100px] mx-auto">
+      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">How it stacks up</p>
+      <h2 class="font-sans text-[clamp(27px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.018em] text-gaia-ink mb-8">{p.name} vs. the field</h2>
+      <div class="overflow-x-auto rounded-2xl" style="border:1px solid rgba(128,190,164,.5); background:#f7f5f0">
+        <table class="w-full min-w-[560px] border-collapse">
+          <thead>
+            <tr>
+              <th class="p-4 text-left font-sans text-[12px] tracking-[0.1em] uppercase font-semibold border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">Planter</th>
+              <th class="p-4 text-left font-sans text-[12px] tracking-[0.1em] uppercase font-semibold border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">Price</th>
+              <th class="p-4 text-left font-sans text-[12px] tracking-[0.1em] uppercase font-semibold border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">Best for</th>
+              <th class="p-4 text-left font-sans text-[12px] tracking-[0.1em] uppercase font-semibold border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">Rating</th>
+              <th class="p-4 text-left font-sans text-[12px] tracking-[0.1em] uppercase font-semibold border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)"></th>
+            </tr>
+          </thead>
           <tbody>
             {planters.map((x) => (
-              <tr class={x.slug === p.slug ? "is-current" : undefined}>
-                <th scope="row">{x.name}{x.slug === p.slug && <span class="mini-stamp"> · this pick</span>}</th>
-                <td class="val">{x.priceRange}</td>
-                <td class="val">{cap(x.bestFor)}</td>
-                <td class="val">{x.rating} ★</td>
-                <td><a href={`/planters/${x.slug}`}>View <Icon name="arrow" class="arw" /></a></td>
+              <tr class:list={[x.slug === p.slug && "bg-gaia-gold/10"]}>
+                <th scope="row" class="p-4 text-left font-sans font-bold text-[14.5px] border-b" style={x.slug === p.slug ? "color:#c98633; border-color:rgba(128,190,164,.5)" : "color:#23312b; border-color:rgba(128,190,164,.5)"}>
+                  {x.name}{x.slug === p.slug && <span class="font-sans text-[11px] text-gaia-gold ml-1">· this pick</span>}
+                </th>
+                <td class="p-4 text-left font-serif text-[14.5px] border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">{x.priceRange}</td>
+                <td class="p-4 text-left font-serif text-[14.5px] border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">{cap(x.bestFor)}</td>
+                <td class="p-4 text-left font-serif text-[14.5px] border-b" style="color:#5c7962; border-color:rgba(128,190,164,.5)">{x.rating} ★</td>
+                <td class="p-4 text-left border-b" style="border-color:rgba(128,190,164,.5)">
+                  <a href={`/planters/${x.slug}`} class="inline-flex items-center gap-1 font-sans text-[14px] font-semibold text-gaia-gold hover:underline">View <Icon name="arrow" class="arw" /></a>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -121,51 +189,50 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     </div>
   </section>
 
-  <!-- VIDEO + REVIEW -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <div class="pd-media-grid" style="grid-template-columns:1.4fr .9fr">
-        <div class="video-embed reveal" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px">
-          <span style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.7);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--accent)"><Icon name="play" /></span>
-          <span class="kicker">Add a video review (YouTube / TikTok)</span>
-        </div>
-        <div class="tile quote-tile reveal" style="justify-content:center">
-          <Stars rating={5} />
-          <p class="q">&ldquo;{p.review.quote}&rdquo;</p>
-          <p class="src"><b>{p.review.author}</b> · {p.review.source}</p>
-        </div>
+  <!-- ── Video + Review ───────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 py-8">
+    <div class="max-w-[1100px] mx-auto grid md:grid-cols-[1.4fr_0.9fr] gap-6 items-stretch">
+      <div class="rounded-3xl flex flex-col items-center justify-center gap-3 py-16" style="aspect-ratio:16/9; background:radial-gradient(80% 80% at 50% 40%,rgba(128,190,164,.5),transparent 65%),linear-gradient(160deg,#E6F0E9,#D2E3D7); border:1px solid rgba(128,190,164,.5)">
+        <span class="w-[74px] h-[74px] rounded-full flex items-center justify-center" style="background:rgba(255,255,255,.7); border:1px solid #80bea4; color:#5c7962"><Icon name="play" /></span>
+        <span class="font-sans text-[12px] tracking-[0.2em] uppercase font-semibold" style="color:#5c7962">Add a video review (YouTube / TikTok)</span>
+      </div>
+      <div class="rounded-3xl p-8 flex flex-col justify-center" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+        <Stars rating={5} />
+        <p class="font-serif italic text-[clamp(17px,1.7vw,22px)] leading-[1.4] text-gaia-ink mt-4 mb-4">&ldquo;{p.review.quote}&rdquo;</p>
+        <p class="font-sans text-[13px]" style="color:#5c7962"><b class="text-gaia-ink font-semibold">{p.review.author}</b> · {p.review.source}</p>
       </div>
     </div>
   </section>
 
-  <!-- FINAL CTA -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <div class="cta-banner reveal">
-        <span class="eyebrow">Ready when you are</span>
-        <h2 class="h2">Get the {p.name}</h2>
-        <p class="lead">You'll be taken to our trusted retail partner. Reader-exclusive rates may apply.</p>
-        <div class="cta-actions">
-          <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="btn btn-primary btn-lg">Buy now <Icon name="external" /></a>
-          <a href="/planters/catalog" class="btn btn-ghost btn-lg">Compare alternatives</a>
-        </div>
-        <div class="disclosure" style="justify-content:center;margin-top:18px"><Icon name="info" /> We earn a small commission at no extra cost to you.</div>
+  <!-- ── Final CTA ────────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 py-8">
+    <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-14 text-center" style="background:#23312b">
+      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">Ready when you are</p>
+      <h2 class="font-sans text-[clamp(27px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.018em] mb-4" style="color:#f7f5f0">Get the {p.name}</h2>
+      <p class="font-serif text-[clamp(16px,1.5vw,19px)] leading-[1.6] max-w-[600px] mx-auto mb-8" style="color:#80bea4">You'll be taken to our trusted retail partner. Reader-exclusive rates may apply.</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="inline-flex items-center gap-2 rounded-full px-7 py-4 text-[15px] font-sans font-semibold transition-colors" style="background:#c98633; color:#23312b;">
+          Buy now <Icon name="external" />
+        </a>
+        <a href="/planters/catalog" class="inline-flex items-center rounded-full border px-7 py-4 text-[15px] font-sans font-semibold transition-colors" style="border-color:rgba(247,245,240,.5); color:#f7f5f0;">
+          Compare alternatives
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 font-sans text-[12.5px] mt-5" style="color:#80bea4">
+        <Icon name="info" /> We earn a small commission at no extra cost to you.
       </div>
     </div>
   </section>
 
-  <!-- RELATED -->
-  <section class="section section--tight">
-    <div class="gv-container">
-      <div class="section-head reveal"><span class="eyebrow">Keep exploring</span><h2 class="h2">Related planters</h2></div>
-      <div class="product-grid">
+  <!-- ── Related ───────────────────────────────────────── -->
+  <section class="bg-gaia-pale px-5 pt-8 pb-12">
+    <div class="max-w-[1100px] mx-auto">
+      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">Keep exploring</p>
+      <h2 class="font-sans text-[clamp(27px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.018em] text-gaia-ink mb-8">Related planters</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {related.map((x) => <PlanterCard product={x} />)}
       </div>
     </div>
   </section>
 
-</div>
-<script is:inline>
-(function(){var s=document.querySelector(".gv-shop");if(!s)return;s.classList.add("ready");var els=s.querySelectorAll(".reveal");if("IntersectionObserver" in window){var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}})},{threshold:.12,rootMargin:"0px 0px -40px 0px"});els.forEach(function(el){io.observe(el)})}else{els.forEach(function(el){el.classList.add("in")}})();
-</script>
 </Layout>

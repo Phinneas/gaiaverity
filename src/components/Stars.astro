@@ -5,10 +5,10 @@ const { rating = 0, count, showText = false } = Astro.props;
 const filled = Math.round(rating);
 const stars = Array.from({ length: 5 }, (_, i) => i < filled);
 ---
-<span class="pcard-rating">
-  <span class="stars" role="img" aria-label={`${rating} out of 5 stars`}>
+<span class="inline-flex items-center gap-2 font-sans text-[13px] text-gaia-forest">
+  <span class="inline-flex gap-0.5 text-gaia-gold" role="img" aria-label={`${rating} out of 5 stars`}>
     {stars.map((on) => (
-      <span class={on ? "st" : "st empty"}><Icon name="star" /></span>
+      <span class:list={["w-[15px] h-[15px]", !on && "opacity-25"]}><Icon name="star" /></span>
     ))}
   </span>
   {showText && <span>{rating}{count ? ` · ${count} reviews` : ""}</span>}

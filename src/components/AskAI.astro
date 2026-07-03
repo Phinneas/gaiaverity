@@ -18,16 +18,21 @@ const platforms = [
 ];
 ---
 
-<section class="ask-ai-section">
-  <h3>Not sure yet?</h3>
-  <p>Ask an AI for a second opinion on whether {productName} is right for you.</p>
-  <div class="ask-ai-buttons">
+<section class="text-center py-8">
+  <h3 class="font-sans font-semibold text-[1.25rem] tracking-[-0.01em] text-gaia-ink mb-2">Not sure yet?</h3>
+  <p class="font-serif text-[0.95rem] text-gaia-forest mb-6 leading-[1.6]">Ask an AI for a second opinion on whether {productName} is right for you.</p>
+  <div class="flex flex-wrap gap-3 justify-center max-w-[600px] mx-auto">
     {platforms.map((p) => (
       <a
         href={p.href}
         target="_blank"
         rel="noopener noreferrer"
-        class:list={["ai-button", p.key]}
+        class:list={[
+          "inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-sans text-[0.875rem] font-semibold border transition-all hover:-translate-y-0.5 hover:shadow-sm",
+          p.key === "chatgpt" && "bg-white border-gaia-border/50 text-gaia-forest hover:border-[#10a37f] hover:text-[#10a37f]",
+          p.key === "claude" && "bg-white border-gaia-border/50 text-gaia-forest hover:border-[#d97757] hover:text-[#d97757]",
+          p.key === "perplexity" && "bg-white border-gaia-border/50 text-gaia-forest hover:border-[#20808d] hover:text-[#20808d]",
+        ]}
         aria-label={`Ask ${p.label} about ${productName}`}
       >
         <span>Ask {p.label}</span>
@@ -35,62 +40,3 @@ const platforms = [
     ))}
   </div>
 </section>
-
-<style>
-  .ask-ai-section {
-    padding: clamp(40px, 5vw, 64px) 1.5rem;
-    text-align: center;
-    border-top: 1px solid rgba(128, 190, 164, 0.5);
-    margin-top: 2rem;
-  }
-  .ask-ai-section h3 {
-    font-family: var(--font-sans, "Cabin Variable", "Cabin", system-ui, sans-serif);
-    font-weight: 600;
-    font-size: 1.25rem;
-    letter-spacing: -0.01em;
-    color: var(--ink, #23312b);
-    margin-bottom: 0.5rem;
-  }
-  .ask-ai-section p {
-    font-family: var(--font-serif, "Fraunces Variable", "Fraunces", Georgia, serif);
-    font-size: 0.95rem;
-    color: var(--forest, #5c7962);
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-  }
-  .ask-ai-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  .ai-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
-    border-radius: 999px;
-    text-decoration: none;
-    font-family: var(--font-sans, "Cabin Variable", "Cabin", system-ui, sans-serif);
-    font-size: 0.875rem;
-    font-weight: 600;
-    border: 1px solid rgba(128, 190, 164, 0.5);
-    background: #fff;
-    color: var(--forest, #5c7962);
-    transition: all 0.2s ease;
-  }
-  .ai-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(35, 49, 43, 0.08);
-  }
-  .ai-button.chatgpt:hover { border-color: #10a37f; color: #10a37f; }
-  .ai-button.claude:hover { border-color: #d97757; color: #d97757; }
-  .ai-button.perplexity:hover { border-color: #20808d; color: #20808d; }
-
-  @media (max-width: 480px) {
-    .ask-ai-buttons { flex-direction: column; align-items: stretch; }
-    .ai-button { justify-content: center; }
-  }
-</style>

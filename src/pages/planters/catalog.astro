@@ -1,6 +1,5 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import "@/styles/planters.css";
 import PlanterCard from "../../components/PlanterCard.astro";
 import Icon from "../../components/Icon.astro";
 import { planters } from "../../data/planters";
@@ -15,31 +14,46 @@ const filters = [
 ];
 ---
 <Layout title="AI Planter Catalog — GaiaVerity" desc="Every smart planter we trust, vetted and ranked by the GaiaVerity team.">
-<div class="gv-shop">
-  <section class="section section--tight">
-    <div class="gv-container">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/planters">Shop</a><span class="sep">/</span><span>Catalog</span>
+  <section class="bg-gaia-pale px-5 pt-6 pb-8">
+    <div class="max-w-[1100px] mx-auto">
+
+      <!-- Breadcrumb -->
+      <nav class="flex flex-wrap gap-2 font-sans text-[13px] py-5" style="color:#5c7962" aria-label="Breadcrumb">
+        <a href="/planters" class="hover:text-gaia-gold transition-colors">Shop</a>
+        <span class="opacity-50">/</span>
+        <span>Catalog</span>
       </nav>
 
-      <div class="collection-head">
-        <div style="max-width:680px">
-          <span class="eyebrow">AI Planter Catalog</span>
-          <h1 class="h1" style="margin-block:10px 14px">Every smart planter we trust</h1>
-          <p class="lead">Smart planters that water, feed and monitor your plants — vetted and ranked by the GaiaVerity team.</p>
+      <!-- Collection header -->
+      <div class="flex flex-wrap gap-6 justify-between items-end mb-8">
+        <div class="max-w-[680px]">
+          <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">AI Planter Catalog</p>
+          <h1 class="font-sans text-[clamp(38px,5.6vw,68px)] font-bold leading-[1.05] tracking-[-0.02em] text-gaia-ink my-3">Every smart planter we trust</h1>
+          <p class="font-serif text-[clamp(16px,1.5vw,19px)] text-gaia-forest leading-[1.6]">Smart planters that water, feed and monitor your plants — vetted and ranked by the GaiaVerity team.</p>
         </div>
-        <div class="badge-stamp"><Icon name="shield" /> {planters.length} vetted picks</div>
+        <span class="inline-flex items-center gap-1.5 font-sans text-[11px] font-semibold tracking-[0.05em] uppercase text-gaia-gold rounded-full px-3 py-1.5" style="background:rgba(201,134,51,.10); border:1px solid rgba(201,134,51,.35)">
+          <Icon name="shield" /> {planters.length} vetted picks
+        </span>
       </div>
 
-      <div class="collection-toolbar">
-        <div class="tag-pills" id="tagPills">
+      <!-- Toolbar: filter pills + sort -->
+      <div class="flex flex-wrap gap-3 justify-between items-center py-4 border-t border-b" style="border-color:rgba(128,190,164,.5)">
+        <div class="flex flex-wrap gap-2" id="tagPills">
           {filters.map((f, i) => (
-            <button class:list={["tag-pill", i === 0 && "active"]} data-tag={f.tag}>{f.label}</button>
+            <button
+              class:list={[
+                "rounded-full px-4 py-2 text-[13px] font-sans transition-colors border",
+                i === 0 ? "bg-gaia-sage text-gaia-ink border-transparent" : "bg-transparent text-gaia-forest border-gaia-border hover:text-gaia-ink",
+              ]}
+              data-tag={f.tag}
+            >
+              {f.label}
+            </button>
           ))}
         </div>
-        <div class="sort-form">
+        <div class="flex items-center gap-2 font-sans text-[13px]" style="color:#5c7962">
           <label for="sortBy">Sort</label>
-          <select id="sortBy">
+          <select id="sortBy" class="rounded-xl px-3 py-2 font-sans text-[13.5px] border" style="background:#f7f5f0; color:#23312b; border-color:#80bea4">
             <option>Featured</option>
             <option>Price: low to high</option>
             <option>Price: high to low</option>
@@ -49,7 +63,8 @@ const filters = [
         </div>
       </div>
 
-      <div class="product-grid" id="catalogGrid">
+      <!-- Product grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-6" id="catalogGrid">
         {planters.map((p, i) => <PlanterCard product={p} feature={i === 0} />)}
       </div>
     </div>
@@ -61,20 +76,18 @@ const filters = [
       var grid = document.getElementById("catalogGrid");
       if (!pills || !grid) return;
       pills.addEventListener("click", function (e) {
-        var btn = e.target.closest(".tag-pill");
+        var btn = e.target.closest("button");
         if (!btn) return;
-        pills.querySelectorAll(".tag-pill").forEach(function (b) { b.classList.remove("active"); });
-        btn.classList.add("active");
+        pills.querySelectorAll("button").forEach(function (b) {
+          b.className = "rounded-full px-4 py-2 text-[13px] font-sans transition-colors border bg-transparent text-gaia-forest border-gaia-border hover:text-gaia-ink";
+        });
+        btn.className = "rounded-full px-4 py-2 text-[13px] font-sans transition-colors border bg-gaia-sage text-gaia-ink border-transparent";
         var tag = btn.getAttribute("data-tag");
-        grid.querySelectorAll(".pcard").forEach(function (card) {
+        grid.querySelectorAll("article").forEach(function (card) {
           var tags = (card.getAttribute("data-tags") || "").split(" ");
           card.style.display = tag === "all" || tags.indexOf(tag) !== -1 ? "" : "none";
         });
       });
     })();
   </script>
-<script is:inline>
-(function(){var s=document.querySelector(".gv-shop");if(!s)return;s.classList.add("ready");var els=s.querySelectorAll(".reveal");if("IntersectionObserver" in window){var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}})},{threshold:.12,rootMargin:"0px 0px -40px 0px"});els.forEach(function(el){io.observe(el)})}else{els.forEach(function(el){el.classList.add("in")}})();
-</script>
-</div>
 </Layout>

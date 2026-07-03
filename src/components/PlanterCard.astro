@@ -7,27 +7,40 @@ interface Props { product: Planter; feature?: boolean; }
 const { product: p, feature = false } = Astro.props;
 const href = `/planters/${p.slug}`;
 ---
-<article class:list={["pcard", feature && "pcard--feature", "reveal"]} data-tags={p.tags.join(" ")} data-name={p.name.toLowerCase()}>
-  <a href={href} class="pcard-media" style={p.mediaTint ? `background:${p.mediaTint}` : undefined} aria-label={p.name}>
+<article
+  class:list={[
+    "reveal rounded-3xl bg-gaia-pale border border-gaia-border/30 overflow-hidden hover:-translate-y-1 hover:border-gaia-border hover:shadow-lg transition-all duration-200 flex flex-col h-full",
+    feature && "md:col-span-2 md:row-span-2",
+  ]}
+  data-tags={p.tags.join(" ")}
+  data-name={p.name.toLowerCase()}
+>
+  <a href={href} class="relative aspect-[4/3] flex items-center justify-center overflow-hidden" style={p.mediaTint ? `background:${p.mediaTint}` : "background:radial-gradient(95% 85% at 30% 18%,rgba(128,190,164,.55),transparent 62%),linear-gradient(160deg,#E6F0E9,#D4E5D9)"} aria-label={p.name}>
     {p.image ? (
-      <img src={p.image} alt={p.name} loading="lazy" />
+      <img src={p.image} alt={p.name} loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
     ) : (
-      <Icon name="leaf" class="leaf-mark" />
+      <span class="w-12 h-12 text-gaia-forest opacity-80"><Icon name="leaf" /></span>
     )}
     {p.recommended && (
-      <span class="pcard-tag badge-stamp"><Icon name="shield" /> Recommended</span>
+      <span class="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 font-sans text-[11px] font-semibold tracking-[0.05em] uppercase text-gaia-gold border border-ga-gold/35 rounded-full px-3 py-1.5" style="background:rgba(201,134,51,.10); border-color:rgba(201,134,51,.35)">
+        <Icon name="shield" /> Recommended
+      </span>
     )}
-    <span class="pcard-fav" aria-hidden="true"><Icon name="heart" /></span>
+    <span class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center text-gaia-gold" style="background:rgba(255,255,255,.85); border:1px solid rgba(128,190,164,.5)" aria-hidden="true">
+      <Icon name="heart" />
+    </span>
   </a>
-  <div class="pcard-body">
-    <span class="pcard-platform">{p.platform}</span>
-    <h3 class="pcard-name"><a href={href}>{p.name}</a></h3>
-    <p class="pcard-best">Best for {p.bestFor}</p>
+  <div class="p-5 flex flex-col gap-2 flex-1">
+    <span class="font-sans text-[11px] tracking-[0.12em] uppercase text-gaia-forest font-semibold">{p.platform}</span>
+    <h3 class="font-sans font-bold text-[20px] tracking-[-0.01em] text-gaia-ink">
+      <a href={href} class="hover:text-gaia-gold transition-colors">{p.name}</a>
+    </h3>
+    <p class="font-serif text-[14.5px] text-gaia-forest">Best for {p.bestFor}</p>
     <Stars rating={p.rating} count={p.reviews} showText={true} />
-    {feature && <p class="pcard-best">{p.verdict}</p>}
-    <div class="pcard-foot">
-      <span class="pcard-price">{p.priceRange}</span>
-      <a href={href} class="pcard-link">Read review <Icon name="arrow" class="arw" /></a>
+    {feature && <p class="font-serif text-[14.5px] text-gaia-forest">{p.verdict}</p>}
+    <div class="mt-auto flex items-center justify-between gap-3 pt-2">
+      <span class="font-sans font-bold text-[18px] text-gaia-gold">{p.priceRange}</span>
+      <a href={href} class="font-sans text-[13.5px] font-semibold text-gaia-gold inline-flex items-center gap-1 hover:underline">Read review <Icon name="arrow" class="arw" /></a>
     </div>
   </div>
 </article>
