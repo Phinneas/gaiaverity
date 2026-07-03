@@ -13,14 +13,14 @@
     "wrangler": "wrangler"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.7.0",
-    "@astrojs/markdown-remark": "^7.2.0",
-    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/cloudflare": "14",
+    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/mdx": "^7.0.2",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/tailwind": "^6.0.2",
     "@fontsource-variable/cabin": "^5.2.8",
     "@fontsource-variable/fraunces": "^5.2.9",
-    "astro": "^6.4.6",
+    "astro": "^7.0.6",
     "astro-seo": "^1.1.0",
     "classnames": "^2.5.1",
     "gray-matter": "^4.0.3",

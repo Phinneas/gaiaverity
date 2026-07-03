@@ -14,11 +14,7 @@ export default defineConfig({
   site: 'https://www.gaiaverity.com',
   trailingSlash: 'always',
   output: 'server',
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  adapter: cloudflare(),
   prerender: {
     default: false,
     auto: false,
