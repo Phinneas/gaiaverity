@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import { Image, Picture } from "astro:assets";
 import Authorcard from "@/components/authorcard.astro";
 import Container from "@/components/container.astro";
@@ -9,59 +10,104 @@ import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
 import { getCollection, render } from "astro:content";
 import { fetchCmsPosts } from "@/lib/sonicjs";
-import type { CmsPost } from "@/lib/sonicjs";
 
-const slug = Astro.params.slug;
+export async function getStaticPaths() {
+  const [mdxPosts, cmsPosts] = await Promise.all([
+    getCollection("blog", ({ data }) => data.draft !== true),
+    fetchCmsPosts(),
+  ]);
 
-if (!slug) {
-  return Astro.redirect("/blog");
+  const mdxSlugs = new Set(mdxPosts.map((p: any) => p.slug || p.id));
+  const paths = [];
+
+  for (const post of mdxPosts) {
+    const { Content } = await render(post);
+    const slug = post.slug || post.id;
+    const authorSlug = post.data.author;
+    const author = authors.find((item) => item.slug === authorSlug) || {
+      name: post.data.author || "Admin",
+      slug: "admin",
+      image: "",
+    };
+    const categorySlug = (post.data.category || "general").toLowerCase();
+    const category = categories.find((item) => item.slug === categorySlug) || {
+      title: post.data.category || "General",
+      slug: categorySlug,
+      color: "blue",
+    };
+
+    paths.push({
+      params: { slug },
+      props: {
+        title: post.data.title,
+        excerpt: post.data.excerpt,
+        postImage: post.data.image || "",
+        publishDate: post.data.publishDate,
+        author,
+        category,
+        tags: post.data.tags || [],
+        Content,
+        htmlContent: null as string | null,
+      },
+    });
+  }
+
+  for (const cmsPost of cmsPosts) {
+    if (mdxSlugs.has(cmsPost.slug)) continue;
+    paths.push({
+      params: { slug: cmsPost.slug },
+      props: {
+        title: cmsPost.title,
+        excerpt: cmsPost.excerpt,
+        postImage: cmsPost.featureimage || "",
+        publishDate: cmsPost.publishedAt,
+        author: { name: cmsPost.author || "Admin", slug: "admin", image: "" },
+        category: { title: "General", slug: "general", color: "blue" },
+        tags: [],
+        Content: null,
+        htmlContent: cmsPost.htmlContent,
+      },
+    });
+  }
+
+  return paths;
 }
 
-// Look up the MDX post first
-const mdxPosts = await getCollection("blog", ({ data }) => data.draft !== true);
-const post = mdxPosts.find((p: any) => p.id === slug || p.slug === slug) || null;
-
-// If not found in MDX, check CMS
-let cmsPost: CmsPost | null = null;
-if (!post) {
-  const cmsPosts = await fetchCmsPosts();
-  cmsPost = cmsPosts.find((p: CmsPost) => p.slug === slug) || null;
+interface Props {
+  title: string;
+  excerpt: string;
+  postImage: any;
+  publishDate: any;
+  author: any;
+  category: any;
+  tags: string[];
+  Content: any;
+  htmlContent: string | null;
 }
 
-if (!post && !cmsPost) {
-  return Astro.redirect("/blog");
-}
+const {
+  title,
+  excerpt,
+  postImage,
+  publishDate,
+  author,
+  category,
+  tags,
+  Content,
+  htmlContent,
+} = Astro.props;
 
-// Render MDX content if it's an MDX post
-let Content: any = null;
-if (post) {
-  const { Content: RenderedContent } = await render(post);
-  Content = RenderedContent;
-}
+const isExternalImage = typeof postImage === "string" && postImage.startsWith("http");
 
-// Normalise fields from whichever source we have
-const title       = post ? post.data.title       : cmsPost!.title;
-const excerpt     = post ? post.data.excerpt      : cmsPost!.excerpt;
-const postImage   = post ? (post.data.image || '') : (cmsPost!.featureimage || '');
-const publishDate = post ? post.data.publishDate  : cmsPost!.publishedAt;
-const authorSlug  = post ? post.data.author       : null;
-const htmlContent = cmsPost ? cmsPost.htmlContent : null;
-
-const isExternalImage = typeof postImage === 'string' && postImage.startsWith('http');
-
-const author = authors.find((item) => item.slug === authorSlug) || {
-  name: post?.data?.author || cmsPost?.author || "Admin",
-  slug: "admin",
-  image: ""
-};
-
-const categorySlug = post?.data?.category || "general";
-const category = categories.find(
-  (item) => item.slug === categorySlug.toLowerCase()
-) || {
-  title: post?.data?.category || "General",
-  slug: categorySlug.toLowerCase(),
-  color: "blue"
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description: excerpt,
+  datePublished: publishDate ? new Date(publishDate).toISOString() : undefined,
+  author: { "@type": "Person", name: author.name },
+  publisher: { "@type": "Organization", name: "GaiaVerity" },
+  ...(postImage ? { image: typeof postImage === "string" ? postImage : undefined } : {}),
 };
 ---
 
@@ -69,6 +115,7 @@ const category = categories.find(
   title={title}
   desc={excerpt}
   ogimage={postImage}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
   <Container>
     <div class="max-w-screen-md mx-auto">
       <div class="text-center">
@@ -148,10 +195,10 @@ const category = categories.find(
           <div set:html={htmlContent} />
         )}
 
-        {post?.data?.tags && (
+        {tags && tags.length > 0 && (
           <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
             {
-              (post.data.tags || []).map((tag: string) => (
+              tags.map((tag: string) => (
                 <span class="text-sm text-gray-500">#{tag}</span>
               ))
             }

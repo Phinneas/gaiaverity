@@ -87,14 +87,14 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   ]);
 
   // MDX slugs take precedence — skip any CMS post that duplicates one
-  const mdxSlugs = new Set(mdxPosts.map((p: any) => p.slug));
+  const mdxSlugs = new Set(mdxPosts.map((p: any) => p.slug || p.id));
 
   const formattedMdx: BlogPost[] = mdxPosts.map((post: any) => ({
-    slug: post.slug,
+    slug: post.slug || post.id,
     title: post.data.title,
     data: {
       title: post.data.title,
-      slug: post.slug,
+      slug: post.slug || post.id,
       excerpt: post.data.excerpt || '',
       content: '',
       featuredImage: post.data.image || '',

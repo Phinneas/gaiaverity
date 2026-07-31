@@ -1,9 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /rss/
-Disallow: /en/
-Disallow: /page/
-Disallow: /tag/
-
 Sitemap: https://www.gaiaverity.com/sitemap-index.xml

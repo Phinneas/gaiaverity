@@ -1,0 +1,36 @@
+---
+export const prerender = true;
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+---
+
+<Layout title="Page not found" desc="This page has moved or no longer exists.">
+  <Container>
+    <div class="max-w-screen-md mx-auto text-center py-20 px-5">
+      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-6" style="color:#c98633">
+        404
+      </p>
+      <h1 class="font-sans text-[clamp(32px,4.5vw,48px)] font-semibold leading-[1.1] mb-6" style="color:#23312b">
+        This page has moved<br />or no longer exists.
+      </h1>
+      <p class="font-serif text-[16px] leading-[1.8] max-w-[420px] mx-auto mb-10" style="color:#5c7962">
+        The content you're looking for may have a new home. Try the homepage or browse all our gardening guides.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-sans font-semibold transition-colors"
+          style="background:#23312b; color:#f7f5f0;">
+          Back to homepage
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a
+          href="/blog"
+          class="inline-flex items-center rounded-full border px-6 py-3.5 text-[14px] font-sans transition-colors"
+          style="border-color:#80bea4; color:#5c7962;">
+          Browse the blog
+        </a>
+      </div>
+    </div>
+  </Container>
+</Layout>

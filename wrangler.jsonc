@@ -13,6 +13,7 @@
     "enabled": true
   },
   "routes": [
-    { "pattern": "www.gaiaverity.com", "custom_domain": true }
+    { "pattern": "www.gaiaverity.com", "custom_domain": true },
+    { "pattern": "gaiaverity.com", "custom_domain": true }
   ]
 }
