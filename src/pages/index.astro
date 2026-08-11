@@ -9,16 +9,16 @@ const allPosts = await getBlogPosts();
 const recentPosts = allPosts.slice(0, 3);
 
 const topics = [
-  { label: "Lawn mushrooms",                href: "/blog?category=mushrooms" },
-  { label: "Drought-resistant ground cover", href: "/blog?category=drought" },
-  { label: "Native plant gardening",         href: "/blog?category=native" },
-  { label: "Vertical gardens",               href: "/blog?category=small-space" },
-  { label: "Organic lawn care",              href: "/blog?category=sustainable" },
-  { label: "Pest & weed control",            href: "/blog?category=pest-control" },
-  { label: "Soil prep & composting",         href: "/blog?category=soil" },
-  { label: "Shade gardening",                href: "/blog?category=shade" },
-  { label: "Rain garden design",             href: "/blog?category=rain-garden" },
-  { label: "Fire-resistant plants",          href: "/blog?category=fire-resistant" },
+  { label: "Lawn mushrooms",                href: "/blog/?category=mushrooms" },
+  { label: "Drought-resistant ground cover", href: "/blog/?category=drought" },
+  { label: "Native plant gardening",         href: "/blog/?category=native" },
+  { label: "Vertical gardens",               href: "/blog/?category=small-space" },
+  { label: "Organic lawn care",              href: "/blog/?category=sustainable" },
+  { label: "Pest & weed control",            href: "/blog/?category=pest-control" },
+  { label: "Soil prep & composting",         href: "/blog/?category=soil" },
+  { label: "Shade gardening",                href: "/blog/?category=shade" },
+  { label: "Rain garden design",             href: "/blog/?category=rain-garden" },
+  { label: "Fire-resistant plants",          href: "/blog/?category=fire-resistant" },
 ];
 ---
 
@@ -46,14 +46,14 @@ const topics = [
         </div>
         <div class="flex flex-wrap gap-3 mt-10">
           <a
-            href="/blog"
+            href="/blog/"
             class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-sans font-semibold transition-colors"
             style="background:#23312b; color:#f7f5f0;">
             Read the guides
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
           <a
-            href="/about"
+            href="/about/"
             class="inline-flex items-center rounded-full border px-6 py-3.5 text-[14px] font-sans transition-colors"
             style="border-color:#80bea4; color:#5c7962;">
             About
@@ -129,7 +129,7 @@ const topics = [
         <h3 class="font-sans text-[22px] font-semibold" style="color:#f7f5f0">Free guides, no paywall, no jargon. Just good gardening.</h3>
       </div>
       <a
-        href="/blog"
+        href="/blog/"
         class="flex-shrink-0 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-sans font-semibold transition-colors"
         style="background:#f7f5f0; color:#23312b; white-space:nowrap;">
         Start reading →
@@ -162,7 +162,7 @@ const topics = [
         <p class="font-serif text-[16px] leading-[1.8] mb-8" style="color:#5c7962">
           Most gardening sites treat every lawn the same. But your soil type, shade pattern, and local climate change everything. GaiaVerity is built around conditions real gardeners actually face.
         </p>
-        <a href="/about" class="inline-flex items-center gap-2 font-sans text-[14px] font-semibold transition-colors" style="color:#5c7962">
+        <a href="/about/" class="inline-flex items-center gap-2 font-sans text-[14px] font-semibold transition-colors" style="color:#5c7962">
           Learn more
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -178,7 +178,7 @@ const topics = [
         <h2 class="font-sans text-[28px] font-semibold leading-tight" style="color:#23312b">
           What you'll find here
         </h2>
-        <a href="/blog" class="font-sans text-[13px] font-medium transition-colors" style="color:#5c7962">
+        <a href="/blog/" class="font-sans text-[13px] font-medium transition-colors" style="color:#5c7962">
           Browse all articles →
         </a>
       </div>
@@ -215,7 +215,7 @@ const topics = [
       <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-12" style="background:#f7f5f0">
         <div class="flex items-end justify-between mb-8">
           <h2 class="font-sans text-[28px] font-semibold" style="color:#23312b">From the garden</h2>
-          <a href="/blog" class="font-sans text-[13px] font-medium transition-colors" style="color:#5c7962">View all →</a>
+          <a href="/blog/" class="font-sans text-[13px] font-medium transition-colors" style="color:#5c7962">View all →</a>
         </div>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {recentPosts.map((post) => (

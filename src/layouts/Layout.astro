@@ -10,12 +10,13 @@ export interface Props {
   title?: string;
   desc?: string;
   ogimage?: string;
+  noindex?: boolean;
 }
 
 // Strip query params (e.g. ?ref=) from canonical — use pathname only
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
-const { title, desc, ogimage = "/opengraph.jpg" } = Astro.props;
+const { title, desc, ogimage = "/opengraph.jpg", noindex = false } = Astro.props;
 
 const resolvedOGImage = checkImageUrl(ogimage, Astro.site);
 
@@ -37,6 +38,7 @@ const makeTitle = title
       description={desc ||
         "Real, practical gardening advice for home gardeners — from lawn mushrooms to drought-tolerant borders."}
       canonical={canonicalURL}
+      noindex={noindex}
       twitter={{
         card: "summary_large_image",
       }}

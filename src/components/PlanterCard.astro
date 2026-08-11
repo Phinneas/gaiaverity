@@ -19,7 +19,11 @@ const href = `/planters/${p.slug}`;
     {p.image ? (
       <img src={p.image} alt={p.name} loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
     ) : (
-      <span class="w-12 h-12 text-gaia-forest opacity-80"><Icon name="leaf" /></span>
+      <div class="flex flex-col items-center justify-center gap-2 p-6 text-center">
+        <span class="w-10 h-10 text-gaia-forest opacity-70"><Icon name="leaf" /></span>
+        <span class="font-sans font-bold text-[15px] text-gaia-ink leading-tight">{p.name}</span>
+        <span class="font-sans text-[13px] font-semibold text-gaia-gold">{p.priceRange}</span>
+      </div>
     )}
     {p.recommended && (
       <span class="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 font-sans text-[11px] font-semibold tracking-[0.05em] uppercase text-gaia-gold border border-ga-gold/35 rounded-full px-3 py-1.5" style="background:rgba(201,134,51,.10); border-color:rgba(201,134,51,.35)">

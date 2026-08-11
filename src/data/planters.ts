@@ -2,8 +2,12 @@
 // GaiaVerity — AI Planter Shop data
 // Edit this file to manage your affiliate planters. Every page reads from here.
 // `affiliateUrl` is where the "Buy now" button sends shoppers (your deep link).
-// `image` is optional: drop a photo in /public/planters/ and reference it,
-// e.g. "/planters/leafypod.jpg". If omitted, a tasteful leaf placeholder shows.
+// `image` is the product photo. To get an image:
+//   1. Log into affiliate-program.amazon.com
+//   2. Visit the product page on Amazon
+//   3. Right-click the main product image → "Copy image address"
+//   4. Paste the URL here (it starts with https://m.media-amazon.com/images/I/)
+// If `image` is left empty, a styled card with product name & price shows instead.
 // ---------------------------------------------------------------------------
 
 export interface Review {
@@ -51,6 +55,8 @@ export const planters: Planter[] = [
     recommended: false,
     tags: ["beginner", "sensor"],
     affiliateUrl: "https://amzn.to/4vKYbtD",
+    // image: right-click product photo at https://www.amazon.com/dp/B0DR7C9MLP
+    image: "https://m.media-amazon.com/images/I/71QjtUeafML._AC_SL1500_.jpg",
     mediaTint: WARM,
     verdict: "A fraction of the price of a smart planter — WiFi moisture alerts that tell you when to water, for any pot you already own.",
     description: [
@@ -74,6 +80,8 @@ export const planters: Planter[] = [
     recommended: false,
     tags: ["beginner", "herbs"],
     affiliateUrl: "https://amzn.to/4v88RRF",
+    // image: right-click product photo at https://www.amazon.com/dp/B07YF1HCTZ
+    image: "https://m.media-amazon.com/images/I/61UwoekP5nL._AC_SX679_.jpg",
     mediaTint: WARM,
     verdict: "The countertop classic — plug-and-grow herb pods that just work, with the biggest refill ecosystem around.",
     description: [
@@ -97,6 +105,8 @@ export const planters: Planter[] = [
     recommended: true,
     tags: ["design", "beginner"],
     affiliateUrl: "https://amzn.to/44Jetah",
+    // image: right-click product photo at https://www.amazon.com/dp/B0DHY6T5K3
+    image: "https://m.media-amazon.com/images/I/71Q8-6ll0aL._AC_SX679_.jpg",
     mediaTint: MINT,
     verdict: "An interactive plant pet with 100+ emoji expressions and 9 precision sensors — the smart planter that makes you smile every time you look at it.",
     description: [
@@ -120,6 +130,8 @@ export const planters: Planter[] = [
     recommended: false,
     tags: ["hydroponic", "herbs"],
     affiliateUrl: "https://amzn.to/4awdw8L",
+    // image: right-click product photo at https://www.amazon.com/dp/B0CPHTBHL8
+    image: "https://m.media-amazon.com/images/I/81vRepvKu7L._AC_SL1500_.jpg",
     mediaTint: MINT,
     verdict: "A countertop vertical garden that grows 16 plants in 1.4 sq ft — fresh herbs and greens year-round with AI camera monitoring.",
     description: [
@@ -143,6 +155,8 @@ export const planters: Planter[] = [
     recommended: false,
     tags: ["vertical", "hydroponic"],
     affiliateUrl: "https://amzn.to/4vcfrXC",
+    // image: right-click product photo at https://www.amazon.com/dp/B0CXX91C2Q
+    image: "https://m.media-amazon.com/images/I/81M+zQGngXL._AC_SL1500_.jpg",
     mediaTint: MINT,
     verdict: "A floor-standing vertical garden that grows 30 plants in 2 sq ft — the most productive smart garden you can put in your home.",
     description: [

@@ -7,6 +7,7 @@ const REDIRECTS: Record<string, string> = {
   // ── Dead URLs (GSC 404s) ───────────────────────────────────────────────────
   "/bio-diverse-lawn-care/": "/blog/biodiverse-lawn-care/",
   "/blog": "/blog/",
+  "/archive": "/archive/",
   "/clover-and-wildflower-lawn/": "/blog/white-clover-lawn-alternative/",
   "/what-is-sustainable-gardening/": "/blog/sustainable-gardening-techniques/",
   "/garden-design-inspirations/": "/blog/",
@@ -71,6 +72,112 @@ const REDIRECTS: Record<string, string> = {
   "/no-mow-lawn-guide/": "/blog/no-mow-lawn-guide/",
 };
 
+// ── Ghost / demo content — permanently removed (410 Gone) ────────────────────
+// These slugs never belonged to GaiaVerity's gardening content. They appeared
+// from a Ghost CMS demo import or template migration. 410 tells Google they are
+// gone permanently and should be deindexed faster than a 404.
+const GONE_SLUGS = new Set([
+  "14-architectural-design-ideas-for-spacious-interior",
+  "every-next-level-of-your-life-will-demand-a-different-you",
+  "this-bread-pudding-will-give-you-all-the-fall-feels",
+  "complete-guide-fullstack-development",
+  "essential-data-structures-algorithms",
+  "nothing-new-about-undermining-women-autonomy",
+  "how-to-become-frontend-master",
+  "what-is-mcp",
+  "kitchensink",
+]);
+
+// ── Known valid blog slugs (from MDX content + CMS) ─────────────────────────
+// Used to return proper 404 for unknown slugs rather than a soft 404 (200)
+const VALID_BLOG_SLUGS = new Set([
+  "are-lawn-mushrooms-poisonous",
+  "backyard-garden-ideas",
+  "battery-powered-garden-tools",
+  "best-diy-fruit-fly-trap-methods",
+  "best-drought-tolerant-ground-cover-plants",
+  "best-drought-tolerant-plants",
+  "best-fire-resistant-plants",
+  "best-organic-lawn-fertilizer-guide",
+  "biodiverse-lawn-care",
+  "clay-garden-soil",
+  "climate-resilient-backyard-garden",
+  "climate-resilient-garden",
+  "common-lawn-mushroom-types",
+  "desert-plants-home-garden",
+  "diy-fruit-fly-traps",
+  "edible-landscaping",
+  "fairy-ring-mushrooms",
+  "fall-mushroom-management-for-healthy-lawns",
+  "fall-mushroom-management",
+  "fire-resistant-plants",
+  "garden-gnomes-cultural-history",
+  "how-to-start-a-backyard-garden",
+  "japanese-garden-ideas",
+  "lawn-alternatives",
+  "lawn-mushrooms-and-dogs",
+  "lawn-mushrooms",
+  "mushrooms-after-rain",
+  "mushrooms-growing-in-lawn-identification",
+  "mushrooms-in-lawn",
+  "mushrooms-lawn-why-they-belong",
+  "native-plant-gardening-tips",
+  "native-pollinator-garden-design",
+  "native-pollinator-plants",
+  "no-dig-gardening",
+  "no-dig-organic-gardening",
+  "organic-lawn-care-guide",
+  "organic-weed-control-lawns",
+  "rain-garden-design-2",
+  "rain-garden-design",
+  "replace-your-lawn-with-wildflowers",
+  "seasonal-mushroom-patterns-in-home-lawns",
+  "small-backyard-garden-ideas",
+  "small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery",
+  "sustainable-gardening-techniques",
+  "sustainable-small-backyard-vegetable-garden",
+  "terrarium-setup-guide",
+  "tomato-companion-plants",
+  "vertical-garden-ideas-small-spaces",
+  "welcome-to-gaiaverity",
+  "when-to-prune-holly-bushes",
+  "white-clover-lawn-alternative",
+  "white-mushrooms-in-lawn",
+]);
+
+// Category query params that don't correspond to real gardening categories
+// (Ghost CMS defaults — travel, lifestyle, etc.) — return 410 to prevent
+// Google from indexing these query-param URLs.
+const DEPRECATED_CATEGORIES = new Set([
+  "travel",
+  "announcement",
+  "general",
+  "personal",
+  "design",
+  "education",
+  "lifestyle",
+  "technology",
+]);
+
+function isGhostSlugPath(path: string): boolean {
+  // Match /blog/<slug> or /blog/<slug>/ — any variant
+  const match = path.match(/^\/blog\/([^\/]+)\/?$/);
+  if (!match) return false;
+  return GONE_SLUGS.has(match[1]);
+}
+
+function isInvalidBlogSlug(path: string): boolean {
+  const match = path.match(/^\/blog\/([^\/]+)\/?$/);
+  if (!match) return false;
+  const slug = match[1];
+  return !VALID_BLOG_SLUGS.has(slug) && !GONE_SLUGS.has(slug);
+}
+
+function hasDeprecatedCategory(url: URL): boolean {
+  const cat = url.searchParams.get("category");
+  return cat !== null && DEPRECATED_CATEGORIES.has(cat.toLowerCase());
+}
+
 export const onRequest = defineMiddleware((context, next) => {
   const url = context.url;
   const path = url.pathname;
@@ -82,7 +189,17 @@ export const onRequest = defineMiddleware((context, next) => {
     return context.redirect(wwwUrl.toString(), 301);
   }
 
-  // Check exact redirect match (with trailing slash)
+  // ── 410 Gone: ghost/demo content that never belonged on this site ──────────
+  if (isGhostSlugPath(path)) {
+    return new Response("Gone", { status: 410 });
+  }
+
+  // ── 410 Gone: deprecated category query params on /blog or /archive ────────
+  if ((path === "/blog/" || path === "/archive/") && hasDeprecatedCategory(url)) {
+    return new Response("Gone", { status: 410 });
+  }
+
+  // ── 301 Redirects ──────────────────────────────────────────────────────────
   if (REDIRECTS[path]) {
     return context.redirect(REDIRECTS[path], 301);
   }

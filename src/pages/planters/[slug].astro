@@ -33,12 +33,19 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       <div class="grid md:grid-cols-2 gap-8 items-start">
         <!-- Gallery -->
         <div class="flex flex-col gap-3 md:sticky md:top-24">
-          <div class="rounded-3xl overflow-hidden aspect-square flex items-center justify-center" style={p.mediaTint ? `background:${p.mediaTint}` : "background:radial-gradient(95% 85% at 35% 20%,rgba(128,190,164,.55),transparent 60%),linear-gradient(160deg,#E6F0E9,#D4E5D9); border:1px solid rgba(128,190,164,.5)"}>
-            {p.image ? <img src={p.image} alt={p.name} class="w-full h-full object-cover" /> : <span class="w-[86px] h-[86px] text-gaia-forest opacity-80"><Icon name="leaf" /></span>}
+          <div class="rounded-3xl overflow-hidden aspect-square flex flex-col items-center justify-center gap-3 p-8 text-center" style={p.mediaTint ? `background:${p.mediaTint}` : "background:radial-gradient(95% 85% at 35% 20%,rgba(128,190,164,.55),transparent 60%),linear-gradient(160deg,#E6F0E9,#D4E5D9); border:1px solid rgba(128,190,164,.5)"}>
+            {p.image ? <img src={p.image} alt={p.name} class="w-full h-full object-cover absolute inset-0" /> : <>
+              <span class="w-16 h-16 text-gaia-forest opacity-70"><Icon name="leaf" /></span>
+              <span class="font-sans font-bold text-[22px] text-gaia-ink leading-tight">{p.name}</span>
+              <span class="font-sans text-[16px] font-semibold text-gaia-gold">{p.priceRange}</span>
+              <span class="font-sans text-[13px] text-gaia-forest">Product photo coming soon</span>
+            </>}
           </div>
+          {p.image && (
           <div class="flex gap-2.5 flex-wrap">
             {[0,1,2].map(() => <div class="w-[74px] h-[74px] rounded-xl overflow-hidden" style={p.mediaTint ? `background:${p.mediaTint}` : "background:#E6F0E9; border:1px solid rgba(128,190,164,.5)"}></div>)}
           </div>
+          )}
         </div>
 
         <!-- Info -->
@@ -57,8 +64,8 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
           <p class="font-serif italic text-[18px] mt-5 mb-6 pl-4 leading-[1.6]" style="color:#5c7962; border-left:2px solid #c98633">{p.verdict}</p>
 
-          <!-- Spec card -->
-          <div class="rounded-2xl p-5 grid grid-cols-2 gap-4 my-5" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+          <!-- Specs -->
+          <div class="grid grid-cols-2 gap-4 my-5">
             <div class="flex flex-col gap-1">
               <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Price range</span>
               <span class="font-sans font-bold text-[18px] text-gaia-gold">{p.priceRange}</span>
@@ -67,24 +74,14 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
               <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Best for</span>
               <span class="font-sans font-bold text-[18px] text-gaia-ink">{cap(p.bestFor)}</span>
             </div>
-            <div class="flex flex-col gap-1">
-              <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Platform</span>
-              <span class="font-sans font-bold text-[18px] text-gaia-ink">{p.platform}</span>
-            </div>
-            <div class="flex flex-col gap-1">
-              <span class="font-sans text-[11px] tracking-[0.12em] uppercase font-semibold" style="color:#5c7962">Commission</span>
-              <span class="font-sans font-bold text-[18px] text-gaia-gold">{p.commission}</span>
-            </div>
           </div>
 
           <!-- CTA -->
-          <div class="flex flex-col gap-3 mt-2">
-            <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-[16px] font-sans font-semibold transition-colors w-full" style="background:#c98633; color:#23312b;">
-              Buy now <Icon name="external" />
+          <div class="flex flex-col gap-2 mt-2">
+            <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[14px] font-sans font-semibold transition-colors" style="background:#c98633; color:#23312b;">
+              Check price <Icon name="external" />
             </a>
-            <div class="flex items-center gap-2 font-sans text-[12.5px]" style="color:#5c7962">
-              <Icon name="info" /> We earn a small commission at no extra cost to you.
-            </div>
+            <span class="font-sans text-[11px] text-center" style="color:#5c7962">As an affiliate we may earn a small commission.</span>
           </div>
         </div>
       </div>
@@ -189,37 +186,13 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     </div>
   </section>
 
-  <!-- ── Video + Review ───────────────────────────────── -->
+  <!-- ── Review highlight ────────────────────────────── -->
   <section class="bg-gaia-pale px-5 py-8">
-    <div class="max-w-[1100px] mx-auto grid md:grid-cols-[1.4fr_0.9fr] gap-6 items-stretch">
-      <div class="rounded-3xl flex flex-col items-center justify-center gap-3 py-16" style="aspect-ratio:16/9; background:radial-gradient(80% 80% at 50% 40%,rgba(128,190,164,.5),transparent 65%),linear-gradient(160deg,#E6F0E9,#D2E3D7); border:1px solid rgba(128,190,164,.5)">
-        <span class="w-[74px] h-[74px] rounded-full flex items-center justify-center" style="background:rgba(255,255,255,.7); border:1px solid #80bea4; color:#5c7962"><Icon name="play" /></span>
-        <span class="font-sans text-[12px] tracking-[0.2em] uppercase font-semibold" style="color:#5c7962">Add a video review (YouTube / TikTok)</span>
-      </div>
-      <div class="rounded-3xl p-8 flex flex-col justify-center" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="rounded-3xl p-8 max-w-[720px] mx-auto" style="background:#eef4f0; border:1px solid rgba(128,190,164,.5)">
         <Stars rating={5} />
         <p class="font-serif italic text-[clamp(17px,1.7vw,22px)] leading-[1.4] text-gaia-ink mt-4 mb-4">&ldquo;{p.review.quote}&rdquo;</p>
-        <p class="font-sans text-[13px]" style="color:#5c7962"><b class="text-gaia-ink font-semibold">{p.review.author}</b> · {p.review.source}</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Final CTA ────────────────────────────────────── -->
-  <section class="bg-gaia-pale px-5 py-8">
-    <div class="max-w-[1100px] mx-auto rounded-3xl px-10 py-14 text-center" style="background:#23312b">
-      <p class="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color:#c98633">Ready when you are</p>
-      <h2 class="font-sans text-[clamp(27px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.018em] mb-4" style="color:#f7f5f0">Get the {p.name}</h2>
-      <p class="font-serif text-[clamp(16px,1.5vw,19px)] leading-[1.6] max-w-[600px] mx-auto mb-8" style="color:#80bea4">You'll be taken to our trusted retail partner. Reader-exclusive rates may apply.</p>
-      <div class="flex flex-wrap gap-3 justify-center">
-        <a href={p.affiliateUrl} target="_blank" rel="sponsored nofollow noopener" class="inline-flex items-center gap-2 rounded-full px-7 py-4 text-[15px] font-sans font-semibold transition-colors" style="background:#c98633; color:#23312b;">
-          Buy now <Icon name="external" />
-        </a>
-        <a href="/planters/catalog" class="inline-flex items-center rounded-full border px-7 py-4 text-[15px] font-sans font-semibold transition-colors" style="border-color:rgba(247,245,240,.5); color:#f7f5f0;">
-          Compare alternatives
-        </a>
-      </div>
-      <div class="flex items-center justify-center gap-2 font-sans text-[12.5px] mt-5" style="color:#80bea4">
-        <Icon name="info" /> We earn a small commission at no extra cost to you.
+        <p class="font-sans text-[13px]" style="color:#5c7962"><b class="text-gaia-ink font-semibold">{p.review.author}</b> &middot; {p.review.source}</p>
       </div>
     </div>
   </section>

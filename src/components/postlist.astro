@@ -67,7 +67,7 @@ const postDate = post.data?.publishDate || new Date().toISOString();
     </a>
   </div>
 
-  <a href={"/archive?category=" + category.slug}>
+  <a href={"/archive/?category=" + category.slug}>
     <Label theme={category.color}>{category.title}</Label>
   </a>
   <h2
