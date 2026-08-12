@@ -194,6 +194,11 @@ export const onRequest = defineMiddleware((context, next) => {
     return new Response("Gone", { status: 410 });
   }
 
+  // ── 404 Not Found: invalid blog slugs ──────────────────────────────────────
+  if (isInvalidBlogSlug(path)) {
+    return context.rewrite(new Request(new URL("/404", context.url)));
+  }
+
   // ── 410 Gone: deprecated category query params on /blog or /archive ────────
   if ((path === "/blog/" || path === "/archive/") && hasDeprecatedCategory(url)) {
     return new Response("Gone", { status: 410 });
