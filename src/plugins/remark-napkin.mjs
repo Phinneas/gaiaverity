@@ -65,8 +65,7 @@ export function remarkNapkin(options = {}) {
         console.log(`[Napkin] Generating diagram for block (key from ${apiKeySource}, length ${apiKey.length})...`);
         
         try {
-          // This models the expected standard API call for text-to-image/diagram services.
-          // Note: When the actual Napkin API docs are available, adjust endpoints/payloads here.
+          // Note: If the Napkin API endpoint or payload structure is different, it will throw here.
           const response = await fetch('https://api.napkin.ai/v1/diagrams', {
             method: 'POST',
             headers: {
@@ -86,7 +85,8 @@ export function remarkNapkin(options = {}) {
           });
 
           if (!response.ok) {
-            throw new Error(`Napkin API error: ${response.status}`);
+            const errText = await response.text().catch(() => '');
+            throw new Error(`Napkin API error: ${response.status} ${response.statusText} - ${errText}`);
           }
 
           const imageBuffer = await response.arrayBuffer();
@@ -94,6 +94,10 @@ export function remarkNapkin(options = {}) {
           console.log(`[Napkin] Successfully saved diagram to ${filepath}`);
         } catch (error) {
           console.error(`[Napkin] Failed to generate diagram: ${error.message}`);
+          parent.children[index] = {
+            type: 'html',
+            value: `<div class="p-6 bg-red-50 border border-red-200 rounded-xl my-6 text-center text-red-800 font-sans"><strong>Napkin API Error</strong><br/><span class="text-sm">${error.message}</span></div>`
+          };
           continue;
         }
       }
