@@ -21,10 +21,8 @@ Rules for placement:
 
 The block must be formatted exactly like this:
 \`\`\`napkin
-A short, clear conceptual description of the process or cycle.
-1. Step one
-2. Step two
-3. Step three
+Create a flowchart:
+Step 1 -> Step 2 -> Step 3 -> Step 4
 \`\`\`
 
 Rules for output:
