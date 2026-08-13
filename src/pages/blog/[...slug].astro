@@ -9,15 +9,10 @@ import { categories } from "@/data/category";
 import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
 import { getCollection, render } from "astro:content";
-import { fetchCmsPosts } from "@/lib/sonicjs";
 
 export async function getStaticPaths() {
-  const [mdxPosts, cmsPosts] = await Promise.all([
-    getCollection("blog", ({ data }) => data.draft !== true),
-    fetchCmsPosts(),
-  ]);
+  const mdxPosts = await getCollection("blog", ({ data }) => data.draft !== true);
 
-  const mdxSlugs = new Set(mdxPosts.map((p: any) => p.slug || p.id));
   const paths = [];
 
   for (const post of mdxPosts) {
@@ -47,25 +42,6 @@ export async function getStaticPaths() {
         category,
         tags: post.data.tags || [],
         Content,
-        htmlContent: null as string | null,
-      },
-    });
-  }
-
-  for (const cmsPost of cmsPosts) {
-    if (mdxSlugs.has(cmsPost.slug)) continue;
-    paths.push({
-      params: { slug: cmsPost.slug },
-      props: {
-        title: cmsPost.title,
-        excerpt: cmsPost.excerpt,
-        postImage: cmsPost.featureimage || "",
-        publishDate: cmsPost.publishedAt,
-        author: { name: cmsPost.author || "Admin", slug: "admin", image: "" },
-        category: { title: "General", slug: "general", color: "blue" },
-        tags: [],
-        Content: null,
-        htmlContent: cmsPost.htmlContent,
       },
     });
   }
@@ -82,7 +58,6 @@ interface Props {
   category: any;
   tags: string[];
   Content: any;
-  htmlContent: string | null;
 }
 
 const {
@@ -94,7 +69,6 @@ const {
   category,
   tags,
   Content,
-  htmlContent,
 } = Astro.props;
 
 const isExternalImage = typeof postImage === "string" && postImage.startsWith("http");
@@ -189,11 +163,7 @@ const articleSchema = {
       <div
         class="mx-auto my-3 prose prose-base prose-headings:text-gaia-ink prose-p:text-gaia-ink prose-li:text-gaia-ink prose-strong:text-gaia-ink prose-a:text-gaia-mid hover:prose-a:text-gaia-dark prose-blockquote:text-gaia-ink">
 
-        {Content ? (
-          <Content />
-        ) : (
-          <div set:html={htmlContent} />
-        )}
+        <Content />
 
         {tags && tags.length > 0 && (
           <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">

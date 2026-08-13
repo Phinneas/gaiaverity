@@ -4,9 +4,10 @@ import Container from "@/components/container.astro";
 import Pagetitle from "@/components/pagetitle.astro";
 import Postlist from "@/components/postlist.astro";
 import Layout from "@/layouts/Layout.astro";
-import { getBlogPosts } from "@/lib/sonicjs";
+import { getCollection } from "astro:content";
 
-const latestPosts = await getBlogPosts();
+const allPostsRaw = await getCollection("blog", ({ data }) => data.draft !== true);
+const latestPosts = allPostsRaw.sort((a, b) => new Date(b.data.publishDate || 0).valueOf() - new Date(a.data.publishDate || 0).valueOf());
 ---
 
 <Layout title="Blog" desc="All articles from GaiaVerity — sustainable lawn care, native plants, mushroom identification, and more.">

@@ -3,9 +3,10 @@ export const prerender = true;
 import Layout from "@/layouts/Layout.astro";
 import Postlist from "@/components/postlist.astro";
 import AskAI from "@/components/AskAI.astro";
-import { getBlogPosts } from "@/lib/sonicjs";
+import { getCollection } from "astro:content";
 
-const allPosts = await getBlogPosts();
+const allPostsRaw = await getCollection("blog", ({ data }) => data.draft !== true);
+const allPosts = allPostsRaw.sort((a, b) => new Date(b.data.publishDate || 0).valueOf() - new Date(a.data.publishDate || 0).valueOf());
 const recentPosts = allPosts.slice(0, 3);
 
 const topics = [
