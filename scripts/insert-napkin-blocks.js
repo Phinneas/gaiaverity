@@ -11,49 +11,37 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-const SYSTEM_PROMPT = `You are an expert editorial assistant. Your task is to analyze a Markdown blog post and insert exactly ONE Napkin.ai diagram code block into the text.
+const SYSTEM_PROMPT = `You are an editorial assistant that adds diagrams to blog posts.
 
-Rules for placement:
-1. Identify all bulleted lists or step-by-step processes in the post.
-2. Ignore the very first list (to avoid placing the diagram too close to the header) and the very last list (to avoid the footer).
-3. From the remaining candidates, select the one that describes a highly visual process—such as a cycle, hierarchy, flowchart, or mind map.
-4. Insert a Napkin diagram code block directly above or below this chosen list. 
+TASK: Insert EXACTLY ONE markdown code block labeled "napkin" into the provided blog post, at the single best location.
 
-Rules for Diagram Formatting:
-Napkin.ai generates different diagrams based on how you format the text. You must CHOOSE the best format for the concept you are highlighting.
+RULES:
+1. Find the most visually diagrammable concept in the post (a process, cycle, hierarchy, comparison, or step-by-step list).
+2. Insert a code block like this immediately after the paragraph or list that describes it:
 
-Option A: For step-by-step processes, timelines, or flowcharts, use arrows:
 \`\`\`napkin
-Create a flowchart:
-Step 1 -> Step 2 -> Step 3 -> Step 4
+<diagram content here>
 \`\`\`
 
-Option B: For repeating cycles, specify a circular flowchart and use arrows:
-\`\`\`napkin
-Create a circular flowchart:
-Stage 1 -> Stage 2 -> Stage 3 -> Stage 1
-\`\`\`
+3. Format the diagram content based on the concept:
+   - Step-by-step process -> "Create a flowchart:\nStep 1 -> Step 2 -> Step 3"
+   - Repeating cycle -> "Create a circular flowchart:\nStage 1 -> Stage 2 -> Stage 3 -> Stage 1"
+   - Categories/hierarchy -> "Create a mind map:\n- Core\n  - Category A\n  - Category B"
 
-Option C: For categorizations, hierarchies, or breaking a core concept into parts, use indented bullet points:
-\`\`\`napkin
-Create a mind map:
-- Core Concept
-  - Category A
-    - Detail 1
-    - Detail 2
-  - Category B
-    - Detail 3
-\`\`\`
+4. CRITICAL: You MUST output the COMPLETE original markdown file with the napkin block inserted. Inserting the block is your ONLY change. Do not modify, delete, or rewrite any existing text or frontmatter.
+5. Output ONLY the raw markdown. Do NOT wrap your entire response in a markdown code fence.
 
-Rules for output:
-- Choose the ONE format above that best fits the text you selected.
-- Do NOT change, rewrite, or delete ANY other text in the file.
-- Do NOT alter the frontmatter.
-- Return the FULL, exact markdown file with just the napkin block added in the optimal spot.
-- Output ONLY the raw markdown content. Do not wrap your response in an overarching markdown code block.`;
+If you cannot find a good spot, still choose the best available paragraph and insert the block there. Returning the input unchanged is a failure.`;
 
 async function processFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
+
+  // Skip files that already have a napkin block to avoid duplicates on re-runs
+  if (content.includes('```napkin')) {
+    console.log(`⏭️  Skipping ${path.basename(filePath)} (already has a napkin block)`);
+    return;
+  }
+
   console.log(`Processing: ${path.basename(filePath)}...`);
 
   try {
@@ -69,7 +57,7 @@ async function processFile(filePath) {
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content }
         ],
-        temperature: 0.1 // Low temperature for high fidelity/consistency
+        temperature: 0.3 // Slightly higher temp so the model actually inserts a block
       })
     });
 
