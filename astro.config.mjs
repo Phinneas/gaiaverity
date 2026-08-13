@@ -5,6 +5,9 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
 import { unified } from '@astrojs/markdown-remark';
+import { loadEnv } from 'vite';
+
+const env = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), '');
 
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 
@@ -25,7 +28,7 @@ export default defineConfig({
   },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkReadingTime, remarkNapkin],
+      remarkPlugins: [remarkReadingTime, [remarkNapkin, { apiKey: env.NAPKIN_API_KEY || process.env.NAPKIN_API_KEY || env.NAPKIN_KEY }]],
       rehypePlugins: [rehypeImageNativeLazyLoading],
     }),
   },

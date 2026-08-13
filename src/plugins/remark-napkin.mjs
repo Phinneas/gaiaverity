@@ -3,7 +3,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { visit } from 'unist-util-visit';
 
-export function remarkNapkin() {
+export function remarkNapkin(options = {}) {
   return async (tree) => {
     const nodesToProcess = [];
 
@@ -28,7 +28,7 @@ export function remarkNapkin() {
       }
 
       const allNapkinKeys = Object.keys(process.env).filter(k => k.toLowerCase().includes('napkin'));
-      const apiKey = process.env.NAPKIN_API_KEY || process.env.NAPKIN_KEY || process.env.VITE_NAPKIN_API_KEY;
+      const apiKey = options.apiKey || process.env.NAPKIN_API_KEY || process.env.NAPKIN_KEY || process.env.VITE_NAPKIN_API_KEY;
 
       // If the image doesn't exist locally, we hit the API
       if (!fs.existsSync(filepath)) {
