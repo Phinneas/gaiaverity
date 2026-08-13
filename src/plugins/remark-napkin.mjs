@@ -65,8 +65,8 @@ export function remarkNapkin(options = {}) {
         console.log(`[Napkin] Generating diagram for block (key from ${apiKeySource}, length ${apiKey.length})...`);
         
         try {
-          // Note: If the Napkin API endpoint or payload structure is different, it will throw here.
-          const response = await fetch('https://api.napkin.ai/v1/diagrams', {
+          // STEP 1: Create the visual request
+          const createResponse = await fetch('https://api.napkin.ai/v1/visual', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -74,22 +74,79 @@ export function remarkNapkin(options = {}) {
             },
             body: JSON.stringify({
               text: text,
-              style: 'mindmap',
-              // Force GaiaVerity brand colors onto the diagram
-              theme: {
-                background: "#f7f5f0",
-                text: "#23312b",
-                accent: "#c98633"
-              }
+              style: 'vibrant',
+              format: 'png',
+              language: 'en'
             })
           });
 
-          if (!response.ok) {
-            const errText = await response.text().catch(() => '');
-            throw new Error(`Napkin API error: ${response.status} ${response.statusText} - ${errText}`);
+          if (!createResponse.ok) {
+            const errText = await createResponse.text().catch(() => '');
+            throw new Error(`Napkin API create error: ${createResponse.status} ${createResponse.statusText} - ${errText}`);
           }
 
-          const imageBuffer = await response.arrayBuffer();
+          const createData = await createResponse.json();
+          const requestId = createData.id;
+
+          if (!requestId) {
+            throw new Error("No request ID returned from Napkin API");
+          }
+
+          console.log(`[Napkin] Request created (ID: ${requestId}). Polling for status...`);
+
+          // STEP 2: Poll for completion
+          let isComplete = false;
+          let fileUrl = null;
+          let attempts = 0;
+          const maxAttempts = 30; // Max 1 minute at 2s intervals
+
+          while (!isComplete && attempts < maxAttempts) {
+            await new Promise(r => setTimeout(r, 2000));
+            attempts++;
+            
+            const statusResponse = await fetch(`https://api.napkin.ai/v1/visual/${requestId}/status`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${apiKey}`
+              }
+            });
+
+            if (!statusResponse.ok) {
+              const errText = await statusResponse.text().catch(() => '');
+              throw new Error(`Napkin API status error: ${statusResponse.status} ${statusResponse.statusText} - ${errText}`);
+            }
+
+            const statusData = await statusResponse.json();
+            
+            if (statusData.status === 'completed') {
+              isComplete = true;
+              if (statusData.generated_files && statusData.generated_files.length > 0) {
+                fileUrl = statusData.generated_files[0].url;
+              } else {
+                throw new Error("Napkin reported completion but returned no files.");
+              }
+            } else if (statusData.status === 'failed') {
+              throw new Error(`Napkin reported failure: ${statusData.error || 'Unknown error'}`);
+            }
+          }
+
+          if (!isComplete) {
+            throw new Error("Napkin generation timed out after 60 seconds.");
+          }
+
+          // STEP 3: Download the generated file
+          console.log(`[Napkin] Generation complete. Downloading from ${fileUrl}...`);
+          const fileResponse = await fetch(fileUrl, {
+            headers: {
+               'Authorization': `Bearer ${apiKey}`
+            }
+          });
+
+          if (!fileResponse.ok) {
+             throw new Error(`Failed to download image: ${fileResponse.status}`);
+          }
+
+          const imageBuffer = await fileResponse.arrayBuffer();
           fs.writeFileSync(filepath, Buffer.from(imageBuffer));
           console.log(`[Napkin] Successfully saved diagram to ${filepath}`);
         } catch (error) {
