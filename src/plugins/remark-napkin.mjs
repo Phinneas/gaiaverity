@@ -73,7 +73,7 @@ export function remarkNapkin(options = {}) {
               'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-              text: text,
+              content: text,
               style: 'vibrant',
               format: 'png',
               language: 'en'
