@@ -9,6 +9,7 @@ import { unified } from '@astrojs/markdown-remark';
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 
 import { remarkReadingTime } from './src/utils/all.js';
+import { remarkNapkin } from './src/plugins/remark-napkin.mjs';
 
 export default defineConfig({
   site: 'https://www.gaiaverity.com',
@@ -24,7 +25,7 @@ export default defineConfig({
   },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkReadingTime],
+      remarkPlugins: [remarkReadingTime, remarkNapkin],
       rehypePlugins: [rehypeImageNativeLazyLoading],
     }),
   },
