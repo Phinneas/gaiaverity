@@ -25,7 +25,7 @@ export default defineConfig({
   },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkReadingTime, [remarkNapkin, { apiKey: process.env.NAPKIN_API_KEY || process.env.NAPKIN_KEY }]],
+      remarkPlugins: [remarkReadingTime, [remarkNapkin, { apiKey: process.env.NAPKIN_API_TOKEN || process.env.NAPKIN_API_KEY || process.env.NAPKIN_KEY }]],
       rehypePlugins: [rehypeImageNativeLazyLoading],
     }),
   },

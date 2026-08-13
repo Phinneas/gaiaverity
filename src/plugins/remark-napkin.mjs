@@ -28,21 +28,41 @@ export function remarkNapkin(options = {}) {
       }
 
       const allNapkinKeys = Object.keys(process.env).filter(k => k.toLowerCase().includes('napkin'));
-      const apiKey = options.apiKey || process.env.NAPKIN_API_KEY || process.env.NAPKIN_KEY || process.env.VITE_NAPKIN_API_KEY;
+      // Resolve the key from an explicit option first, then a list of env var names.
+      // NAPKIN_API_TOKEN is the preferred name; NAPKIN_API_KEY/NAPKIN_KEY are kept for back-compat.
+      const keySources = ['NAPKIN_API_TOKEN', 'NAPKIN_API_KEY', 'NAPKIN_KEY', 'VITE_NAPKIN_API_KEY'];
+      let apiKey = options.apiKey;
+      let apiKeySource = apiKey ? 'options.apiKey' : null;
+      if (!apiKey) {
+        for (const name of keySources) {
+          const val = process.env[name];
+          if (val && val.trim()) {
+            apiKey = val;
+            apiKeySource = name;
+            break;
+          }
+        }
+      }
 
       // If the image doesn't exist locally, we hit the API
       if (!fs.existsSync(filepath)) {
         if (!apiKey) {
-          console.warn(`[Napkin] Missing NAPKIN_API_KEY. Skipping diagram generation for hash ${hash}. Found keys: ${allNapkinKeys.join(', ')}`);
+          // Report which napkin-related vars exist and whether each is set or empty,
+          // so the build-time vs runtime scope problem is easy to diagnose.
+          const keyStatus = allNapkinKeys.length
+            ? allNapkinKeys.map(k => `${k}=${process.env[k] ? 'set' : 'empty'}`).join(', ')
+            : 'none';
+          console.warn(`[Napkin] Missing Napkin API key. Skipping diagram generation for hash ${hash}. Found keys: ${keyStatus}`);
           // Render a placeholder warning block in development if the key is missing
           parent.children[index] = {
             type: 'html',
-            value: `<div class="p-6 bg-gaia-paper border border-gaia-border rounded-xl my-6 text-center text-gaia-soil font-sans"><strong>Napkin Diagram Placeholder</strong><br/><span class="text-sm">API Key not found in build environment. (Found related keys: ${allNapkinKeys.join(', ') || 'none'})</span></div>`
+            value: `<div class="p-6 bg-gaia-paper border border-gaia-border rounded-xl my-6 text-center text-gaia-soil font-sans"><strong>Napkin Diagram Placeholder</strong><br/><span class="text-sm">API Key not found in build environment. (Found related keys: ${keyStatus})</span></div>`
           };
           continue;
         }
 
-        console.log(`[Napkin] Generating diagram for block...`);
+        // Log the resolved source name and key length only; never log the secret value.
+        console.log(`[Napkin] Generating diagram for block (key from ${apiKeySource}, length ${apiKey.length})...`);
         
         try {
           // This models the expected standard API call for text-to-image/diagram services.
