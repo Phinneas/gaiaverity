@@ -26,7 +26,7 @@ const category = foundCategory || {
   color: "blue"
 };
 
-const postSlug = post.slug || '';
+const postSlug = post.slug || post.id || post.data?.slug || '';
 const postImage = post.data?.image || '';
 const isExternalImage = typeof postImage === 'string' && (postImage.includes('unsplash.com') || postImage.includes('gaiaverity.com'));
 const postTitle = post.data?.title || 'Untitled';
