@@ -111,6 +111,7 @@ const VALID_BLOG_SLUGS = new Set([
   "fall-mushroom-management-for-healthy-lawns",
   "fall-mushroom-management",
   "fire-resistant-plants",
+  "fungus-gnats-yellow-sticky-traps",
   "garden-gnomes-cultural-history",
   "how-to-start-a-backyard-garden",
   "japanese-garden-ideas",
