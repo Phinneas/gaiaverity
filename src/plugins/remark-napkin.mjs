@@ -27,16 +27,17 @@ export function remarkNapkin() {
         fs.mkdirSync(publicDir, { recursive: true });
       }
 
-      const apiKey = process.env.NAPKIN_API_KEY;
+      const allNapkinKeys = Object.keys(process.env).filter(k => k.toLowerCase().includes('napkin'));
+      const apiKey = process.env.NAPKIN_API_KEY || process.env.NAPKIN_KEY || process.env.VITE_NAPKIN_API_KEY;
 
       // If the image doesn't exist locally, we hit the API
       if (!fs.existsSync(filepath)) {
         if (!apiKey) {
-          console.warn(`[Napkin] Missing NAPKIN_API_KEY. Skipping diagram generation for hash ${hash}.`);
+          console.warn(`[Napkin] Missing NAPKIN_API_KEY. Skipping diagram generation for hash ${hash}. Found keys: ${allNapkinKeys.join(', ')}`);
           // Render a placeholder warning block in development if the key is missing
           parent.children[index] = {
             type: 'html',
-            value: `<div class="p-6 bg-gaia-paper border border-gaia-border rounded-xl my-6 text-center text-gaia-soil font-sans"><strong>Napkin Diagram Placeholder</strong><br/><span class="text-sm">Provide NAPKIN_API_KEY to render this diagram during build.</span></div>`
+            value: `<div class="p-6 bg-gaia-paper border border-gaia-border rounded-xl my-6 text-center text-gaia-soil font-sans"><strong>Napkin Diagram Placeholder</strong><br/><span class="text-sm">API Key not found in build environment. (Found related keys: ${allNapkinKeys.join(', ') || 'none'})</span></div>`
           };
           continue;
         }
