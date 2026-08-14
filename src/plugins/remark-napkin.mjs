@@ -3,6 +3,22 @@ import path from 'path';
 import crypto from 'crypto';
 import { visit } from 'unist-util-visit';
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Napkin limits requests to ~10/second. Retry on 429 (and transient 5xx)
+// with exponential backoff so a batch build doesn't drop posts.
+async function fetchWithRetry(url, options, maxRetries = 6) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const res = await fetch(url, options);
+    if (res.status !== 429 && res.status < 500) return res;
+    const header = res.headers.get('retry-after');
+    const backoffMs = header ? parseInt(header, 10) * 1000 : 1000 * Math.pow(2, attempt);
+    console.warn(`[Napkin] Rate limited/transient (${res.status}), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})...`);
+    await sleep(backoffMs);
+  }
+  return fetch(url, options);
+}
+
 export function remarkNapkin(options = {}) {
   return async (tree) => {
     const nodesToProcess = [];
@@ -66,7 +82,7 @@ export function remarkNapkin(options = {}) {
         
         try {
           // STEP 1: Create the visual request
-          const createResponse = await fetch('https://api.napkin.ai/v1/visual', {
+          const createResponse = await fetchWithRetry('https://api.napkin.ai/v1/visual', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
