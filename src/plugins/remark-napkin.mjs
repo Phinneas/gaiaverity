@@ -11,8 +11,10 @@ async function fetchWithRetry(url, options, maxRetries = 6) {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     const res = await fetch(url, options);
     if (res.status !== 429 && res.status < 500) return res;
-    const header = res.headers.get('retry-after');
-    const backoffMs = header ? parseInt(header, 10) * 1000 : 1000 * Math.pow(2, attempt);
+    // Napkin often returns retry_after: 0; always wait at least ~1.5s so the
+    // 1-second rate-limit window actually resets before retrying.
+    const headerMs = (parseInt(res.headers.get('retry-after') || '0', 10) || 0) * 1000;
+    const backoffMs = Math.max(1500, headerMs, 1000 * Math.pow(2, attempt));
     console.warn(`[Napkin] Rate limited/transient (${res.status}), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})...`);
     await sleep(backoffMs);
   }
