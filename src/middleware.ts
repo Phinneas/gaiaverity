@@ -15,6 +15,7 @@ const REDIRECTS: Record<string, string> = {
 
   // ── Merged duplicate pages (301 to the survivor) ──────────────────────────
   "/blog/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
+  "/blog/are-lawn-mushrooms-poisonous/": "/blog/lawn-mushrooms-and-dogs/",
 
   // ── CMS root-level URLs → /blog/ canonical ─────────────────────────────────
   "/biodiverse-lawn-care/": "/blog/biodiverse-lawn-care/",
@@ -36,7 +37,7 @@ const REDIRECTS: Record<string, string> = {
   "/small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery/": "/blog/small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery/",
   "/fire-resistant-plants/": "/blog/fire-resistant-plants/",
   "/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
-  "/are-lawn-mushrooms-poisonous/": "/blog/are-lawn-mushrooms-poisonous/",
+  "/are-lawn-mushrooms-poisonous/": "/blog/lawn-mushrooms-and-dogs/",
   "/mushrooms-growing-in-lawn-identification/": "/blog/mushrooms-growing-in-lawn-identification/",
   "/fairy-ring-mushrooms/": "/blog/fairy-ring-mushrooms/",
   "/lawn-mushrooms-and-dogs/": "/blog/lawn-mushrooms-and-dogs/",
