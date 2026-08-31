@@ -13,6 +13,9 @@ const REDIRECTS: Record<string, string> = {
   "/garden-design-inspirations/": "/blog/",
   "/designing-small-backyard-gardens/": "/blog/small-backyard-garden-ideas/",
 
+  // ── Merged duplicate pages (301 to the survivor) ──────────────────────────
+  "/blog/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
+
   // ── CMS root-level URLs → /blog/ canonical ─────────────────────────────────
   "/biodiverse-lawn-care/": "/blog/biodiverse-lawn-care/",
   "/white-clover-lawn-alternative/": "/blog/white-clover-lawn-alternative/",
@@ -32,7 +35,7 @@ const REDIRECTS: Record<string, string> = {
   "/rain-garden-design/": "/blog/rain-garden-design/",
   "/small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery/": "/blog/small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery/",
   "/fire-resistant-plants/": "/blog/fire-resistant-plants/",
-  "/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-plants/",
+  "/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
   "/are-lawn-mushrooms-poisonous/": "/blog/are-lawn-mushrooms-poisonous/",
   "/mushrooms-growing-in-lawn-identification/": "/blog/mushrooms-growing-in-lawn-identification/",
   "/fairy-ring-mushrooms/": "/blog/fairy-ring-mushrooms/",
@@ -89,7 +92,9 @@ const GONE_SLUGS = new Set([
 ]);
 
 // ── Known valid blog slugs (from MDX content + CMS) ─────────────────────────
-// Used to return proper 404 for unknown slugs rather than a soft 404 (200)
+// Used to return proper 404 for unknown slugs rather than a soft 404 (200).
+// Note: merged/redirected slugs (e.g. best-drought-tolerant-plants) stay here
+// so their 301 in REDIRECTS fires before this 404 check.
 const VALID_BLOG_SLUGS = new Set([
   "are-lawn-mushrooms-poisonous",
   "backyard-garden-ideas",

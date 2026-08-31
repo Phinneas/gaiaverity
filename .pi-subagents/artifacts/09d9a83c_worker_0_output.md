@@ -1,0 +1,5 @@
+I have completed the humanizer loop for both files. Here is the summary of the changes:
+
+**Summary of changes:**
+- **`src/content/blog/backyard-garden-ideas.mdx`**: Removed AI tells such as em dashes, promotional language ("stunning", "breathtaking", "vibrant"), copula avoidance ("serves as", "offers"), and title-cased headings. Removed generic filler conclusions ("Your backyard transformation doesn't happen overnight...") and padded "rule of three" phrases. Rephrased sentences to be more direct and human-sounding while preserving all original facts, gardening advice, and frontmatter exactly.
+- **`src/content/blog/clay-garden-soil.mdx`**: Removed rhetorical openers and persuasive tropes (e.g., "uphill battle"). Converted title-cased headings to sentence case. Cleaned up disjointed faux-table text structures into natural lists and readable text to avoid AI formatting habits. Eliminated overly formal AI vocabulary and wordy filler while keeping all technical measurements, soil classifications, and frontmatter identical.
