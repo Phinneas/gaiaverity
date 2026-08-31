@@ -109,6 +109,7 @@ const VALID_BLOG_SLUGS = new Set([
   "clay-garden-soil",
   "climate-resilient-backyard-garden",
   "climate-resilient-garden",
+  "clover-lawn",
   "common-lawn-mushroom-types",
   "desert-plants-home-garden",
   "diy-fruit-fly-traps",
