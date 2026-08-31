@@ -119,6 +119,7 @@ const VALID_BLOG_SLUGS = new Set([
   "fire-resistant-plants",
   "fungus-gnats-yellow-sticky-traps",
   "garden-gnomes-cultural-history",
+  "how-to-improve-clay-soil",
   "how-to-start-a-backyard-garden",
   "japanese-garden-ideas",
   "lawn-alternatives",
