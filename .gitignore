@@ -22,3 +22,11 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 .wrangler/
+
+# Pi internal state
+.pi/
+.pi-subagents/
+
+# local scratch
+napkin-docs.html
+test-*.mjs
