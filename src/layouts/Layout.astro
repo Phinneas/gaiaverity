@@ -106,6 +106,12 @@ const makeTitle = title
       img {
         content-visibility: auto;
       }
+      /* Wide comparison tables scroll horizontally instead of overflowing on mobile */
+      .prose table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
     </style>
   </body>
 </html>
