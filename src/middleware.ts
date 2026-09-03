@@ -85,7 +85,7 @@ const REDIRECTS: Record<string, string> = {
   "/lawn-mushrooms-poisonous-dogs/": "/blog/lawn-mushrooms-poisonous-dogs/",
   "/mushrooms-after-rain-yard/": "/blog/mushrooms-after-rain-yard/",
   "/mushrooms-new-sod/": "/blog/mushrooms-new-sod/",
-  "/bee-lawn-guide/": "/blog/bee-lawn-guide/",
+  "/bee-lawn-guide/": "/blog/bee-lawn/",
   "/no-mow-lawn-guide/": "/blog/no-mow-lawn-guide/",
 };
 
@@ -113,6 +113,7 @@ const VALID_BLOG_SLUGS = new Set([
   "are-lawn-mushrooms-poisonous",
   "backyard-garden-ideas",
   "battery-powered-garden-tools",
+  "bee-lawn",
   "best-diy-fruit-fly-trap-methods",
   "best-drought-tolerant-ground-cover-plants",
   "best-drought-tolerant-plants",
