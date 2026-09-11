@@ -28,7 +28,7 @@ const category = foundCategory || {
 
 const postSlug = post.slug || post.id || post.data?.slug || '';
 const postImage = post.data?.image || '';
-const isExternalImage = typeof postImage === 'string' && (postImage.includes('unsplash.com') || postImage.includes('gaiaverity.com'));
+const isExternalImage = typeof postImage === 'string' && postImage.startsWith('http');
 const postTitle = post.data?.title || 'Untitled';
 const postExcerpt = post.data?.excerpt || '';
 const postDate = post.data?.publishDate || new Date().toISOString();

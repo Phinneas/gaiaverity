@@ -18,10 +18,12 @@ export async function getStaticPaths() {
   for (const post of mdxPosts) {
     const { Content } = await render(post);
     const slug = post.slug || post.id;
-    const authorSlug = post.data.author;
-    const author = authors.find((item) => item.slug === authorSlug) || {
-      name: post.data.author || "Admin",
-      slug: "admin",
+    const authorName = post.data.author || "Admin";
+    const author = authors.find(
+      (item) => item.slug === authorName || item.name.toLowerCase() === authorName.toLowerCase()
+    ) || {
+      name: authorName,
+      slug: authorName.toLowerCase().replace(/\s+/g, "-"),
       image: "",
     };
     const categorySlug = (post.data.category || "general").toLowerCase();
@@ -42,6 +44,7 @@ export async function getStaticPaths() {
         category,
         tags: post.data.tags || [],
         Content,
+        noindex: post.data.noindex || false,
       },
     });
   }
@@ -58,6 +61,7 @@ interface Props {
   category: any;
   tags: string[];
   Content: any;
+  noindex: boolean;
 }
 
 const {
@@ -69,6 +73,7 @@ const {
   category,
   tags,
   Content,
+  noindex,
 } = Astro.props;
 
 const isExternalImage = typeof postImage === "string" && postImage.startsWith("http");
@@ -88,7 +93,8 @@ const articleSchema = {
 <Layout
   title={title}
   desc={excerpt}
-  ogimage={postImage}>
+  ogimage={postImage}
+  noindex={noindex}>
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
   <Container>
     <div class="max-w-screen-md mx-auto">
@@ -120,7 +126,7 @@ const articleSchema = {
 
           <div>
             <p class="text-gaia-ink">
-              {author.name}
+              <a href={`/about/${author.slug}/`} class="hover:text-gaia-gold transition-colors">{author.name}</a>
             </p>
             <div class="flex items-center space-x-2 text-sm">
               <time

@@ -21,6 +21,15 @@ async function fetchWithRetry(url, options, maxRetries = 6) {
   return fetch(url, options);
 }
 
+function diagramAlt(text) {
+  const first = (text || "").trim().split("\n")[0].toLowerCase();
+  if (first.includes("circular")) return "Circular flowchart diagram";
+  if (first.includes("flowchart")) return "Flowchart diagram";
+  if (first.includes("mind map")) return "Mind map diagram";
+  if (first.includes("chart")) return "Chart diagram";
+  return "Diagram";
+}
+
 export function remarkNapkin(options = {}) {
   return async (tree) => {
     const nodesToProcess = [];
@@ -180,7 +189,7 @@ export function remarkNapkin(options = {}) {
       // Replace the Markdown code block with standard HTML pointing to the static image
       parent.children[index] = {
         type: 'html',
-        value: `<img src="/diagrams/${filename}" alt="${text.replace(/"/g, '&quot;').replace(/\n/g, ' ')}" class="w-full h-auto rounded-3xl my-10" style="border: 1px solid rgba(128,190,164,0.5);" loading="lazy" />`
+        value: `<img src="/diagrams/${filename}" alt="${diagramAlt(text)}" class="w-full h-auto rounded-3xl my-10" style="border: 1px solid rgba(128,190,164,0.5);" loading="lazy" />`
       };
     }
   };

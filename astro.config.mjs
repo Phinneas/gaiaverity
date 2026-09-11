@@ -21,7 +21,7 @@ export default defineConfig({
     auto: false,
   },
   image: {
-    domains: ['pub-d552d0f3145d4a05b526e561d625b49b.r2.dev', 'images.unsplash.com'],
+    domains: ['pub-d552d0f3145d4a05b526e561d625b49b.r2.dev', 'images.unsplash.com', 'images.pexels.com'],
   },
   markdown: {
     processor: unified({

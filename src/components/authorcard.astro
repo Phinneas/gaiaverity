@@ -23,9 +23,9 @@ const { author } = Astro.props;
     </div>
     <div>
       <div>
-        <p class="text-lg font-medium text-gray-800 dark:text-gray-300">
+        <a href={`/about/${author.slug}/`} class="text-lg font-medium text-gray-800 dark:text-gray-300 hover:text-gaia-mid transition-colors">
           About {author.name}
-        </p>
+        </a>
       </div>
       <div class="mt-3">
         {author.bio && <p>{author.bio}</p>}

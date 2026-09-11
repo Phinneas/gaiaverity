@@ -54,44 +54,50 @@ const makeTitle = title
         },
       }}
     />
-    <!-- LinkStorm link placement code -->
-    <script
-      defer
-      src="https://linkstorm.io/linkstorm_site_linker.js?projectId=3642&websiteId=3643"
-    ></script>
-
-    <!-- Plausible Analytics -->
-    <script
-      defer
-      data-domain="gaiaverity.com"
-      src="https://plausible-production.up.railway.app/js/script.js"></script>
+    <!-- Consent-gated analytics & advertising -->
     <script is:inline>
-      window.plausible =
-        window.plausible ||
-        function () {
-          (window.plausible.q = window.plausible.q || []).push(arguments);
-        };
-    </script>
-
-    <!-- Matomo -->
-    <script is:inline>
-      var _paq = (window._paq = window._paq || []);
-      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(["trackPageView"]);
-      _paq.push(["enableLinkTracking"]);
       (function () {
-        var u = "//complex-honeybee.pikapod.net/";
-        _paq.push(["setTrackerUrl", u + "matomo.php"]);
-        _paq.push(["setSiteId", "1"]);
-        var d = document,
-          g = d.createElement("script"),
-          s = d.getElementsByTagName("script")[0];
-        g.async = true;
-        g.src = u + "matomo.js";
-        s.parentNode.insertBefore(g, s);
+        var CONSENT_KEY = "gaiaverity-consent";
+        function readConsent() {
+          try { return JSON.parse(localStorage.getItem(CONSENT_KEY) || "null"); }
+          catch (e) { return null; }
+        }
+        function inject(src, attrs) {
+          var s = document.createElement("script");
+          if (attrs) { for (var k in attrs) { if (attrs[k] != null) s.setAttribute(k, attrs[k]); } }
+          s.async = true;
+          s.src = src;
+          document.head.appendChild(s);
+        }
+        window.__gaiaConsent = readConsent() || { analytics: false, ads: false };
+
+        window.__gaiaLoadAnalytics = function () {
+          if (window.__gaiaAnalyticsLoaded) return;
+          window.__gaiaAnalyticsLoaded = true;
+          // Plausible
+          inject("https://plausible-production.up.railway.app/js/script.js", { "data-domain": "gaiaverity.com" });
+          // Matomo
+          var _paq = (window._paq = window._paq || []);
+          _paq.push(["trackPageView"]);
+          _paq.push(["enableLinkTracking"]);
+          var u = "//complex-honeybee.pikapod.net/";
+          _paq.push(["setTrackerUrl", u + "matomo.php"]);
+          _paq.push(["setSiteId", "1"]);
+          inject(u + "matomo.js", {});
+          // LinkStorm
+          inject("https://linkstorm.io/linkstorm_site_linker.js?projectId=3642&websiteId=3643", {});
+        };
+
+        window.__gaiaLoadAds = function () {
+          if (window.__gaiaAdsLoaded) return;
+          window.__gaiaAdsLoaded = true;
+          inject("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5424097145643842", { crossorigin: "anonymous" });
+        };
+
+        if (window.__gaiaConsent.analytics) window.__gaiaLoadAnalytics();
+        if (window.__gaiaConsent.ads) window.__gaiaLoadAds();
       })();
     </script>
-    <!-- End Matomo Code -->
     <slot name="head" />
   </head>
   <body class="bg-white">
@@ -113,5 +119,81 @@ const makeTitle = title
         -webkit-overflow-scrolling: touch;
       }
     </style>
+
+    <!-- Cookie consent banner -->
+    <div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:1000; background:#23312b; color:#f7f5f0; padding:20px 24px; box-shadow:0 -4px 20px rgba(0,0,0,0.18);">
+      <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
+        <p class="font-sans" style="font-size:14px; line-height:1.55; margin:0; flex:1 1 320px;">
+          We use cookies to personalize ads and analyze site traffic.
+          <a href="/privacy-policy/" style="color:#80bea4; text-decoration:underline;">Learn more</a>.
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <div id="cookie-preferences" style="display:none; gap:14px; align-items:center; font-size:13px;">
+            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="consent-analytics" /> Analytics</label>
+            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="consent-ads" /> Advertising</label>
+          </div>
+          <button id="cookie-accept" class="font-sans" style="background:#c98633; color:#23312b; border:none; border-radius:999px; padding:10px 22px; font-size:14px; font-weight:600; cursor:pointer;">Accept all</button>
+          <button id="cookie-customize" class="font-sans" style="background:transparent; color:#f7f5f0; border:1px solid #80bea4; border-radius:999px; padding:9px 18px; font-size:14px; font-weight:600; cursor:pointer;">Customize</button>
+          <button id="cookie-save" class="font-sans" style="display:none; background:#80bea4; color:#23312b; border:none; border-radius:999px; padding:10px 22px; font-size:14px; font-weight:600; cursor:pointer;">Save preferences</button>
+          <button id="cookie-reject" class="font-sans" style="background:transparent; color:#f7f5f0; border:none; padding:9px 10px; font-size:13px; cursor:pointer; text-decoration:underline;">Reject non-essential</button>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var CONSENT_KEY = "gaiaverity-consent";
+        var banner = document.getElementById("cookie-banner");
+        var acceptBtn = document.getElementById("cookie-accept");
+        var customizeBtn = document.getElementById("cookie-customize");
+        var saveBtn = document.getElementById("cookie-save");
+        var rejectBtn = document.getElementById("cookie-reject");
+        var prefs = document.getElementById("cookie-preferences");
+        var analyticsCb = document.getElementById("consent-analytics");
+        var adsCb = document.getElementById("consent-ads");
+
+        function readConsent() {
+          try { return JSON.parse(localStorage.getItem(CONSENT_KEY) || "null"); }
+          catch (e) { return null; }
+        }
+        function writeConsent(c) {
+          localStorage.setItem(CONSENT_KEY, JSON.stringify(c));
+          window.__gaiaConsent = c;
+        }
+        function applyConsent(c) {
+          if (c.analytics && window.__gaiaLoadAnalytics) window.__gaiaLoadAnalytics();
+          if (c.ads && window.__gaiaLoadAds) window.__gaiaLoadAds();
+        }
+        function hide() { banner.style.display = "none"; }
+
+        var existing = readConsent();
+        if (existing) {
+          hide();
+          applyConsent(existing);
+        } else {
+          banner.style.display = "block";
+        }
+
+        acceptBtn.addEventListener("click", function () {
+          var c = { analytics: true, ads: true };
+          writeConsent(c); applyConsent(c); hide();
+        });
+        customizeBtn.addEventListener("click", function () {
+          prefs.style.display = "flex";
+          customizeBtn.style.display = "none";
+          rejectBtn.style.display = "none";
+          acceptBtn.style.display = "none";
+          saveBtn.style.display = "inline-block";
+        });
+        saveBtn.addEventListener("click", function () {
+          var c = { analytics: analyticsCb.checked, ads: adsCb.checked };
+          writeConsent(c); applyConsent(c); hide();
+        });
+        rejectBtn.addEventListener("click", function () {
+          var c = { analytics: false, ads: false };
+          writeConsent(c); hide();
+        });
+      })();
+    </script>
   </body>
 </html>

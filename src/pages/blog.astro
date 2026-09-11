@@ -6,7 +6,7 @@ import Postlist from "@/components/postlist.astro";
 import Layout from "@/layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-const allPostsRaw = await getCollection("blog", ({ data }) => data.draft !== true);
+const allPostsRaw = await getCollection("blog", ({ data }) => data.draft !== true && !data.noindex);
 const latestPosts = allPostsRaw.sort((a, b) => new Date(b.data.publishDate || 0).valueOf() - new Date(a.data.publishDate || 0).valueOf());
 ---
 
