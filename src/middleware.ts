@@ -29,6 +29,7 @@ const REDIRECTS: Record<string, string> = {
   "/blog/mushrooms-after-rain/": "/blog/lawn-mushrooms/",
   "/blog/mushrooms-lawn-why-they-belong/": "/blog/lawn-mushrooms/",
   "/blog/mushrooms-in-lawn/": "/blog/lawn-mushrooms/",
+  "/blog/rain-garden-design-2/": "/blog/rain-garden-design/",
 
   // ── CMS root-level URLs → /blog/ canonical ─────────────────────────────────
   "/biodiverse-lawn-care/": "/blog/biodiverse-lawn-care/",
@@ -66,7 +67,7 @@ const REDIRECTS: Record<string, string> = {
   "/best-drought-tolerant-ground-cover-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
   "/best-fire-resistant-plants/": "/blog/best-fire-resistant-plants/",
   "/organic-lawn-care-guide/": "/blog/organic-lawn-care-guide/",
-  "/rain-garden-design-2/": "/blog/rain-garden-design-2/",
+  "/rain-garden-design-2/": "/blog/rain-garden-design/",
   "/best-organic-lawn-fertilizer-guide/": "/blog/best-organic-lawn-fertilizer-guide/",
   "/garden-gnomes-cultural-history/": "/blog/garden-gnomes-cultural-history/",
   "/backyard-garden-ideas/": "/blog/backyard-garden-ideas/",

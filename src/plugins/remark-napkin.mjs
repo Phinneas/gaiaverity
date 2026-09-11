@@ -22,12 +22,23 @@ async function fetchWithRetry(url, options, maxRetries = 6) {
 }
 
 function diagramAlt(text) {
-  const first = (text || "").trim().split("\n")[0].toLowerCase();
-  if (first.includes("circular")) return "Circular flowchart diagram";
-  if (first.includes("flowchart")) return "Flowchart diagram";
-  if (first.includes("mind map")) return "Mind map diagram";
-  if (first.includes("chart")) return "Chart diagram";
-  return "Diagram";
+  const lines = (text || "").trim().split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return "Diagram";
+  const first = lines[0].toLowerCase();
+  let type = "Diagram";
+  if (first.includes("circular")) type = "Circular flowchart";
+  else if (first.includes("flowchart")) type = "Flowchart";
+  else if (first.includes("mind map")) type = "Mind map";
+  else if (first.includes("chart")) type = "Chart";
+
+  const content = lines
+    .slice(1)
+    .map((l) => l.replace(/^[-*•]\s*/, "").replace(/->/g, " → ").replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .join(" · ");
+
+  const alt = content ? `${type} showing ${content}` : `${type} diagram`;
+  return alt.length > 160 ? alt.slice(0, 157) + "…" : alt;
 }
 
 export function remarkNapkin(options = {}) {

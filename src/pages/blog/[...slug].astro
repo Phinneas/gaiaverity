@@ -147,7 +147,7 @@ const articleSchema = {
       {isExternalImage ? (
         <img
           src={postImage}
-          alt="Thumbnail"
+          alt={title}
           loading="eager"
           class="w-full object-cover"
         />
@@ -156,7 +156,7 @@ const articleSchema = {
           src={postImage}
           widths={[200, 400, 800, 1200]}
           sizes="(max-width: 640px) 90vw, 480px"
-          alt="Thumbnail"
+          alt={title}
           loading="eager"
           class="w-full object-cover"
         />
