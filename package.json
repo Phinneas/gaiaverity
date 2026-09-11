@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/check-hero-images.mjs",
     "build": "astro build",
+    "check:images": "node scripts/check-hero-images.mjs",
+    "pipeline": "node scripts/pipeline.mjs",
+    "de-dash": "node scripts/de-dash.mjs",
     "preview": "astro preview",
     "deploy": "wrangler deploy",
     "astro": "astro",
