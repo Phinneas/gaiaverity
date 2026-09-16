@@ -1,7 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 
-// 301 redirect map — migrated from public/_redirects (Cloudflare Pages format,
-// which is NOT processed by Workers). All rules must be maintained here now.
+// Redirects for matched Astro routes. Redirects for deleted prerendered routes
+// belong in public/_redirects so Cloudflare handles them before its 404 fallback.
 
 const REDIRECTS: Record<string, string> = {
   // ── Dead URLs (GSC 404s) ───────────────────────────────────────────────────
@@ -14,22 +14,7 @@ const REDIRECTS: Record<string, string> = {
   "/designing-small-backyard-gardens/": "/blog/small-backyard-garden-ideas/",
 
   // ── Merged duplicate pages (301 to the survivor) ──────────────────────────
-  "/blog/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
-  "/blog/are-lawn-mushrooms-poisonous/": "/blog/lawn-mushrooms-and-dogs/",
   "/blog/lawn-mushrooms-and-pets/": "/blog/lawn-mushrooms-and-dogs/",
-
-  // ── Lawn mushroom cluster consolidation (orphans → Core 1 / Core 2) ───────
-  "/blog/common-lawn-mushroom-types/": "/blog/lawn-mushrooms/",
-  "/blog/mushrooms-growing-in-lawn-identification/": "/blog/lawn-mushrooms/",
-  "/blog/white-mushrooms-in-lawn/": "/blog/lawn-mushrooms/",
-  "/blog/fairy-ring-mushrooms/": "/blog/lawn-mushrooms/",
-  "/blog/seasonal-mushroom-patterns-in-home-lawns/": "/blog/lawn-mushrooms/",
-  "/blog/fall-mushroom-management/": "/blog/lawn-mushrooms/",
-  "/blog/fall-mushroom-management-for-healthy-lawns/": "/blog/lawn-mushrooms/",
-  "/blog/mushrooms-after-rain/": "/blog/lawn-mushrooms/",
-  "/blog/mushrooms-lawn-why-they-belong/": "/blog/lawn-mushrooms/",
-  "/blog/mushrooms-in-lawn/": "/blog/lawn-mushrooms/",
-  "/blog/rain-garden-design-2/": "/blog/rain-garden-design/",
 
   // ── CMS root-level URLs → /blog/ canonical ─────────────────────────────────
   "/biodiverse-lawn-care/": "/blog/biodiverse-lawn-care/",
@@ -166,6 +151,7 @@ const VALID_BLOG_SLUGS = new Set([
   "tomato-companion-plants",
   "vertical-garden-ideas-small-spaces",
   "welcome-to-gaiaverity",
+  "what-is-sustainable-gardening",
   "when-to-prune-holly-bushes",
   "white-clover-lawn-alternative",
   "white-mushrooms-in-lawn",
