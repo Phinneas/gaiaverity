@@ -15,6 +15,12 @@ const blog = defineCollection({
       tags: z.array(z.string()),
       image: image().or(z.string()),
       publishDate: z.string().transform((str) => new Date(str)),
+      modifiedDate: z.string().transform((str) => new Date(str)).optional(),
+      faq: z.array(z.object({
+        question: z.string(),
+        answer: z.string(),
+      })).optional(),
+      hideFaqSection: z.boolean().optional(),
     }),
 });
 

@@ -118,6 +118,12 @@ const makeTitle = title
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
       }
+      .prose table:has(th:nth-child(4)) :is(th, td) {
+        min-width: 12rem;
+      }
+      .prose table:has(th:nth-child(4)) :is(th, td):first-child {
+        min-width: 6rem;
+      }
     </style>
 
     <!-- Cookie consent banner -->

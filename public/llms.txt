@@ -1,0 +1,36 @@
+# GaiaVerity
+
+> Practical, research-backed gardening and lawn care advice for home gardeners who want to work with their land, not against it.
+
+GaiaVerity is a gardening and sustainable living blog covering lawn care, soil health, native plants, organic methods, and backyard ecology. Content is written by Chester Beard, the site's founder, and focuses on actionable guidance backed by horticultural research — not marketing hype.
+
+## Key Topics
+
+- **Lawn mushrooms**: Identification, safety, removal methods, fairy rings, and whether they're harmful to pets and children
+- **Organic lawn care**: Composting, natural fertilization, mowing techniques, weed management without chemicals
+- **Soil health**: Clay soil amendments, no-dig gardening, composting, soil testing
+- **Lawn alternatives**: Clover lawns, moss lawns, bee lawns, wildflower meadows, drought-tolerant ground covers
+- **Native and sustainable gardening**: Pollinator gardens, native plants, rain gardens, climate-resilient landscapes
+- **Small-space gardening**: Vertical gardens, container planting, balcony and patio growing
+- **Pest and disease management**: Organic weed control, fruit fly traps, fungus gnat management
+
+## Content Format
+
+All articles are long-form guides (1,000–3,000 words) with:
+- Clear definitions and direct answers in opening paragraphs
+- Comparison tables where relevant
+- Step-by-step instructions for how-to topics
+- Expert author attribution
+- Publication and update dates
+
+## Pages
+
+- Home: https://www.gaiaverity.com/
+- Blog: https://www.gaiaverity.com/blog/
+- About the author: https://www.gaiaverity.com/about/chester-beard/
+- Planters catalog: https://www.gaiaverity.com/planters/
+
+## Contact
+
+- Website: https://www.gaiaverity.com
+- Contact page: https://www.gaiaverity.com/contact/

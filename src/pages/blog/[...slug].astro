@@ -40,9 +40,12 @@ export async function getStaticPaths() {
         excerpt: post.data.excerpt,
         postImage: post.data.image || "",
         publishDate: post.data.publishDate,
+        modifiedDate: post.data.modifiedDate || undefined,
         author,
         category,
         tags: post.data.tags || [],
+        faq: post.data.faq || [],
+        hideFaqSection: post.data.hideFaqSection || false,
         Content,
         noindex: post.data.noindex || false,
       },
@@ -57,9 +60,12 @@ interface Props {
   excerpt: string;
   postImage: any;
   publishDate: any;
+  modifiedDate?: Date;
   author: any;
   category: any;
   tags: string[];
+  faq: { question: string; answer: string }[];
+  hideFaqSection: boolean;
   Content: any;
   noindex: boolean;
 }
@@ -69,25 +75,56 @@ const {
   excerpt,
   postImage,
   publishDate,
+  modifiedDate,
   author,
   category,
   tags,
+  faq,
+  hideFaqSection,
   Content,
   noindex,
 } = Astro.props;
 
 const isExternalImage = typeof postImage === "string" && postImage.startsWith("http");
 
-const articleSchema = {
+const displayDate = modifiedDate || publishDate;
+const publishISO = publishDate ? new Date(publishDate).toISOString() : undefined;
+const modifiedISO = modifiedDate ? new Date(modifiedDate).toISOString() : publishISO;
+
+const schemas: Record<string, any>[] = [{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: title,
   description: excerpt,
-  datePublished: publishDate ? new Date(publishDate).toISOString() : undefined,
-  author: { "@type": "Person", name: author.name },
-  publisher: { "@type": "Organization", name: "GaiaVerity" },
+  datePublished: publishISO,
+  dateModified: modifiedISO,
+  author: {
+    "@type": "Person",
+    name: author.name,
+    url: `https://www.gaiaverity.com/about/${author.slug}/`,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "GaiaVerity",
+    url: "https://www.gaiaverity.com",
+  },
   ...(postImage ? { image: typeof postImage === "string" ? postImage : undefined } : {}),
-};
+}];
+
+if (faq && faq.length > 0) {
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item: { question: string; answer: string }) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  });
+}
 ---
 
 <Layout
@@ -95,7 +132,7 @@ const articleSchema = {
   desc={excerpt}
   ogimage={postImage}
   noindex={noindex}>
-  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)} slot="head" />
   <Container>
     <div class="max-w-screen-md mx-auto">
       <div class="text-center">
@@ -131,8 +168,8 @@ const articleSchema = {
             <div class="flex items-center space-x-2 text-sm">
               <time
                 class="text-gaia-ink/60"
-                datetime={publishDate}>
-                {getFormattedDate(publishDate)}
+                datetime={displayDate}>
+                {modifiedDate ? `Updated ${getFormattedDate(modifiedDate)}` : getFormattedDate(publishDate)}
               </time>
             </div>
           </div>
@@ -170,6 +207,20 @@ const articleSchema = {
         class="mx-auto my-3 prose prose-base prose-headings:text-gaia-ink prose-p:text-gaia-ink prose-li:text-gaia-ink prose-strong:text-gaia-ink prose-a:text-gaia-mid hover:prose-a:text-gaia-dark prose-blockquote:text-gaia-ink">
 
         <Content />
+
+        {faq && faq.length > 0 && !hideFaqSection && (
+          <section class="mt-10 pt-8 border-t border-gaia-border/30">
+            <h2 class="font-sans text-2xl font-semibold text-gaia-ink mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-6">
+              {faq.map((item: { question: string; answer: string }) => (
+                <div>
+                  <h3 class="font-sans text-lg font-semibold text-gaia-ink mb-2">{item.question}</h3>
+                  <p class="text-gaia-ink/80 leading-relaxed">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {tags && tags.length > 0 && (
           <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">

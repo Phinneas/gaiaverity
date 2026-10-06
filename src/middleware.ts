@@ -138,6 +138,7 @@ const VALID_BLOG_SLUGS = new Set([
   "no-dig-organic-gardening",
   "no-mow-may",
   "organic-lawn-care-guide",
+  "organic-lawn-care-season-by-season-program",
   "organic-weed-control-lawns",
   "rain-garden-design-2",
   "rain-garden-design",
