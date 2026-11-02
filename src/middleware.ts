@@ -64,7 +64,7 @@ const REDIRECTS: Record<string, string> = {
   "/vertical-garden-ideas-small-spaces/": "/blog/vertical-garden-ideas-small-spaces/",
   "/battery-powered-garden-tools/": "/blog/battery-powered-garden-tools/",
   "/native-plant-gardening-tips/": "/blog/native-plant-gardening-tips/",
-  "/mushrooms-in-lawn/": "/blog/lawn-mushrooms/",
+  "/mushrooms-in-lawn/": "/blog/mushrooms-in-lawn/",
   "/mushrooms-lawn-why-they-belong/": "/blog/lawn-mushrooms/",
   "/organic-weed-control-lawns/": "/blog/organic-weed-control-lawns/",
   "/white-mushrooms-in-lawn/": "/blog/lawn-mushrooms/",
