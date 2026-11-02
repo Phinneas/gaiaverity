@@ -1,2 +1,15 @@
 /blog/best-drought-tolerant-plants/ /blog/best-drought-tolerant-ground-cover-plants/ 301
 /blog/rain-garden-design-2/ /blog/rain-garden-design/ 301
+/blog/rain-garden-design-2 /blog/rain-garden-design/ 301
+
+# Trailing slash: 301 instead of the asset layer's default 307
+/blog /blog/ 301
+/archive /archive/ 301
+/about /about/ 301
+/contact /contact/ 301
+/privacy-policy /privacy-policy/ 301
+/terms /terms/ 301
+/planters /planters/ 301
+/blog/:slug /blog/:slug/ 301
+/planters/:slug /planters/:slug/ 301
+/about/:slug /about/:slug/ 301
