@@ -21,7 +21,7 @@ Add 301 rules to `public/_redirects` (edge-served, proven mechanism). Rejected a
 
 ### 1. `public/_redirects`
 
-Keep the 2 existing rules. Add 28 new 301 rules:
+Keep the existing rules. Add 27 new 301 rules (both trailing-slash variants = 54 lines). Note: `/rain-garden-design-2` (both variants) and slashless `/blog/:slug` handling were already added by commit `fc01eef`, so `/rain-garden-design-2` needs no new lines — its mapping below is already satisfied.
 
 | Source | Destination |
 |---|---|
