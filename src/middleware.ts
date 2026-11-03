@@ -118,8 +118,12 @@ const VALID_BLOG_SLUGS = new Set([
   "fall-mushroom-management-for-healthy-lawns",
   "fall-mushroom-management",
   "fire-resistant-plants",
+  "freeze-drying-jerky",
   "fungus-gnats-yellow-sticky-traps",
   "garden-gnomes-cultural-history",
+  "grass-alternatives-for-dogs",
+  "harvest-right-freeze-dryer-where-to-buy-and-what-it-costs",
+  "how-to-freeze-dry-food-at-home",
   "how-to-improve-clay-soil",
   "how-to-start-a-backyard-garden",
   "japanese-garden-ideas",
@@ -143,6 +147,7 @@ const VALID_BLOG_SLUGS = new Set([
   "rain-garden-design-2",
   "rain-garden-design",
   "replace-your-lawn-with-wildflowers",
+  "root-cellar-refrigerator",
   "seasonal-mushroom-patterns-in-home-lawns",
   "small-backyard-garden-ideas",
   "small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery",
@@ -194,6 +199,13 @@ function hasDeprecatedCategory(url: URL): boolean {
 export const onRequest = defineMiddleware((context, next) => {
   const url = context.url;
   const path = url.pathname;
+
+  // Force HTTPS — 301 http → https (mirrors Cloudflare "Always Use HTTPS")
+  if (url.protocol === "http:") {
+    const httpsUrl = new URL(url.toString());
+    httpsUrl.protocol = "https:";
+    return context.redirect(httpsUrl.toString(), 301);
+  }
 
   // Redirect apex domain → www (canonical consistency for SEO)
   if (url.hostname === "gaiaverity.com") {

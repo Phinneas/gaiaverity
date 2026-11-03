@@ -98,6 +98,14 @@ const makeTitle = title
         if (window.__gaiaConsent.ads) window.__gaiaLoadAds();
       })();
     </script>
+    <!-- Organization JSON-LD (site-wide) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "GaiaVerity",
+      url: "https://www.gaiaverity.com",
+      sameAs: ["https://www.pinterest.com/GaiaVerityGardens/"],
+    })} />
     <slot name="head" />
   </head>
   <body class="bg-white">

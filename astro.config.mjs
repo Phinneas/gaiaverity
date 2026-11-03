@@ -29,7 +29,9 @@ export default defineConfig({
       rehypePlugins: [rehypeImageNativeLazyLoading],
     }),
   },
-  integrations: [tailwind(), mdx(), sitemap()],
+  integrations: [tailwind(), mdx(), sitemap({
+    filter: (page) => !page.includes('/blog/welcome-to-gaiaverity'),
+  })],
   vite: {
     ssr: {
       external: ['reading-time', 'mdast-util-to-string'],
