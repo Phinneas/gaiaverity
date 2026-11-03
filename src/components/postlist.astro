@@ -105,7 +105,7 @@ const postDate = post.data?.publishDate || new Date().toISOString();
           )
         }
       </div>
-      <a href="https://www.linkedin.com/in/chester-beard/" target="_blank" rel="noopener noreferrer" class="text-sm hover:text-gaia-mid transition-colors">{author.name}</a>
+      <a href={`/about/${author.slug}/`} class="text-sm hover:text-gaia-mid transition-colors">{author.name}</a>
     </div>
     <span class="text-xs text-gray-300"> &bull;</span>
     <time class="text-sm" datetime={postDate}>
