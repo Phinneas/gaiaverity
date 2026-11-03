@@ -200,13 +200,6 @@ export const onRequest = defineMiddleware((context, next) => {
   const url = context.url;
   const path = url.pathname;
 
-  // Force HTTPS — 301 http → https (mirrors Cloudflare "Always Use HTTPS")
-  if (url.protocol === "http:") {
-    const httpsUrl = new URL(url.toString());
-    httpsUrl.protocol = "https:";
-    return context.redirect(httpsUrl.toString(), 301);
-  }
-
   // Redirect apex domain → www (canonical consistency for SEO)
   if (url.hostname === "gaiaverity.com") {
     const wwwUrl = new URL(url.toString());
