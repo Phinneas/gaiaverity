@@ -35,7 +35,7 @@ const REDIRECTS: Record<string, string> = {
   "/rain-garden-design/": "/blog/rain-garden-design/",
   "/small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery/": "/blog/small-space-vertical-garden-ideas-to-transform-your-balcony-or-wall-with-lush-greenery/",
   "/fire-resistant-plants/": "/blog/fire-resistant-plants/",
-  "/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-ground-cover-plants/",
+  "/best-drought-tolerant-plants/": "/blog/best-drought-tolerant-plants/",
   "/are-lawn-mushrooms-poisonous/": "/blog/lawn-mushrooms-and-dogs/",
   "/mushrooms-growing-in-lawn-identification/": "/blog/lawn-mushrooms/",
   "/fairy-ring-mushrooms/": "/blog/lawn-mushrooms/",
