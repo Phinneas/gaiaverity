@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-11-04T05:35:34.576Z",
+  "region": {
+    "label": "Pacific Northwest",
+    "bboxLat": "41.5,49.5",
+    "bboxLon": "-125.5,-116.0"
+  },
+  "sources": {
+    "gbif": "GBIF.org occurrence data, kingdom=Fungi, licences CC0_1_0 + CC_BY_4_0",
+    "noaa": "NOAA GHCN-Daily precipitation, station USW00024233 (Seattle-Tacoma KSEA), regional proxy"
+  },
+  "window": {
+    "startYear": 2015,
+    "endYear": 2024
+  },
+  "sightingsByMonth": {
+    "months": [
+      5064350,
+      4414995,
+      5529392,
+      7402374,
+      9090550,
+      6439262,
+      4948316,
+      4631934,
+      4892563,
+      4807288,
+      4108672,
+      4306658
+    ],
+    "total": 65821774
+  },
+  "daysAfterRain": {
+    "buckets": [
+      {
+        "label": "Same day",
+        "min": 0,
+        "max": 0,
+        "count": 5514
+      },
+      {
+        "label": "1 day",
+        "min": 1,
+        "max": 1,
+        "count": 956
+      },
+      {
+        "label": "2 days",
+        "min": 2,
+        "max": 2,
+        "count": 1231
+      },
+      {
+        "label": "3 days",
+        "min": 3,
+        "max": 3,
+        "count": 130
+      },
+      {
+        "label": "4–5 days",
+        "min": 4,
+        "max": 5,
+        "count": 846
+      },
+      {
+        "label": "6–9 days",
+        "min": 6,
+        "max": 9,
+        "count": 323
+      },
+      {
+        "label": "10+ days",
+        "min": 10,
+        "max": null,
+        "count": 0
+      }
+    ],
+    "matched": 9000,
+    "total": 9000,
+    "rainDays": 1235
+  }
+}

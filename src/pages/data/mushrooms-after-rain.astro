@@ -1,0 +1,190 @@
+---
+export const prerender = true;
+import Layout from "@/layouts/Layout.astro";
+import data from "@/data/mushroom-hub-data.json";
+
+const monthly = data.sightingsByMonth.months;
+const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const maxMonth = Math.max(...monthly);
+
+const dar = data.daysAfterRain.buckets;
+const maxDar = Math.max(...dar.map((b) => b.count));
+
+function fmt(n: number): string {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(0) + "k";
+  return String(n);
+}
+
+const posts = [
+  { slug: "lawn-mushrooms", title: "Lawn Mushroom Identification Guide" },
+  { slug: "mushrooms-after-rain", title: "Mushrooms After Rain" },
+  { slug: "mushrooms-in-lawn", title: "How to Get Rid of Mushrooms in Lawn Without Killing Your Soil" },
+  { slug: "mushrooms-lawn-why-they-belong", title: "Mushrooms in My Lawn and Why They Belong There" },
+  { slug: "mushrooms-growing-in-lawn-identification", title: "Mushrooms Growing in Lawn: Identification and Safety" },
+  { slug: "common-lawn-mushroom-types", title: "Common Lawn Mushroom Types" },
+  { slug: "white-mushrooms-in-lawn", title: "White Mushrooms in Lawn and What They Really Mean" },
+  { slug: "are-lawn-mushrooms-poisonous", title: "Are Lawn Mushrooms Poisonous?" },
+  { slug: "lawn-mushrooms-and-dogs", title: "Are Lawn Mushrooms Poisonous to Dogs?" },
+  { slug: "fairy-ring-mushrooms", title: "Fairy Ring Mushrooms" },
+  { slug: "fall-mushroom-management", title: "Fall Mushroom Management" },
+  { slug: "seasonal-mushroom-patterns-in-home-lawns", title: "Seasonal Mushroom Patterns in Home Lawns" },
+  { slug: "fall-mushroom-management-for-healthy-lawns", title: "Fall Mushroom Management for Healthy Lawns" },
+];
+
+const yearRange = `${data.window.startYear} to ${data.window.endYear}`;
+---
+
+<Layout
+  title="When Mushrooms Appear After Rain, by Region"
+  desc="A data look at fungi sightings in the Pacific Northwest, joined with rainfall, to see when mushrooms actually appear after rain.">
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section style="background:#eef4f0; padding:88px 24px 40px;">
+    <div style="max-width:760px; margin:0 auto;">
+      <p class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#c98633; margin-bottom:24px;">
+        Data Hub · Pacific Northwest · Pilot
+      </p>
+      <h1 class="font-sans" style="font-size:clamp(36px,6vw,60px); font-weight:700; line-height:1.05; letter-spacing:-0.03em; color:#23312b; margin-bottom:20px;">
+        When mushrooms<br/>appear after rain.
+      </h1>
+      <p class="font-serif" style="font-size:18px; line-height:1.75; color:#5c7962; max-width:560px;">
+        I joined fungi sightings from GBIF with rainfall from NOAA to see the real pattern. Not a guess, not a rule of thumb. The data, as it stands.
+      </p>
+      <div class="font-sans" style="margin-top:28px; font-size:13px; color:#5c7962; display:flex; flex-wrap:wrap; gap:8px;">
+        <span style="background:#f7f5f0; border:1px solid #d8e5dc; border-radius:999px; padding:6px 14px;">{data.region.label}</span>
+        <span style="background:#f7f5f0; border:1px solid #d8e5dc; border-radius:999px; padding:6px 14px;">{yearRange}</span>
+        <span style="background:#f7f5f0; border:1px solid #d8e5dc; border-radius:999px; padding:6px 14px;">{fmt(data.sightingsByMonth.total)} sightings</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Chart 1: sightings by month ──────────────────── -->
+  <section style="background:#f7f5f0; padding:56px 24px;">
+    <div style="max-width:760px; margin:0 auto;">
+      <h2 class="font-sans" style="font-size:24px; font-weight:600; color:#23312b; margin-bottom:8px;">Sightings by month</h2>
+      <p class="font-serif" style="font-size:15px; line-height:1.7; color:#5c7962; margin-bottom:28px;">
+        Recorded fungi sightings in the Pacific Northwest, {yearRange}, averaged across those years.
+      </p>
+
+      <svg viewBox="0 0 720 300" role="img" aria-label="Bar chart of fungi sightings by month" style="width:100%; height:auto; display:block;">
+        {
+          monthly.map((v, i) => {
+            const h = (v / maxMonth) * 220;
+            const bw = 46;
+            const gap = 14;
+            const x = 20 + i * (bw + gap);
+            const y = 250 - h;
+            const peak = v === maxMonth;
+            return (
+              <g>
+                <rect x={x} y={y} width={bw} height={h} rx="4" fill={peak ? "#c98633" : "#5c7962"} opacity={peak ? 1 : 0.85} />
+                <text x={x + bw / 2} y={y - 8} text-anchor="middle" class="font-sans" font-size="11" fill="#5c7962" font-weight={peak ? 700 : 400}>{fmt(v)}</text>
+                <text x={x + bw / 2} y={272} text-anchor="middle" class="font-sans" font-size="12" fill="#23312b">{monthLabels[i]}</text>
+              </g>
+            );
+          })
+        }
+      </svg>
+      <p class="font-serif" style="font-size:13px; line-height:1.6; color:#80bea4; margin-top:12px;">
+        Peak in May. A smaller shoulder in late fall. Read the interpretation below before you draw conclusions.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Chart 2: days after rain ─────────────────────── -->
+  <section style="background:#f7f5f0; padding:32px 24px 56px;">
+    <div style="max-width:760px; margin:0 auto;">
+      <h2 class="font-sans" style="font-size:24px; font-weight:600; color:#23312b; margin-bottom:8px;">Sightings by days since rain</h2>
+      <p class="font-serif" style="font-size:15px; line-height:1.7; color:#5c7962; margin-bottom:28px;">
+        For each sighting, how many days had passed since the last measurable rain at Seattle-Tacoma (the regional rainfall proxy).
+      </p>
+
+      <svg viewBox="0 0 720 300" role="img" aria-label="Bar chart of fungi sightings by days since rain" style="width:100%; height:auto; display:block;">
+        {
+          dar.map((b, i) => {
+            const h = (b.count / maxDar) * 220;
+            const bw = 82;
+            const gap = 16;
+            const x = 20 + i * (bw + gap);
+            const y = 250 - h;
+            const peak = b.count === maxDar;
+            return (
+              <g>
+                <rect x={x} y={y} width={bw} height={h} rx="4" fill={peak ? "#c98633" : "#5c7962"} opacity={peak ? 1 : 0.85} />
+                <text x={x + bw / 2} y={y - 8} text-anchor="middle" class="font-sans" font-size="11" fill="#5c7962" font-weight={peak ? 700 : 400}>{b.count}</text>
+                <text x={x + bw / 2} y={272} text-anchor="middle" class="font-sans" font-size="12" fill="#23312b">{b.label}</text>
+              </g>
+            );
+          })
+        }
+      </svg>
+      <p class="font-serif" style="font-size:13px; line-height:1.6; color:#80bea4; margin-top:12px;">
+        {fmt(dar[0].count)} of {fmt(data.daysAfterRain.total)} sampled sightings landed on the same day it rained. The sample is not random; see "how this was made".
+      </p>
+    </div>
+  </section>
+
+  <!-- ── My position ──────────────────────────────────── -->
+  <section style="background:#23312b; padding:64px 24px;">
+    <div style="max-width:720px; margin:0 auto;">
+      <p class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#c98633; margin-bottom:20px;">What I think the data means</p>
+      <h2 class="font-sans" style="font-size:clamp(24px,3.5vw,36px); font-weight:600; line-height:1.15; color:#f7f5f0; margin-bottom:24px;">Mushrooms follow moisture. The chart just makes it visible.</h2>
+      <div class="font-serif" style="font-size:17px; line-height:1.85; color:#e6efe8;">
+
+        <p>The monthly chart peaks in May, not in the fall. That surprised me, and it is worth taking apart.</p>
+
+        <p>Part of that spring peak is real. Morels and other spring fungi fruit in the Pacific Northwest when the soil warms and stays wet. But part of it is people. More people are outside in spring, and more people photograph what they find. A "sighting" is a person choosing to record a mushroom, not a mushroom choosing to appear. The two are not the same thing.</p>
+
+        <p>The days-since-rain chart is honest about the same limit. Most sightings land on a rain day or within a day or two. That is not proof mushrooms sprout the instant it rains. Seattle rains often, so "near a rain day" is the default state for almost any outdoor observation. The chart shows the coupling between moisture and sightings. It does not prove the lag I would need to call this a rule.</p>
+
+        <p>My takeaway for a gardener is narrower than a headline. Expect mushrooms after rain, and expect more of them in spring and again in the damp of late fall. Beyond that, treat this as a starting point, not a finished answer. The next step is better data, which I spell out below.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How this was made ─────────────────────────────── -->
+  <section style="background:#f7f5f0; padding:64px 24px;">
+    <div style="max-width:720px; margin:0 auto;">
+      <p class="font-sans" style="font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#c98633; margin-bottom:20px;">How this was made</p>
+      <h2 class="font-sans" style="font-size:clamp(24px,3.5vw,36px); font-weight:600; line-height:1.15; color:#23312b; margin-bottom:24px;">Two public datasets, joined by date.</h2>
+      <div class="font-serif" style="font-size:16.5px; line-height:1.8; color:#23312b;">
+
+        <p><strong>Fungi sightings.</strong> GBIF.org occurrence records for kingdom Fungi, filtered to the two most permissive licences, CC0 and CC BY, so the numbers are reproducible. Bounding box for the Pacific Northwest, {yearRange}.</p>
+
+        <p><strong>Rainfall.</strong> NOAA GHCN-Daily precipitation for Seattle-Tacoma (KSEA), one station standing in for the whole region. A sighting's "days since rain" is the gap between its date and the last day with at least 1 mm of rain at that station.</p>
+
+        <p><strong>The join.</strong> The monthly chart is a full count from GBIF's month facet. The days-since-rain chart is a {fmt(data.daysAfterRain.total)}-record sample, because the full set is far too large to download for a pilot.</p>
+
+        <h3 class="font-sans" style="font-size:20px; font-weight:600; color:#23312b; margin:28px 0 10px;">Limits I want you to see</h3>
+        <ul style="padding-left:24px; margin:0;">
+          <li style="margin-bottom:10px;"><strong>One station for a whole region.</strong> Rainfall at Seattle-Tacoma is a proxy, not the rain where each mushroom grew.</li>
+          <li style="margin-bottom:10px;"><strong>Not a random sample.</strong> The days-since-rain chart uses the first {fmt(data.daysAfterRain.total)} records the API returns, so the shape is indicative, not precise.</li>
+          <li style="margin-bottom:10px;"><strong>Sightings are not fruiting.</strong> Every record is a person noticing and recording. That filters the signal through human effort.</li>
+        </ul>
+
+        <p style="margin-top:24px;">Data from GBIF.org and NOAA National Centers for Environmental Information. Both are public and free to reuse. The pipeline that builds this page is at <code class="font-sans" style="font-size:13px; color:#3B6D11;">scripts/build-mushroom-hub.mjs</code>, and the numbers refresh from the source each time it runs.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Related mushroom guides ───────────────────────── -->
+  <section style="background:#eef4f0; padding:64px 24px 80px;">
+    <div style="max-width:720px; margin:0 auto;">
+      <h2 class="font-sans" style="font-size:24px; font-weight:600; color:#23312b; margin-bottom:24px;">Every mushroom guide on the site</h2>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        {posts.map((p) => (
+          <a
+            href={`/blog/${p.slug}/`}
+            class="font-serif"
+            style="display:block; background:#f7f5f0; border:1px solid #d8e5dc; border-radius:14px; padding:16px 18px; font-size:15px; line-height:1.4; color:#23312b; text-decoration:none;">
+            {p.title}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Layout>
